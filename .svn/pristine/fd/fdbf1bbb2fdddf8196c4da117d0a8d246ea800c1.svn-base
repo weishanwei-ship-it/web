@@ -1,0 +1,11 @@
+
+> @vben-core/design@5.7.0 build E:\Project\ICOPWeb\packages\@core\base\design
+> pnpm vite build
+
+[36mvite v8.0.0 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming...✓ 9 modules transformed.
+rendering chunks...
+dist/design.css  116.86 kB
+dist/index.mjs     0.00 kB
+
+[32m✓ built in 1.09s[39m

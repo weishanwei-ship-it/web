@@ -1,0 +1,1 @@
+import{nt as e,t}from"./vue.runtime.esm-bundler-DzX1phpv.js";import{t as n}from"./ConfigProvider-Cc3-_LyJ.js";var r=0;function i(i,a=`reka`){var o;if(i)return i;let s;if(`useId`in t)s=(o=e)==null?void 0:o.call(t);else{var c,l;let e=n({useId:void 0});s=(c=(l=e.useId)==null?void 0:l.call(e))==null?`${++r}`:c}return a?`${a}-${s}`:s}export{i as t};

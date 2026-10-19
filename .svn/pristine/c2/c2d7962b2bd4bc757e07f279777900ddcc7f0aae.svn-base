@@ -1,0 +1,1 @@
+import{E as e,Tt as t,W as n,v as r}from"./vue.runtime.esm-bundler-aRXT_Jhh.js";import"./utils-x3L4BUfx.js";import"./defu-hPsK9PZ1.js";import"./src-B6Xi47SI.js";import{t as i}from"./fallback-CBUGYmXw.js";import"./src-CXsn4llp.js";var a=e({__name:`coming-soon`,setup(e){return(e,a)=>(n(),r(t(i),{status:`coming-soon`}))}});export{a as default};

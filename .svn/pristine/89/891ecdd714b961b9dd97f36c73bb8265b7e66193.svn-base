@@ -1,0 +1,7 @@
+import { BaseFormComponentType, ExtendedFormApi, VbenFormProps } from "./types.js";
+import * as vue from "vue";
+
+//#region src/use-vben-form.d.ts
+declare function useVbenForm<T extends BaseFormComponentType = BaseFormComponentType>(options: VbenFormProps<T>): readonly [vue.DefineSetupFnComponent<VbenFormProps<BaseFormComponentType>, {}, {}, VbenFormProps<BaseFormComponentType> & {}, vue.PublicProps>, ExtendedFormApi];
+//#endregion
+export { useVbenForm };

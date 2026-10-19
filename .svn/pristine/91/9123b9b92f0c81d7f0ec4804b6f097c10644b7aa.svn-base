@@ -1,0 +1,1 @@
+import"./vue.runtime.esm-bundler-CaGt1XdC.js";import"./useMergeSemantic-w4MH8jM3.js";import"./isFragment-AZjWTaNb.js";import"./dist-BSD0yyaA.js";import e,{t}from"./Group-BnPegNO_.js";t.install=n=>{n.component(t.name,t),n.component(e.name,e)};var n=t;export{e as CheckboxGroup,n as default};

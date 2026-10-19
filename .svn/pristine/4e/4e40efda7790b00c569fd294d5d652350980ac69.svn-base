@@ -1,0 +1,42 @@
+
+> @vben-core/menu-ui@5.7.0 build E:\Project\ICOPWeb\packages\@core\ui-kit\menu-ui
+> pnpm exec tsdown
+
+[33m[tsdown] Node.js v22.13.0 is deprecated. Support will be removed in the next minor release. Please upgrade to Node.js 22.18.0 or later.[39m
+[34mℹ[39m tsdown [2mv0.21.3[22m powered by rolldown [2mv1.0.0-rc.9[22m
+[34mℹ[39m config file: [4mE:\Project\ICOPWeb\packages\@core\ui-kit\menu-ui\tsdown.config.ts[24m (unrun)
+[34mℹ[39m entry: [34msrc\index.ts[39m
+[34mℹ[39m tsconfig: [34mtsconfig.json[39m
+[34mℹ[39m Build start
+[34mℹ[39m [2mdist\[22m[1mindex.mjs[22m                                    [2m 0.26 kB[22m [2m│ gzip: 0.15 kB[22m
+[34mℹ[39m [2mdist\[22mstyle.css                                    [2m16.03 kB[22m [2m│ gzip: 2.63 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\menu.mjs                          [2m 8.46 kB[22m [2m│ gzip: 2.62 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\sub-menu.mjs                      [2m 7.66 kB[22m [2m│ gzip: 2.28 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\menu-item.mjs                     [2m 4.48 kB[22m [2m│ gzip: 1.58 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\sub-menu-content.mjs              [2m 3.23 kB[22m [2m│ gzip: 1.13 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\collapse-transition.mjs           [2m 2.74 kB[22m [2m│ gzip: 0.72 kB[22m
+[34mℹ[39m [2mdist\[22msub-menu.mjs                                 [2m 2.40 kB[22m [2m│ gzip: 0.88 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\normal-menu\normal-menu.mjs       [2m 2.21 kB[22m [2m│ gzip: 0.94 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\menu-badge.mjs                    [2m 1.84 kB[22m [2m│ gzip: 0.80 kB[22m
+[34mℹ[39m [2mdist\[22mmenu.mjs                                     [2m 1.23 kB[22m [2m│ gzip: 0.58 kB[22m
+[34mℹ[39m [2mdist\[22mhooks\use-menu-context.mjs                   [2m 1.01 kB[22m [2m│ gzip: 0.40 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\menu-badge-dot.mjs                [2m 0.94 kB[22m [2m│ gzip: 0.46 kB[22m
+[34mℹ[39m [2mdist\[22mutils\index.mjs                              [2m 0.90 kB[22m [2m│ gzip: 0.41 kB[22m
+[34mℹ[39m [2mdist\[22mhooks\use-menu.mjs                           [2m 0.88 kB[22m [2m│ gzip: 0.49 kB[22m
+[34mℹ[39m [2mdist\[22mhooks\use-menu-scroll.mjs                    [2m 0.79 kB[22m [2m│ gzip: 0.41 kB[22m
+[34mℹ[39m [2mdist\[22m_virtual\_\plugin-vue\export-helper.mjs      [2m 0.25 kB[22m [2m│ gzip: 0.18 kB[22m
+[34mℹ[39m [2mdist\[22m[32m[1mindex.d.ts[22m[39m                                   [2m 0.62 kB[22m [2m│ gzip: 0.21 kB[22m
+[34mℹ[39m [2mdist\[22m[32mtypes.d.ts[39m                                   [2m 1.99 kB[22m [2m│ gzip: 0.60 kB[22m
+[34mℹ[39m [2mdist\[22m[32mcomponents\normal-menu\normal-menu.vue.d.ts[39m  [2m 0.87 kB[22m [2m│ gzip: 0.42 kB[22m
+[34mℹ[39m [2mdist\[22m[32mmenu.vue.d.ts[39m                                [2m 0.57 kB[22m [2m│ gzip: 0.32 kB[22m
+[34mℹ[39m [2mdist\[22m[32mcomponents\menu-badge.vue.d.ts[39m               [2m 0.54 kB[22m [2m│ gzip: 0.31 kB[22m
+[34mℹ[39m [2mdist\[22m[32mcomponents\normal-menu\normal-menu.d.ts[39m      [2m 0.30 kB[22m [2m│ gzip: 0.22 kB[22m
+[34mℹ[39m [2mdist\[22m[32mcomponents\normal-menu\index.d.ts[39m            [2m 0.10 kB[22m [2m│ gzip: 0.09 kB[22m
+[34mℹ[39m 24 files, total: 60.30 kB
+[33m[PLUGIN_TIMINGS] Warning:[0m Your build spent significant time in plugins. Here is a breakdown:
+  - unplugin-vue (50%)
+  - rolldown-plugin-dts:generate (25%)
+  - tsdown:external (12%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+[32m✔[39m Build complete in [32m5851ms[39m

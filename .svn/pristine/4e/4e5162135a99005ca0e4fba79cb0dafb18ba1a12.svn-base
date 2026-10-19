@@ -1,0 +1,216 @@
+
+> @vben/web-tdesign@5.7.0 build E:\Project\ICOPWeb\apps\web-tdesign
+> pnpm vite build --mode production
+
+[36mvite v8.0.0 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming...✓ 8423 modules transformed.
+rendering chunks...
+✨configuration file is build successfully!
+dist/_app.config.js                              0.23 kB
+dist/index.html                                  3.27 kB
+dist/css/css-Bnh6-_op.css                        0.35 kB
+dist/css/auth-zsf-kax4.css                       0.38 kB
+dist/css/login-Bw5Nl-gj.css                      0.43 kB
+dist/css/extends-Ca6mKJFU.css                    0.47 kB
+dist/css/loading-DXYS4l2z.css                    0.56 kB
+dist/css/rate-Cd3cuPkB.css                       0.65 kB
+dist/css/spinner-Cm6L_mVc.css                    0.69 kB
+dist/css/space-B6MqTpG9.css                      0.96 kB
+dist/css/divider-n1y9fzpe.css                    1.15 kB
+dist/css/theme-toggle-P_oQVgPb.css               1.63 kB
+dist/css/loading-2Y88X0wS.css                    1.73 kB
+dist/css/tooltip-DSuAioyG.css                    1.80 kB
+dist/css/plugin-By5pMuUg.css                     1.90 kB
+dist/css/tdesign-DLsSKS-G.css                    2.04 kB
+dist/css/checkbox-Cmv02J0R.css                   2.88 kB
+dist/css/plugin-CKYXfiWJ.css                     3.49 kB
+dist/css/textarea-BIHpBpSb.css                   3.59 kB
+dist/css/switch-zvVc-TMH.css                     5.79 kB
+dist/css/tippy-DkTQMyWH.css                      6.65 kB
+dist/css/popup-CJh0WRwU.css                      6.91 kB
+dist/css/select-BL040DzL.css                     7.11 kB
+dist/css/auto-complete-Cur9ji_c.css              7.45 kB
+dist/css/tree-select-CEqUWbn9.css                8.15 kB
+dist/css/radio-Cg9d0JWx.css                      8.43 kB
+dist/css/time-picker-CypO5n3l.css               10.75 kB
+dist/css/input-0V1cAqXi.css                     11.40 kB
+dist/css/input-number-B6QhBMgR.css              11.92 kB
+dist/css/select-input-CjKnt6at.css              12.45 kB
+dist/css/date-picker-BWHszsYK.css               20.44 kB
+dist/css/basic-xmHkZwlY.css                     22.29 kB
+dist/css/upload-CBOySngy.css                    43.33 kB
+dist/css/button-BA-XHD2f.css                    45.97 kB
+dist/css/bootstrap-BB5nz1Lj.css                152.74 kB
+dist/js/isNil-DERSd8pv.js                        0.04 kB
+dist/js/isUndefined-C2fW7p3g.js                  0.04 kB
+dist/js/_plugin-vue_export-helper-BjzkLM9-.js    0.08 kB
+dist/js/button-Cnxj5oG7.js                       0.11 kB
+dist/js/core-DXoQ0PTv.js                         0.11 kB
+dist/js/space-B-XE5Qe3.js                        0.11 kB
+dist/js/profile-B8-oqERu.js                      0.15 kB
+dist/js/profile-pXF8Lm4l.js                      0.15 kB
+dist/js/globals-BuXZTezK.js                      0.17 kB
+dist/js/button-Cze_pRms.js                       0.17 kB
+dist/js/rotate-cw-H_RcjV1O.js                    0.18 kB
+dist/js/src-DEHO0CK4.js                          0.19 kB
+dist/js/analytics-trends-C-z7o07e.js             0.20 kB
+dist/js/analytics-visits-UonnZFeV.js             0.20 kB
+dist/js/security-setting-Bpbo8IlD.js             0.20 kB
+dist/js/notification-setting-BttGcd6u.js         0.20 kB
+dist/js/analytics-visits-data-B82SfFxk.js        0.21 kB
+dist/js/analytics-visits-sales-CTq4TDU9.js       0.21 kB
+dist/js/src-BumJrYwt.js                          0.21 kB
+dist/js/analytics-visits-source-B5sef4je.js      0.21 kB
+dist/js/page-DEl0SSir.js                         0.27 kB
+dist/js/page-ifHQ6HqT.js                         0.28 kB
+dist/js/demos-CY_QUcfA.js                        0.29 kB
+dist/js/demos-BiGtbr8n.js                        0.30 kB
+dist/js/vben-bWTIU4i0.js                         0.34 kB
+dist/js/Card-DQUOvy9W.js                         0.35 kB
+dist/js/_cacheHas-CyU1ecgU.js                    0.37 kB
+dist/js/objectWithoutProperties-DL07YAu7.js      0.37 kB
+dist/js/coming-soon-DzIuYzkf.js                  0.37 kB
+dist/js/forbidden-DywucK-N.js                    0.40 kB
+dist/js/not-found-Duj2h059.js                    0.40 kB
+dist/js/password-setting-4yPHHCLl.js             0.41 kB
+dist/js/internal-error-BVeIjztL.js               0.41 kB
+dist/js/offline-CLgTKnjk.js                      0.41 kB
+dist/js/_flatRest-DFnj73h1.js                    0.43 kB
+dist/js/auth-title-CTlnNYp_.js                   0.47 kB
+dist/js/base-setting-BNYWFVs5.js                 0.49 kB
+dist/js/login-fyzkTPJB.js                        0.54 kB
+dist/js/en-afUPu1Hh.js                           0.57 kB
+dist/js/render-content-CmX_cA_m.js               0.59 kB
+dist/js/analytics-visits-eMDpCoRb.js             0.66 kB
+dist/js/chunk-Cbdasd2v.js                        0.72 kB
+dist/js/analytics-visits-sales-CH5Y6iFJ.js       0.74 kB
+dist/js/fake-arrow-BXVYEq3m.js                   0.78 kB
+dist/js/common--6AF5rKX.js                       0.78 kB
+dist/js/common-BA5WZIZq.js                       0.81 kB
+dist/js/icon-DDxoIpEk.js                         0.83 kB
+dist/js/analytics-visits-data-D50zs_sE.js        0.85 kB
+dist/js/Primitive-C6MKpPUS.js                    0.89 kB
+dist/js/dist-CikdHUkZ.js                         0.89 kB
+dist/js/analytics-visits-source-DmJh5CT0.js      0.91 kB
+dist/js/omit-vuTAJ6lY.js                         0.96 kB
+dist/js/TabsTrigger-DtnPJrhH.js                  1.00 kB
+dist/js/analytics-trends-I1QcvVVN.js             1.03 kB
+dist/js/useLengthLimit-BlfwAqaQ.js               1.04 kB
+dist/js/analysis-chart-card-qogAKPU3.js          1.11 kB
+dist/js/divider-C_zJIDB9.js                      1.11 kB
+dist/js/_baseGet-CptFG-ol.js                     1.24 kB
+dist/js/icon-button-Dah_Zf0a.js                  1.30 kB
+dist/js/loading-C_S-t24b.js                      1.49 kB
+dist/js/zh-cn-C3U_i1tJ.js                        1.51 kB
+dist/js/base-setting-CzDzj_Hj.js                 1.63 kB
+dist/js/notification-setting-ChwBCsAD.js         1.66 kB
+dist/js/password-setting-CMXV_a33.js             1.81 kB
+dist/js/locales-D8TcMlPl.js                      1.81 kB
+dist/js/security-setting-C6WSmucr.js             1.88 kB
+dist/js/Separator-1IUtXYe4.js                    1.90 kB
+dist/js/TabsContent-CTWxr1zS.js                  1.91 kB
+dist/js/css-DO7epfFu.js                          1.98 kB
+dist/js/page-BJnVMXgC.js                         2.01 kB
+dist/js/chevron-left-CWy8XeIp.js                 2.12 kB
+dist/js/close-DiklljQB.js                        2.19 kB
+dist/js/space-DRHnxGAP.js                        2.22 kB
+dist/js/defu-BimEdcVZ.js                         2.25 kB
+dist/js/forget-password-CVZoP36O.js              2.32 kB
+dist/js/switch-C_6gjblt.js                       2.36 kB
+dist/js/FormLabel-C9kJKLXJ.js                    2.43 kB
+dist/js/usePrimitiveElement-Dpu6MUQA.js          2.43 kB
+dist/js/dist-Cl2bmuZd.js                         2.70 kB
+dist/js/code-login-CwFjVlJr.js                   2.81 kB
+dist/js/button-C8VI3lh-.js                       2.89 kB
+dist/js/dep-3b939101-CJvP74cI.js                 2.94 kB
+dist/js/isEqual-CIYIgzI2.js                      3.04 kB
+dist/js/tooltip-iYXjhK2I.js                      3.06 kB
+dist/js/isValueEqualOrExist-Dn1SIP8K.js          3.11 kB
+dist/js/profile-B6nIWsVu.js                      3.14 kB
+dist/js/VisuallyHiddenInput-BnVUP2Y3.js          3.18 kB
+dist/js/fallback-kumaEFzx.js                     3.32 kB
+dist/js/authentication-DiflQSqC.js               3.39 kB
+dist/jse/index-index-BXGe-Mr2.js                 3.44 kB
+dist/js/ui-BhuRSSLr.js                           3.49 kB
+dist/js/register-B1HhA7OQ.js                     3.51 kB
+dist/js/authentication-BwdZTyEY.js               3.53 kB
+dist/js/Switch-BbvGSi2y.js                       3.66 kB
+dist/js/ui-CcV3w7hM.js                           3.79 kB
+dist/js/nprogress-BGLebR0a.js                    4.17 kB
+dist/js/TabsList-C9qYba4J.js                     4.28 kB
+dist/js/avatar-ByRnbjDx.js                       4.64 kB
+dist/js/rate-a4U_Axb6.js                         4.80 kB
+dist/js/analytics-BJ5vTqq8.js                    4.85 kB
+dist/js/close-circle-filled-Dv5b1-Q0.js          5.10 kB
+dist/js/checkbox-jzhKld-l.js                     5.43 kB
+dist/js/textarea-SBIo0c2H.js                     5.56 kB
+dist/js/tdesign-CIQ2GrUG.js                      5.95 kB
+dist/js/info-circle-filled-C6uCRtTE.js           6.38 kB
+dist/js/user-s6FQWo_4.js                         6.38 kB
+dist/js/dep-6fcd3856-CXZ67ZNI.js                 6.65 kB
+dist/js/preferences-8_0-U0vh.js                  6.68 kB
+dist/js/preferences-xojFQTF2.js                  6.78 kB
+dist/js/icon-500-GJRC4OXe.js                     7.10 kB
+dist/js/dayjs.min-DwBUgfDC.js                    7.17 kB
+dist/js/checkbox-H594q9Hr.js                     7.96 kB
+dist/js/icon-offline-DkiZyBao.js                 8.10 kB
+dist/js/loading-BSun0fYl.js                      8.19 kB
+dist/js/plugin-BFNbMBEA.js                       8.34 kB
+dist/js/about-CShUmV2i.js                        8.48 kB
+dist/js/auto-complete-yTZ7FZko.js                8.56 kB
+dist/js/radio-BKkyKEEz.js                        8.77 kB
+dist/js/RovingFocusItem-CR7lX_66.js              9.31 kB
+dist/js/icon-403-BmR-Phok.js                     9.40 kB
+dist/js/workspace-Xp11xO74.js                   10.62 kB
+dist/js/plugin-B_qH9orm.js                      10.95 kB
+dist/js/input-number-RmW2HmRc.js                11.77 kB
+dist/js/dep-c171b67b-ClRXBn_7.js                12.14 kB
+dist/js/icon-coming-soon-9NWg2jzv.js            12.91 kB
+dist/js/spinner-Chz9wug1.js                     13.57 kB
+dist/js/input-Cjtd0ROk.js                       13.82 kB
+dist/js/src-eFs-x9Uq.js                         19.90 kB
+dist/js/icon-404-BIS1suiR.js                    24.36 kB
+dist/js/vue-router-DeOrjNHs.js                  24.93 kB
+dist/js/src-sJ456haM.js                         25.26 kB
+dist/js/qrcode-login-I1lV3p3Z.js                25.52 kB
+dist/js/select-DqRtH9YL.js                      28.94 kB
+dist/js/index.esm-CsY9PKck.js                   28.96 kB
+dist/js/popup-cDu5Z26T.js                       30.98 kB
+dist/js/dist-BkAPVp5s.js                        32.83 kB
+dist/js/theme-toggle-NdE05s9Z.js                33.53 kB
+dist/js/motion-Dz9C2S0b.js                      34.67 kB
+dist/js/time-picker-BrMtW0PJ.js                 35.67 kB
+dist/js/vee-validate-CBp4lbxx.js                39.66 kB
+dist/js/select-input-CoHF5EtO.js                44.89 kB
+dist/js/sortable.complete.esm-BVlv0fgL.js       45.70 kB
+dist/js/login-Yf2tSI0x.js                       46.48 kB
+dist/js/utils-DlNNgXGy.js                       47.89 kB
+dist/js/extends-Ks6f2FpR.js                     49.66 kB
+dist/js/tippy-EC-B87mS.js                       51.05 kB
+dist/js/bootstrap-DUjH2PU4.js                   52.24 kB
+dist/js/src-Bb5HDN93.js                         53.84 kB
+dist/js/tooltip-HDcxk8F9.js                     56.74 kB
+dist/js/tree-select-DTJMkEL8.js                 65.39 kB
+dist/js/dep-0a8677c1-rwIKjHPL.js                68.61 kB
+dist/js/use-vben-form-B0c7ZanO.js               96.94 kB
+dist/js/date-picker-CFZT80sh.js                108.29 kB
+dist/js/vue.runtime.esm-bundler-QGCMaQiN.js    109.93 kB
+dist/js/auth-DuUJKwAF.js                       120.75 kB
+dist/js/upload-CbAkx42g.js                     122.13 kB
+dist/js/src-BuMVe-8e.js                        129.71 kB
+dist/js/store-ByTb3zyu.js                      139.51 kB
+dist/js/basic-BQhqPj5U.js                      290.26 kB
+dist/js/use-echarts-QvlTnPFB.js                652.56 kB
+
+
+ WARN  [33m[33m[PLUGIN_TIMINGS] Warning:[0m Your build spent significant time in plugins. Here is a breakdown:
+  - vite:lazy-import (38%)
+  - unplugin-vue-i18n:resource (34%)
+  - vite:tailwind-reference (20%)
+  - vite:vue (5%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+[39m
+
+[32m✓ built in 16.52s[39m
+ZIP file created: E:\Project\ICOPWeb\apps\web-tdesign\dist.zip (1088456 total bytes)
+Folder has been zipped to: E:\Project\ICOPWeb\apps\web-tdesign\dist.zip

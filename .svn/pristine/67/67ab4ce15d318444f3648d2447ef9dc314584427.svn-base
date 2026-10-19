@@ -1,0 +1,1 @@
+var e=`https://github.com/vbenjs/vue-vben-admin`,t=`https://doc.vben.pro`,n=`https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp`,r=`https://www.vben.pro`,i=`https://antdv-next.vben.pro`,a=`https://ele.vben.pro`,o=`https://naive.vben.pro`,s=`https://ant.vben.pro`;export{e as a,r as c,a as i,s as n,n as o,t as r,o as s,i as t};

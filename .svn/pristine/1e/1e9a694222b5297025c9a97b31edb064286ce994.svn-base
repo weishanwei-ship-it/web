@@ -1,0 +1,1 @@
+import{bt as e,v as t}from"./vue.runtime.esm-bundler-DzX1phpv.js";import{t as n}from"./ConfigProvider-Cc3-_LyJ.js";function r(r){let i=n({dir:e(`ltr`)});return t(()=>{var e;return(r==null?void 0:r.value)||((e=i.dir)==null?void 0:e.value)||`ltr`})}export{r as t};

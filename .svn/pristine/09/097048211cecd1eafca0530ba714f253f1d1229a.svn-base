@@ -1,0 +1,234 @@
+import{D as e,E as t,G as n,I as r,V as i,d as a,g as o,gt as s,j as c,k as l,nt as u,rt as d,xt as f}from"./vue.runtime.esm-bundler-aRXT_Jhh.js";import{B as p,F as m,H as h,L as g,R as _,U as v,V as y,j as ee,n as b}from"./use-theme-BWMK84IV.js";import{t as te}from"./use-rtl-BvqqgIJt.js";import{f as x,s as S,t as C}from"./Scrollbar-OpLNbdCa.js";import{r as ne}from"./css-i3aOAw5r.js";import{n as re}from"./light-tKiVGGqS.js";import{n as w,t as T}from"./delegate-DVmuPZ_e.js";import{t as E}from"./use-memo-DQvBmAye.js";import{t as ie}from"./use-merged-state-BgJZDxNi.js";import{a as D,i as O,o as k,s as A,t as ae}from"./use-form-item-CAKgZof0.js";import{t as oe}from"./use-locale-Cws8nItG.js";import{n as se}from"./Loading-E9yOmM-C.js";import{n as j,t as M}from"./Suffix-BAdePS08.js";import{t as N}from"./Eye-BtJP_she.js";import{t as ce}from"./browser-dJ14zkPi.js";import{t as le}from"./light-FHm1hc84.js";var P=t({name:`EyeOff`,render(){return l(`svg`,{xmlns:`http://www.w3.org/2000/svg`,viewBox:`0 0 512 512`},l(`path`,{d:`M432 448a15.92 15.92 0 0 1-11.31-4.69l-352-352a16 16 0 0 1 22.62-22.62l352 352A16 16 0 0 1 432 448z`,fill:`currentColor`}),l(`path`,{d:`M255.66 384c-41.49 0-81.5-12.28-118.92-36.5c-34.07-22-64.74-53.51-88.7-91v-.08c19.94-28.57 41.78-52.73 65.24-72.21a2 2 0 0 0 .14-2.94L93.5 161.38a2 2 0 0 0-2.71-.12c-24.92 21-48.05 46.76-69.08 76.92a31.92 31.92 0 0 0-.64 35.54c26.41 41.33 60.4 76.14 98.28 100.65C162 402 207.9 416 255.66 416a239.13 239.13 0 0 0 75.8-12.58a2 2 0 0 0 .77-3.31l-21.58-21.58a4 4 0 0 0-3.83-1a204.8 204.8 0 0 1-51.16 6.47z`,fill:`currentColor`}),l(`path`,{d:`M490.84 238.6c-26.46-40.92-60.79-75.68-99.27-100.53C349 110.55 302 96 255.66 96a227.34 227.34 0 0 0-74.89 12.83a2 2 0 0 0-.75 3.31l21.55 21.55a4 4 0 0 0 3.88 1a192.82 192.82 0 0 1 50.21-6.69c40.69 0 80.58 12.43 118.55 37c34.71 22.4 65.74 53.88 89.76 91a.13.13 0 0 1 0 .16a310.72 310.72 0 0 1-64.12 72.73a2 2 0 0 0-.15 2.95l19.9 19.89a2 2 0 0 0 2.7.13a343.49 343.49 0 0 0 68.64-78.48a32.2 32.2 0 0 0-.1-34.78z`,fill:`currentColor`}),l(`path`,{d:`M256 160a95.88 95.88 0 0 0-21.37 2.4a2 2 0 0 0-1 3.38l112.59 112.56a2 2 0 0 0 3.38-1A96 96 0 0 0 256 160z`,fill:`currentColor`}),l(`path`,{d:`M165.78 233.66a2 2 0 0 0-3.38 1a96 96 0 0 0 115 115a2 2 0 0 0 1-3.38z`,fill:`currentColor`}))}}),F=m(`n-input`),ue=_(`input`,`
+ max-width: 100%;
+ cursor: text;
+ line-height: 1.5;
+ z-index: auto;
+ outline: none;
+ box-sizing: border-box;
+ position: relative;
+ display: inline-flex;
+ border-radius: var(--n-border-radius);
+ background-color: var(--n-color);
+ transition: background-color .3s var(--n-bezier);
+ font-size: var(--n-font-size);
+ font-weight: var(--n-font-weight);
+ --n-padding-vertical: calc((var(--n-height) - 1.5 * var(--n-font-size)) / 2);
+`,[p(`input, textarea`,`
+ overflow: hidden;
+ flex-grow: 1;
+ position: relative;
+ `),p(`input-el, textarea-el, input-mirror, textarea-mirror, separator, placeholder`,`
+ box-sizing: border-box;
+ font-size: inherit;
+ line-height: 1.5;
+ font-family: inherit;
+ border: none;
+ outline: none;
+ background-color: #0000;
+ text-align: inherit;
+ transition:
+ -webkit-text-fill-color .3s var(--n-bezier),
+ caret-color .3s var(--n-bezier),
+ color .3s var(--n-bezier),
+ text-decoration-color .3s var(--n-bezier);
+ `),p(`input-el, textarea-el`,`
+ -webkit-appearance: none;
+ scrollbar-width: none;
+ width: 100%;
+ min-width: 0;
+ text-decoration-color: var(--n-text-decoration-color);
+ color: var(--n-text-color);
+ caret-color: var(--n-caret-color);
+ background-color: transparent;
+ `,[g(`&::-webkit-scrollbar, &::-webkit-scrollbar-track-piece, &::-webkit-scrollbar-thumb`,`
+ width: 0;
+ height: 0;
+ display: none;
+ `),g(`&::placeholder`,`
+ color: #0000;
+ -webkit-text-fill-color: transparent !important;
+ `),g(`&:-webkit-autofill ~`,[p(`placeholder`,`display: none;`)])]),y(`round`,[h(`textarea`,`border-radius: calc(var(--n-height) / 2);`)]),p(`placeholder`,`
+ pointer-events: none;
+ position: absolute;
+ left: 0;
+ right: 0;
+ top: 0;
+ bottom: 0;
+ overflow: hidden;
+ color: var(--n-placeholder-color);
+ `,[g(`span`,`
+ width: 100%;
+ display: inline-block;
+ `)]),y(`textarea`,[p(`placeholder`,`overflow: visible;`)]),h(`autosize`,`width: 100%;`),y(`autosize`,[p(`textarea-el, input-el`,`
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 100%;
+ `)]),_(`input-wrapper`,`
+ overflow: hidden;
+ display: inline-flex;
+ flex-grow: 1;
+ position: relative;
+ padding-left: var(--n-padding-left);
+ padding-right: var(--n-padding-right);
+ `),p(`input-mirror`,`
+ padding: 0;
+ height: var(--n-height);
+ line-height: var(--n-height);
+ overflow: hidden;
+ visibility: hidden;
+ position: static;
+ white-space: pre;
+ pointer-events: none;
+ `),p(`input-el`,`
+ padding: 0;
+ height: var(--n-height);
+ line-height: var(--n-height);
+ `,[g(`&[type=password]::-ms-reveal`,`display: none;`),g(`+`,[p(`placeholder`,`
+ display: flex;
+ align-items: center; 
+ `)])]),h(`textarea`,[p(`placeholder`,`white-space: nowrap;`)]),p(`eye`,`
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition: color .3s var(--n-bezier);
+ `),y(`textarea`,`width: 100%;`,[_(`input-word-count`,`
+ position: absolute;
+ right: var(--n-padding-right);
+ bottom: var(--n-padding-vertical);
+ `),y(`resizable`,[_(`input-wrapper`,`
+ resize: vertical;
+ min-height: var(--n-height);
+ `)]),p(`textarea-el, textarea-mirror, placeholder`,`
+ height: 100%;
+ padding-left: 0;
+ padding-right: 0;
+ padding-top: var(--n-padding-vertical);
+ padding-bottom: var(--n-padding-vertical);
+ word-break: break-word;
+ display: inline-block;
+ vertical-align: bottom;
+ box-sizing: border-box;
+ line-height: var(--n-line-height-textarea);
+ margin: 0;
+ resize: none;
+ white-space: pre-wrap;
+ scroll-padding-block-end: var(--n-padding-vertical);
+ `),p(`textarea-mirror`,`
+ width: 100%;
+ pointer-events: none;
+ overflow: hidden;
+ visibility: hidden;
+ position: static;
+ white-space: pre-wrap;
+ overflow-wrap: break-word;
+ `)]),y(`pair`,[p(`input-el, placeholder`,`text-align: center;`),p(`separator`,`
+ display: flex;
+ align-items: center;
+ transition: color .3s var(--n-bezier);
+ color: var(--n-text-color);
+ white-space: nowrap;
+ `,[_(`icon`,`
+ color: var(--n-icon-color);
+ `),_(`base-icon`,`
+ color: var(--n-icon-color);
+ `)])]),y(`disabled`,`
+ cursor: not-allowed;
+ background-color: var(--n-color-disabled);
+ `,[p(`border`,`border: var(--n-border-disabled);`),p(`input-el, textarea-el`,`
+ cursor: not-allowed;
+ color: var(--n-text-color-disabled);
+ text-decoration-color: var(--n-text-color-disabled);
+ `),p(`placeholder`,`color: var(--n-placeholder-color-disabled);`),p(`separator`,`color: var(--n-text-color-disabled);`,[_(`icon`,`
+ color: var(--n-icon-color-disabled);
+ `),_(`base-icon`,`
+ color: var(--n-icon-color-disabled);
+ `)]),_(`input-word-count`,`
+ color: var(--n-count-text-color-disabled);
+ `),p(`suffix, prefix`,`color: var(--n-text-color-disabled);`,[_(`icon`,`
+ color: var(--n-icon-color-disabled);
+ `),_(`internal-icon`,`
+ color: var(--n-icon-color-disabled);
+ `)])]),h(`disabled`,[p(`eye`,`
+ color: var(--n-icon-color);
+ cursor: pointer;
+ `,[g(`&:hover`,`
+ color: var(--n-icon-color-hover);
+ `),g(`&:active`,`
+ color: var(--n-icon-color-pressed);
+ `)]),g(`&:hover`,[p(`state-border`,`border: var(--n-border-hover);`)]),y(`focus`,`background-color: var(--n-color-focus);`,[p(`state-border`,`
+ border: var(--n-border-focus);
+ box-shadow: var(--n-box-shadow-focus);
+ `)])]),p(`border, state-border`,`
+ box-sizing: border-box;
+ position: absolute;
+ left: 0;
+ right: 0;
+ top: 0;
+ bottom: 0;
+ pointer-events: none;
+ border-radius: inherit;
+ border: var(--n-border);
+ transition:
+ box-shadow .3s var(--n-bezier),
+ border-color .3s var(--n-bezier);
+ `),p(`state-border`,`
+ border-color: #0000;
+ z-index: 1;
+ `),p(`prefix`,`margin-right: 4px;`),p(`suffix`,`
+ margin-left: 4px;
+ `),p(`suffix, prefix`,`
+ transition: color .3s var(--n-bezier);
+ flex-wrap: nowrap;
+ flex-shrink: 0;
+ line-height: var(--n-height);
+ white-space: nowrap;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ color: var(--n-suffix-text-color);
+ `,[_(`base-loading`,`
+ font-size: var(--n-icon-size);
+ margin: 0 2px;
+ color: var(--n-loading-color);
+ `),_(`base-clear`,`
+ font-size: var(--n-icon-size);
+ `,[p(`placeholder`,[_(`base-icon`,`
+ transition: color .3s var(--n-bezier);
+ color: var(--n-icon-color);
+ font-size: var(--n-icon-size);
+ `)])]),g(`>`,[_(`icon`,`
+ transition: color .3s var(--n-bezier);
+ color: var(--n-icon-color);
+ font-size: var(--n-icon-size);
+ `)]),_(`base-icon`,`
+ font-size: var(--n-icon-size);
+ `)]),_(`input-word-count`,`
+ pointer-events: none;
+ line-height: 1.5;
+ font-size: .85em;
+ color: var(--n-count-text-color);
+ transition: color .3s var(--n-bezier);
+ margin-left: 4px;
+ font-variant: tabular-nums;
+ `),[`warning`,`error`].map(e=>y(`${e}-status`,[h(`disabled`,[_(`base-loading`,`
+ color: var(--n-loading-color-${e})
+ `),p(`input-el, textarea-el`,`
+ caret-color: var(--n-caret-color-${e});
+ `),p(`state-border`,`
+ border: var(--n-border-${e});
+ `),g(`&:hover`,[p(`state-border`,`
+ border: var(--n-border-hover-${e});
+ `)]),g(`&:focus`,`
+ background-color: var(--n-color-focus-${e});
+ `,[p(`state-border`,`
+ box-shadow: var(--n-box-shadow-focus-${e});
+ border: var(--n-border-focus-${e});
+ `)]),y(`focus`,`
+ background-color: var(--n-color-focus-${e});
+ `,[p(`state-border`,`
+ box-shadow: var(--n-box-shadow-focus-${e});
+ border: var(--n-border-focus-${e});
+ `)])])]))]),de=_(`input`,[y(`disabled`,[p(`input-el, textarea-el`,`
+ -webkit-text-fill-color: var(--n-text-color-disabled);
+ `)])]);function I(e){let t=0;for(let n of e)t++;return t}function L(e){return e===``||e==null}function fe(e){let t=s(null);function n(){let{value:n}=e;if(!(n!=null&&n.focus)){i();return}let{selectionStart:r,selectionEnd:a,value:o}=n;if(r==null||a==null){i();return}t.value={start:r,end:a,beforeText:o.slice(0,r),afterText:o.slice(a)}}function r(){var n;let{value:r}=t,{value:i}=e;if(!r||!i)return;let{value:a}=i,{start:o,beforeText:s,afterText:c}=r,l=a.length;if(a.endsWith(c))l=a.length-c.length;else if(a.startsWith(s))l=s.length;else{let e=s[o-1],t=a.indexOf(e,o-1);t!==-1&&(l=t+1)}(n=i.setSelectionRange)==null||n.call(i,l,l)}function i(){t.value=null}return u(e,i),{recordCursor:n,restoreCursor:r}}var R=t({name:`InputWordCount`,setup(e,{slots:t}){let{mergedValueRef:n,maxlengthRef:r,mergedClsPrefixRef:i,countGraphemesRef:a}=c(F),s=o(()=>{let{value:e}=n;return e===null||Array.isArray(e)?0:(a.value||I)(e)});return()=>{let{value:e}=r,{value:a}=n;return l(`span`,{class:`${i.value}-input-word-count`},D(t.default,{value:a===null||Array.isArray(a)?``:a},()=>[e===void 0?s.value:`${s.value} / ${e}`]))}}}),z=Object.assign(Object.assign({},b.props),{bordered:{type:Boolean,default:void 0},type:{type:String,default:`text`},placeholder:[Array,String],defaultValue:{type:[String,Array],default:null},value:[String,Array],disabled:{type:Boolean,default:void 0},size:String,rows:{type:[Number,String],default:3},round:Boolean,minlength:[String,Number],maxlength:[String,Number],clearable:Boolean,autosize:{type:[Boolean,Object],default:!1},pair:Boolean,separator:String,readonly:{type:[String,Boolean],default:!1},passivelyActivated:Boolean,showPasswordOn:String,stateful:{type:Boolean,default:!0},autofocus:Boolean,inputProps:Object,resizable:{type:Boolean,default:!0},showCount:Boolean,loading:{type:Boolean,default:void 0},allowInput:Function,renderCount:Function,onMousedown:Function,onKeydown:Function,onKeyup:[Function,Array],onInput:[Function,Array],onFocus:[Function,Array],onBlur:[Function,Array],onClick:[Function,Array],onChange:[Function,Array],onClear:[Function,Array],countGraphemes:Function,status:String,"onUpdate:value":[Function,Array],onUpdateValue:[Function,Array],textDecoration:[String,Array],attrSize:{type:Number,default:20},onInputBlur:[Function,Array],onInputFocus:[Function,Array],onDeactivate:[Function,Array],onActivate:[Function,Array],onWrapperFocus:[Function,Array],onWrapperBlur:[Function,Array],internalDeactivateOnEnter:Boolean,internalForceFocus:Boolean,internalLoadingBeforeSuffix:{type:Boolean,default:!0},showPasswordToggle:Boolean}),B=t({name:`Input`,props:z,slots:Object,setup(t){let{mergedClsPrefixRef:a,mergedBorderedRef:c,inlineThemeDisabled:l,mergedRtlRef:p,mergedComponentPropsRef:m}=ee(t),h=b(`Input`,`-input`,ue,le,t,a);ce&&se(`-input-safari`,de,a);let g=s(null),_=s(null),y=s(null),x=s(null),S=s(null),C=s(null),D=s(null),O=fe(D),k=s(null),{localeRef:j}=oe(`Input`),M=s(t.defaultValue),N=ie(f(t,`value`),M),P=ae(t,{mergedSize:e=>{var n,r;let{size:i}=t;if(i)return i;let{mergedSize:a}=e||{};return a!=null&&a.value?a.value:((r=(n=m==null?void 0:m.value)==null?void 0:n.Input)==null?void 0:r.size)||`medium`}}),{mergedSizeRef:I,mergedDisabledRef:R,mergedStatusRef:z}=P,B=s(!1),V=s(!1),H=s(!1),U=s(!1),W=null,G=o(()=>{let{placeholder:e,pair:n}=t;return n?Array.isArray(e)?e:e===void 0?[``,``]:[e,e]:e===void 0?[j.value.placeholder]:[e]}),pe=o(()=>{let{value:e}=H,{value:t}=N,{value:n}=G;return!e&&(L(t)||Array.isArray(t)&&L(t[0]))&&n[0]}),me=o(()=>{let{value:e}=H,{value:t}=N,{value:n}=G;return!e&&n[1]&&(L(t)||Array.isArray(t)&&L(t[1]))}),K=E(()=>t.internalForceFocus||B.value),he=E(()=>{if(R.value||t.readonly||!t.clearable||!K.value&&!V.value)return!1;let{value:e}=N,{value:n}=K;return t.pair?!!(Array.isArray(e)&&(e[0]||e[1]))&&(V.value||n):!!e&&(V.value||n)}),q=o(()=>{let{showPasswordOn:e}=t;if(e)return e;if(t.showPasswordToggle)return`click`}),J=s(!1),ge=o(()=>{let{textDecoration:e}=t;return e?Array.isArray(e)?e.map(e=>({textDecoration:e})):[{textDecoration:e}]:[``,``]}),_e=s(void 0),ve=()=>{var e,n;if(t.type===`textarea`){let{autosize:r}=t;if(r&&(_e.value=(n=(e=k.value)==null?void 0:e.$el)==null?void 0:n.offsetWidth),!_.value||typeof r==`boolean`)return;let{paddingTop:i,paddingBottom:a,lineHeight:o}=window.getComputedStyle(_.value),s=Number(i.slice(0,-2)),c=Number(a.slice(0,-2)),l=Number(o.slice(0,-2)),{value:u}=y;if(!u)return;if(r.minRows){let e=Math.max(r.minRows,1),t=`${s+c+l*e}px`;u.style.minHeight=t}if(r.maxRows){let e=`${s+c+l*r.maxRows}px`;u.style.maxHeight=e}}},ye=o(()=>{let{maxlength:e}=t;return e===void 0?void 0:Number(e)});i(()=>{let{value:e}=N;Array.isArray(e)||rt(e)});let be=e().proxy;function Y(e,n){let{onUpdateValue:r,"onUpdate:value":i,onInput:a}=t,{nTriggerFormInput:o}=P;r&&A(r,e,n),i&&A(i,e,n),a&&A(a,e,n),M.value=e,o()}function X(e,n){let{onChange:r}=t,{nTriggerFormChange:i}=P;r&&A(r,e,n),M.value=e,i()}function xe(e){let{onBlur:n}=t,{nTriggerFormBlur:r}=P;n&&A(n,e),r()}function Se(e){let{onFocus:n}=t,{nTriggerFormFocus:r}=P;n&&A(n,e),r()}function Ce(e){let{onClear:n}=t;n&&A(n,e)}function we(e){let{onInputBlur:n}=t;n&&A(n,e)}function Te(e){let{onInputFocus:n}=t;n&&A(n,e)}function Ee(){let{onDeactivate:e}=t;e&&A(e)}function De(){let{onActivate:e}=t;e&&A(e)}function Oe(e){let{onClick:n}=t;n&&A(n,e)}function ke(e){let{onWrapperFocus:n}=t;n&&A(n,e)}function Ae(e){let{onWrapperBlur:n}=t;n&&A(n,e)}function je(){H.value=!0}function Me(e){H.value=!1,e.target===C.value?Z(e,1):Z(e,0)}function Z(e,n=0,i=`input`){let a=e.target.value;if(rt(a),e instanceof InputEvent&&!e.isComposing&&(H.value=!1),t.type===`textarea`){let{value:e}=k;e&&e.syncUnifiedContainer()}if(W=a,H.value)return;O.recordCursor();let o=Ne(a);if(o)if(!t.pair)i===`input`?Y(a,{source:n}):X(a,{source:n});else{let{value:e}=N;e=Array.isArray(e)?[e[0],e[1]]:[``,``],e[n]=a,i===`input`?Y(e,{source:n}):X(e,{source:n})}be.$forceUpdate(),o||r(O.restoreCursor)}function Ne(e){let{countGraphemes:n,maxlength:r,minlength:i}=t;if(n){let t;if(r!==void 0&&(t===void 0&&(t=n(e)),t>Number(r))||i!==void 0&&(t===void 0&&(t=n(e)),t<Number(r)))return!1}let{allowInput:a}=t;return typeof a==`function`?a(e):!0}function Pe(e){we(e),e.relatedTarget===g.value&&Ee(),e.relatedTarget!==null&&(e.relatedTarget===S.value||e.relatedTarget===C.value||e.relatedTarget===_.value)||(U.value=!1),Q(e,`blur`),D.value=null}function Fe(e,t){Te(e),B.value=!0,U.value=!0,De(),Q(e,`focus`),t===0?D.value=S.value:t===1?D.value=C.value:t===2&&(D.value=_.value)}function Ie(e){t.passivelyActivated&&(Ae(e),Q(e,`blur`))}function Le(e){t.passivelyActivated&&(B.value=!0,ke(e),Q(e,`focus`))}function Q(e,t){e.relatedTarget!==null&&(e.relatedTarget===S.value||e.relatedTarget===C.value||e.relatedTarget===_.value||e.relatedTarget===g.value)||(t===`focus`?(Se(e),B.value=!0):t===`blur`&&(xe(e),B.value=!1))}function Re(e,t){Z(e,t,`change`)}function ze(e){Oe(e)}function Be(e){Ce(e),Ve()}function Ve(){t.pair?(Y([``,``],{source:`clear`}),X([``,``],{source:`clear`})):(Y(``,{source:`clear`}),X(``,{source:`clear`}))}function He(e){let{onMousedown:n}=t;n&&n(e);let{tagName:r}=e.target;if(r!==`INPUT`&&r!==`TEXTAREA`){if(t.resizable){let{value:t}=g;if(t){let{left:n,top:r,width:i,height:a}=t.getBoundingClientRect();if(n+i-14<e.clientX&&e.clientX<n+i&&r+a-14<e.clientY&&e.clientY<r+a)return}}e.preventDefault(),B.value||Ze()}}function Ue(){var e;V.value=!0,t.type===`textarea`&&((e=k.value)==null||e.handleMouseEnterWrapper())}function We(){var e;V.value=!1,t.type===`textarea`&&((e=k.value)==null||e.handleMouseLeaveWrapper())}function Ge(){R.value||q.value===`click`&&(J.value=!J.value)}function Ke(e){if(R.value)return;e.preventDefault();let t=e=>{e.preventDefault(),T(`mouseup`,document,t)};if(w(`mouseup`,document,t),q.value!==`mousedown`)return;J.value=!0;let n=()=>{J.value=!1,T(`mouseup`,document,n)};w(`mouseup`,document,n)}function qe(e){t.onKeyup&&A(t.onKeyup,e)}function Je(e){switch(t.onKeydown&&A(t.onKeydown,e),e.key){case`Escape`:Xe();break;case`Enter`:Ye(e);break}}function Ye(e){var n,r;if(t.passivelyActivated){let{value:i}=U;if(i){t.internalDeactivateOnEnter&&Xe();return}e.preventDefault(),t.type===`textarea`?(n=_.value)==null||n.focus():(r=S.value)==null||r.focus()}}function Xe(){t.passivelyActivated&&(U.value=!1,r(()=>{var e;(e=g.value)==null||e.focus()}))}function Ze(){var e,n,r;R.value||(t.passivelyActivated?(e=g.value)==null||e.focus():((n=_.value)==null||n.focus(),(r=S.value)==null||r.focus()))}function Qe(){var e;(e=g.value)!=null&&e.contains(document.activeElement)&&document.activeElement.blur()}function $e(){var e,t;(e=_.value)==null||e.select(),(t=S.value)==null||t.select()}function et(){R.value||(_.value?_.value.focus():S.value&&S.value.focus())}function tt(){let{value:e}=g;e!=null&&e.contains(document.activeElement)&&e!==document.activeElement&&Xe()}function nt(e){if(t.type===`textarea`){let{value:t}=_;t==null||t.scrollTo(e)}else{let{value:t}=S;t==null||t.scrollTo(e)}}function rt(e){let{type:n,pair:r,autosize:i}=t;if(!r&&i)if(n===`textarea`){let{value:t}=y;t&&(t.textContent=`${e==null?``:e}\r\n`)}else{let{value:t}=x;t&&(e?t.textContent=e:t.innerHTML=`&nbsp;`)}}function it(){ve()}let at=s({top:`0`});function ot(e){var t;let{scrollTop:n}=e.target;at.value.top=`${-n}px`,(t=k.value)==null||t.syncUnifiedContainer()}let st=null;d(()=>{let{autosize:e,type:n}=t;e&&n===`textarea`?st=u(N,e=>{!Array.isArray(e)&&e!==W&&rt(e)}):st==null||st()});let ct=null;d(()=>{t.type===`textarea`?ct=u(N,e=>{var t;!Array.isArray(e)&&e!==W&&((t=k.value)==null||t.syncUnifiedContainer())}):ct==null||ct()}),n(F,{mergedValueRef:N,maxlengthRef:ye,mergedClsPrefixRef:a,countGraphemesRef:f(t,`countGraphemes`)});let lt={wrapperElRef:g,inputElRef:S,textareaElRef:_,isCompositing:H,clear:Ve,focus:Ze,blur:Qe,select:$e,deactivate:tt,activate:et,scrollTo:nt},ut=te(`Input`,p,a),dt=o(()=>{let{value:e}=I,{common:{cubicBezierEaseInOut:t},self:{color:n,borderRadius:r,textColor:i,caretColor:a,caretColorError:o,caretColorWarning:s,textDecorationColor:c,border:l,borderDisabled:u,borderHover:d,borderFocus:f,placeholderColor:p,placeholderColorDisabled:m,lineHeightTextarea:g,colorDisabled:_,colorFocus:y,textColorDisabled:ee,boxShadowFocus:b,iconSize:te,colorFocusWarning:x,boxShadowFocusWarning:S,borderWarning:C,borderFocusWarning:re,borderHoverWarning:w,colorFocusError:T,boxShadowFocusError:E,borderError:ie,borderFocusError:D,borderHoverError:O,clearSize:k,clearColor:A,clearColorHover:ae,clearColorPressed:oe,iconColor:se,iconColorDisabled:j,suffixTextColor:M,countTextColor:N,countTextColorDisabled:ce,iconColorHover:le,iconColorPressed:P,loadingColor:F,loadingColorError:ue,loadingColorWarning:de,fontWeight:L,[v(`padding`,e)]:fe,[v(`fontSize`,e)]:R,[v(`height`,e)]:z}}=h.value,{left:B,right:V}=ne(fe);return{"--n-bezier":t,"--n-count-text-color":N,"--n-count-text-color-disabled":ce,"--n-color":n,"--n-font-size":R,"--n-font-weight":L,"--n-border-radius":r,"--n-height":z,"--n-padding-left":B,"--n-padding-right":V,"--n-text-color":i,"--n-caret-color":a,"--n-text-decoration-color":c,"--n-border":l,"--n-border-disabled":u,"--n-border-hover":d,"--n-border-focus":f,"--n-placeholder-color":p,"--n-placeholder-color-disabled":m,"--n-icon-size":te,"--n-line-height-textarea":g,"--n-color-disabled":_,"--n-color-focus":y,"--n-text-color-disabled":ee,"--n-box-shadow-focus":b,"--n-loading-color":F,"--n-caret-color-warning":s,"--n-color-focus-warning":x,"--n-box-shadow-focus-warning":S,"--n-border-warning":C,"--n-border-focus-warning":re,"--n-border-hover-warning":w,"--n-loading-color-warning":de,"--n-caret-color-error":o,"--n-color-focus-error":T,"--n-box-shadow-focus-error":E,"--n-border-error":ie,"--n-border-focus-error":D,"--n-border-hover-error":O,"--n-loading-color-error":ue,"--n-clear-color":A,"--n-clear-size":k,"--n-clear-color-hover":ae,"--n-clear-color-pressed":oe,"--n-icon-color":se,"--n-icon-color-hover":le,"--n-icon-color-pressed":P,"--n-icon-color-disabled":j,"--n-suffix-text-color":M}}),$=l?re(`input`,o(()=>{let{value:e}=I;return e[0]}),dt,t):void 0;return Object.assign(Object.assign({},lt),{wrapperElRef:g,inputElRef:S,inputMirrorElRef:x,inputEl2Ref:C,textareaElRef:_,textareaMirrorElRef:y,textareaScrollbarInstRef:k,rtlEnabled:ut,uncontrolledValue:M,mergedValue:N,passwordVisible:J,mergedPlaceholder:G,showPlaceholder1:pe,showPlaceholder2:me,mergedFocus:K,isComposing:H,activated:U,showClearButton:he,mergedSize:I,mergedDisabled:R,textDecorationStyle:ge,mergedClsPrefix:a,mergedBordered:c,mergedShowPasswordOn:q,placeholderStyle:at,mergedStatus:z,textAreaScrollContainerWidth:_e,handleTextAreaScroll:ot,handleCompositionStart:je,handleCompositionEnd:Me,handleInput:Z,handleInputBlur:Pe,handleInputFocus:Fe,handleWrapperBlur:Ie,handleWrapperFocus:Le,handleMouseEnter:Ue,handleMouseLeave:We,handleMouseDown:He,handleChange:Re,handleClick:ze,handleClear:Be,handlePasswordToggleClick:Ge,handlePasswordToggleMousedown:Ke,handleWrapperKeydown:Je,handleWrapperKeyup:qe,handleTextAreaMirrorResize:it,getTextareaScrollContainer:()=>_.value,mergedTheme:h,cssVars:l?void 0:dt,themeClass:$==null?void 0:$.themeClass,onRender:$==null?void 0:$.onRender})},render(){var e,t,n,r,i,o,s;let{mergedClsPrefix:c,mergedStatus:u,themeClass:d,type:f,countGraphemes:p,onRender:m}=this,h=this.$slots;return m==null||m(),l(`div`,{ref:`wrapperElRef`,class:[`${c}-input`,`${c}-input--${this.mergedSize}-size`,d,u&&`${c}-input--${u}-status`,{[`${c}-input--rtl`]:this.rtlEnabled,[`${c}-input--disabled`]:this.mergedDisabled,[`${c}-input--textarea`]:f===`textarea`,[`${c}-input--resizable`]:this.resizable&&!this.autosize,[`${c}-input--autosize`]:this.autosize,[`${c}-input--round`]:this.round&&f!==`textarea`,[`${c}-input--pair`]:this.pair,[`${c}-input--focus`]:this.mergedFocus,[`${c}-input--stateful`]:this.stateful}],style:this.cssVars,tabindex:!this.mergedDisabled&&this.passivelyActivated&&!this.activated?0:void 0,onFocus:this.handleWrapperFocus,onBlur:this.handleWrapperBlur,onClick:this.handleClick,onMousedown:this.handleMouseDown,onMouseenter:this.handleMouseEnter,onMouseleave:this.handleMouseLeave,onCompositionstart:this.handleCompositionStart,onCompositionend:this.handleCompositionEnd,onKeyup:this.handleWrapperKeyup,onKeydown:this.handleWrapperKeydown},l(`div`,{class:`${c}-input-wrapper`},k(h.prefix,e=>e&&l(`div`,{class:`${c}-input__prefix`},e)),f===`textarea`?l(C,{ref:`textareaScrollbarInstRef`,class:`${c}-input__textarea`,container:this.getTextareaScrollContainer,theme:(t=(e=this.theme)==null?void 0:e.peers)==null?void 0:t.Scrollbar,themeOverrides:(r=(n=this.themeOverrides)==null?void 0:n.peers)==null?void 0:r.Scrollbar,triggerDisplayManually:!0,useUnifiedContainer:!0,internalHoistYRail:!0},{default:()=>{var e,t;let{textAreaScrollContainerWidth:n}=this,r={width:this.autosize&&n&&`${n}px`};return l(a,null,l(`textarea`,Object.assign({},this.inputProps,{ref:`textareaElRef`,class:[`${c}-input__textarea-el`,(e=this.inputProps)==null?void 0:e.class],autofocus:this.autofocus,rows:Number(this.rows),placeholder:this.placeholder,value:this.mergedValue,disabled:this.mergedDisabled,maxlength:p?void 0:this.maxlength,minlength:p?void 0:this.minlength,readonly:this.readonly,tabindex:this.passivelyActivated&&!this.activated?-1:void 0,style:[this.textDecorationStyle[0],(t=this.inputProps)==null?void 0:t.style,r],onBlur:this.handleInputBlur,onFocus:e=>{this.handleInputFocus(e,2)},onInput:this.handleInput,onChange:this.handleChange,onScroll:this.handleTextAreaScroll})),this.showPlaceholder1?l(`div`,{class:`${c}-input__placeholder`,style:[this.placeholderStyle,r],key:`placeholder`},this.mergedPlaceholder[0]):null,this.autosize?l(x,{onResize:this.handleTextAreaMirrorResize},{default:()=>l(`div`,{ref:`textareaMirrorElRef`,class:`${c}-input__textarea-mirror`,key:`mirror`})}):null)}}):l(`div`,{class:`${c}-input__input`},l(`input`,Object.assign({type:f===`password`&&this.mergedShowPasswordOn&&this.passwordVisible?`text`:f},this.inputProps,{ref:`inputElRef`,class:[`${c}-input__input-el`,(i=this.inputProps)==null?void 0:i.class],style:[this.textDecorationStyle[0],(o=this.inputProps)==null?void 0:o.style],tabindex:this.passivelyActivated&&!this.activated?-1:(s=this.inputProps)==null?void 0:s.tabindex,placeholder:this.mergedPlaceholder[0],disabled:this.mergedDisabled,maxlength:p?void 0:this.maxlength,minlength:p?void 0:this.minlength,value:Array.isArray(this.mergedValue)?this.mergedValue[0]:this.mergedValue,readonly:this.readonly,autofocus:this.autofocus,size:this.attrSize,onBlur:this.handleInputBlur,onFocus:e=>{this.handleInputFocus(e,0)},onInput:e=>{this.handleInput(e,0)},onChange:e=>{this.handleChange(e,0)}})),this.showPlaceholder1?l(`div`,{class:`${c}-input__placeholder`},l(`span`,null,this.mergedPlaceholder[0])):null,this.autosize?l(`div`,{class:`${c}-input__input-mirror`,key:`mirror`,ref:`inputMirrorElRef`},`\xA0`):null),!this.pair&&k(h.suffix,e=>e||this.clearable||this.showCount||this.mergedShowPasswordOn||this.loading!==void 0?l(`div`,{class:`${c}-input__suffix`},[k(h[`clear-icon-placeholder`],e=>(this.clearable||e)&&l(j,{clsPrefix:c,show:this.showClearButton,onClear:this.handleClear},{placeholder:()=>e,icon:()=>{var e,t;return(t=(e=this.$slots)[`clear-icon`])==null?void 0:t.call(e)}})),this.internalLoadingBeforeSuffix?null:e,this.loading===void 0?null:l(M,{clsPrefix:c,loading:this.loading,showArrow:!1,showClear:!1,style:this.cssVars}),this.internalLoadingBeforeSuffix?e:null,this.showCount&&this.type!==`textarea`?l(R,null,{default:e=>{var t;let{renderCount:n}=this;return n?n(e):(t=h.count)==null?void 0:t.call(h,e)}}):null,this.mergedShowPasswordOn&&this.type===`password`?l(`div`,{class:`${c}-input__eye`,onMousedown:this.handlePasswordToggleMousedown,onClick:this.handlePasswordToggleClick},this.passwordVisible?O(h[`password-visible-icon`],()=>[l(S,{clsPrefix:c},{default:()=>l(N,null)})]):O(h[`password-invisible-icon`],()=>[l(S,{clsPrefix:c},{default:()=>l(P,null)})])):null]):null)),this.pair?l(`span`,{class:`${c}-input__separator`},O(h.separator,()=>[this.separator])):null,this.pair?l(`div`,{class:`${c}-input-wrapper`},l(`div`,{class:`${c}-input__input`},l(`input`,{ref:`inputEl2Ref`,type:this.type,class:`${c}-input__input-el`,tabindex:this.passivelyActivated&&!this.activated?-1:void 0,placeholder:this.mergedPlaceholder[1],disabled:this.mergedDisabled,maxlength:p?void 0:this.maxlength,minlength:p?void 0:this.minlength,value:Array.isArray(this.mergedValue)?this.mergedValue[1]:void 0,readonly:this.readonly,style:this.textDecorationStyle[1],onBlur:this.handleInputBlur,onFocus:e=>{this.handleInputFocus(e,1)},onInput:e=>{this.handleInput(e,1)},onChange:e=>{this.handleChange(e,1)}}),this.showPlaceholder2?l(`div`,{class:`${c}-input__placeholder`},l(`span`,null,this.mergedPlaceholder[1])):null),k(h.suffix,e=>(this.clearable||e)&&l(`div`,{class:`${c}-input__suffix`},[this.clearable&&l(j,{clsPrefix:c,show:this.showClearButton,onClear:this.handleClear},{icon:()=>{var e;return(e=h[`clear-icon`])==null?void 0:e.call(h)},placeholder:()=>{var e;return(e=h[`clear-icon-placeholder`])==null?void 0:e.call(h)}}),e]))):null,this.mergedBordered?l(`div`,{class:`${c}-input__border`}):null,this.mergedBordered?l(`div`,{class:`${c}-input__state-border`}):null,this.showCount&&f===`textarea`?l(R,null,{default:e=>{var t;let{renderCount:n}=this;return n?n(e):(t=h.count)==null?void 0:t.call(h,e)}}):null)}});export{z as n,B as t};

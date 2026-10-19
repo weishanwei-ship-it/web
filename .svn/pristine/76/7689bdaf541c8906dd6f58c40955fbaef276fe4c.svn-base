@@ -1,0 +1,1 @@
+var e=`Demos`,t=`TDesign Vue`,n={title:`Project`,about:`About`,document:`Document`,antdv:`Ant Design Vue Version`,"antdv-next":`Antdv Next Version`,"naive-ui":`Naive UI Version`,"element-plus":`Element Plus Version`},r={title:e,tdesign:t,vben:n};export{r as default,t as tdesign,e as title,n as vben};

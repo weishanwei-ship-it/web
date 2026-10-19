@@ -1,0 +1,1 @@
+import"./vue.runtime.esm-bundler-DzX1phpv.js";import"./useConfigInject-KTGJ1GiP.js";import"./vue-types-DuEpO4BB.js";import{n as e,r as t,t as n}from"./switch-BO_Sg_aP.js";export{n as SwitchSizes,t as default,e as switchProps};

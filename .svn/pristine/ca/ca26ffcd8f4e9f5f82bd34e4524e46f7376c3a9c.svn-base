@@ -1,0 +1,1 @@
+import"./vue.runtime.esm-bundler-C8KppaGb.js";import"./useConfigInject-Do2Aw9Lf.js";import"./vue-types-BzMF1IFl.js";import{i as e,n as t,r as n,t as r}from"./checkbox-DNO2clRK.js";export{t as CheckboxGroup,n as checkboxGroupProps,e as checkboxProps,r as default};

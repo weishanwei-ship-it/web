@@ -1,0 +1,1 @@
+import{E as e,K as t,g as n,j as r}from"./vue.runtime.esm-bundler-CaGt1XdC.js";var i=Symbol(`SizeContext`),a=()=>r(i,n(()=>void 0)),o=e((e,{slots:r})=>{let o=a();return t(i,n(()=>(e==null?void 0:e.size)||o.value)),()=>{var e;return r==null||(e=r.default)==null?void 0:e.call(r)}},{props:{size:{type:[String,null],required:!1}}});export{a as n,o as t};

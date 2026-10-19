@@ -1,0 +1,45 @@
+
+> @vben-core/popup-ui@5.7.0 build E:\Project\ICOPWeb\packages\@core\ui-kit\popup-ui
+> pnpm exec tsdown
+
+[33m[tsdown] Node.js v22.13.0 is deprecated. Support will be removed in the next minor release. Please upgrade to Node.js 22.18.0 or later.[39m
+[34mℹ[39m tsdown [2mv0.21.3[22m powered by rolldown [2mv1.0.0-rc.9[22m
+[34mℹ[39m config file: [4mE:\Project\ICOPWeb\packages\@core\ui-kit\popup-ui\tsdown.config.ts[24m (unrun)
+[34mℹ[39m entry: [34msrc\index.ts[39m
+[34mℹ[39m tsconfig: [34mtsconfig.json[39m
+[34mℹ[39m Build start
+[34mℹ[39m [2mdist\[22m[1mindex.mjs[22m                      [2m 0.70 kB[22m [2m│ gzip: 0.26 kB[22m
+[34mℹ[39m [2mdist\[22mmodal\modal.mjs                [2m12.20 kB[22m [2m│ gzip: 3.43 kB[22m
+[34mℹ[39m [2mdist\[22mdrawer\drawer.mjs              [2m11.71 kB[22m [2m│ gzip: 3.07 kB[22m
+[34mℹ[39m [2mdist\[22malert\alert2.mjs               [2m 7.39 kB[22m [2m│ gzip: 2.16 kB[22m
+[34mℹ[39m [2mdist\[22malert\AlertBuilder.mjs         [2m 4.01 kB[22m [2m│ gzip: 1.44 kB[22m
+[34mℹ[39m [2mdist\[22mmodal\use-modal-draggable.mjs  [2m 3.17 kB[22m [2m│ gzip: 0.98 kB[22m
+[34mℹ[39m [2mdist\[22mmodal\modal-api.mjs            [2m 3.01 kB[22m [2m│ gzip: 1.29 kB[22m
+[34mℹ[39m [2mdist\[22mdrawer\drawer-api.mjs          [2m 2.88 kB[22m [2m│ gzip: 1.25 kB[22m
+[34mℹ[39m [2mdist\[22mmodal\use-modal.mjs            [2m 2.77 kB[22m [2m│ gzip: 1.10 kB[22m
+[34mℹ[39m [2mdist\[22mdrawer\use-drawer.mjs          [2m 2.66 kB[22m [2m│ gzip: 1.08 kB[22m
+[34mℹ[39m [2mdist\[22malert\alert.mjs                [2m 0.46 kB[22m [2m│ gzip: 0.28 kB[22m
+[34mℹ[39m [2mdist\[22m[32m[1mindex.d.ts[22m[39m                     [2m 1.23 kB[22m [2m│ gzip: 0.37 kB[22m
+[34mℹ[39m [2mdist\[22m[32mdrawer\drawer.vue.d.ts[39m         [2m 1.74 kB[22m [2m│ gzip: 0.63 kB[22m
+[34mℹ[39m [2mdist\[22m[32mdrawer\drawer.d.ts[39m             [2m 1.66 kB[22m [2m│ gzip: 0.65 kB[22m
+[34mℹ[39m [2mdist\[22m[32mmodal\modal.d.ts[39m               [2m 1.62 kB[22m [2m│ gzip: 0.65 kB[22m
+[34mℹ[39m [2mdist\[22m[32mmodal\modal.vue.d.ts[39m           [2m 1.49 kB[22m [2m│ gzip: 0.56 kB[22m
+[34mℹ[39m [2mdist\[22m[32malert\alert.d.ts[39m               [2m 1.37 kB[22m [2m│ gzip: 0.58 kB[22m
+[34mℹ[39m [2mdist\[22m[32malert\alert.vue.d.ts[39m           [2m 1.06 kB[22m [2m│ gzip: 0.44 kB[22m
+[34mℹ[39m [2mdist\[22m[32malert\AlertBuilder.d.ts[39m        [2m 0.83 kB[22m [2m│ gzip: 0.27 kB[22m
+[33m[PLUGIN_TIMINGS] Warning:[0m Your build spent significant time in plugins. Here is a breakdown:
+  - rolldown-plugin-dts:generate (43%)
+  - tsdown:external (23%)
+[34mℹ[39m [2mdist\[22m[32mdrawer\drawer-api.d.ts[39m         [2m 0.71 kB[22m [2m│ gzip: 0.38 kB[22m
+[34mℹ[39m [2mdist\[22m[32mmodal\modal-api.d.ts[39m           [2m 0.70 kB[22m [2m│ gzip: 0.38 kB[22m
+[34mℹ[39m [2mdist\[22m[32mdrawer\use-drawer.d.ts[39m         [2m 0.64 kB[22m [2m│ gzip: 0.29 kB[22m
+  - unplugin-vue (16%)
+  - rolldown-plugin-dts:resolver (11%)
+[34mℹ[39m [2mdist\[22m[32mmodal\use-modal.d.ts[39m           [2m 0.62 kB[22m [2m│ gzip: 0.29 kB[22m
+See https://rolldown.rs/options/checks#plugintimings for more details.
+[34mℹ[39m [2mdist\[22m[32mdrawer\index.d.ts[39m              [2m 0.24 kB[22m [2m│ gzip: 0.15 kB[22m
+
+[34mℹ[39m [2mdist\[22m[32malert\index.d.ts[39m               [2m 0.23 kB[22m [2m│ gzip: 0.16 kB[22m
+[34mℹ[39m [2mdist\[22m[32mmodal\index.d.ts[39m               [2m 0.20 kB[22m [2m│ gzip: 0.13 kB[22m
+[34mℹ[39m 26 files, total: 65.29 kB
+[32m✔[39m Build complete in [32m6271ms[39m

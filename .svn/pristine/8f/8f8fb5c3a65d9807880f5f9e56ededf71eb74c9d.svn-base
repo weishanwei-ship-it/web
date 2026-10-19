@@ -1,0 +1,1 @@
+import{d as e,k as t}from"./vue.runtime.esm-bundler-CaGt1XdC.js";import{mt as n}from"./useMergeSemantic-w4MH8jM3.js";function r(e){return typeof e==`function`?e==null?void 0:e():e}function i(r){if(!r)return;let i=n(Array.isArray(r)?r:[r]);if(i.length>0)return i.length===1?i[0]:t(e,null,i)}export{r as n,i as t};

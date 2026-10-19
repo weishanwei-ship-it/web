@@ -1,0 +1,1 @@
+import{g as e}from"./vue.runtime.esm-bundler-CaGt1XdC.js";import{x as t}from"./useMergeSemantic-w4MH8jM3.js";function n(n){let[,,,,r]=t();return e(()=>r!=null&&r.value?`${n.value}-css-var`:``)}var r=n;export{r as t};

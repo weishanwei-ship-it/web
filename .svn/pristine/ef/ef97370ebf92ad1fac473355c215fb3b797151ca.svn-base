@@ -1,0 +1,35 @@
+
+> @vben-core/tabs-ui@5.7.0 build E:\Project\ICOPWeb\packages\@core\ui-kit\tabs-ui
+> pnpm exec tsdown
+
+[33m[tsdown] Node.js v22.13.0 is deprecated. Support will be removed in the next minor release. Please upgrade to Node.js 22.18.0 or later.[39m
+[34mℹ[39m tsdown [2mv0.21.3[22m powered by rolldown [2mv1.0.0-rc.9[22m
+[34mℹ[39m config file: [4mE:\Project\ICOPWeb\packages\@core\ui-kit\tabs-ui\tsdown.config.ts[24m (unrun)
+[34mℹ[39m entry: [34msrc\index.ts[39m
+[34mℹ[39m tsconfig: [34mtsconfig.json[39m
+[34mℹ[39m Build start
+[34mℹ[39m [2mdist\[22m[1mindex.mjs[22m                                 [2m0.36 kB[22m [2m│ gzip: 0.17 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\tabs-chrome\tabs.mjs           [2m7.32 kB[22m [2m│ gzip: 2.46 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\tabs\tabs.mjs                  [2m5.95 kB[22m [2m│ gzip: 2.12 kB[22m
+[34mℹ[39m [2mdist\[22mtabs-view.mjs                             [2m3.85 kB[22m [2m│ gzip: 1.38 kB[22m
+[34mℹ[39m [2mdist\[22muse-tabs-view-scroll.mjs                  [2m3.63 kB[22m [2m│ gzip: 1.24 kB[22m
+[34mℹ[39m [2mdist\[22muse-tabs-drag.mjs                         [2m2.28 kB[22m [2m│ gzip: 0.87 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\widgets\tool-screen.mjs        [2m1.03 kB[22m [2m│ gzip: 0.54 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\widgets\tool-more.mjs          [2m0.91 kB[22m [2m│ gzip: 0.51 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\widgets\tool-refresh.mjs       [2m0.78 kB[22m [2m│ gzip: 0.45 kB[22m
+[34mℹ[39m [2mdist\[22mstyle.css                                 [2m0.76 kB[22m [2m│ gzip: 0.23 kB[22m
+[33m[PLUGIN_TIMINGS] Warning:[0m Your build spent significant time in plugins. Here is a breakdown:
+[34mℹ[39m [2mdist\[22m_virtual\_\plugin-vue\export-helper.mjs   [2m0.25 kB[22m [2m│ gzip: 0.18 kB[22m
+[34mℹ[39m [2mdist\[22m[32m[1mindex.d.ts[22m[39m                                [2m0.49 kB[22m [2m│ gzip: 0.21 kB[22m
+[34mℹ[39m [2mdist\[22m[32mtabs-view.vue.d.ts[39m                        [2m1.00 kB[22m [2m│ gzip: 0.45 kB[22m
+[34mℹ[39m [2mdist\[22m[32mcomponents\widgets\tool-screen.vue.d.ts[39m   [2m0.62 kB[22m [2m│ gzip: 0.32 kB[22m
+[34mℹ[39m [2mdist\[22m[32mtypes.d.ts[39m                                [2m0.52 kB[22m [2m│ gzip: 0.29 kB[22m
+  - rolldown-plugin-dts:generate (70%)
+[34mℹ[39m [2mdist\[22m[32mcomponents\widgets\tool-refresh.vue.d.ts[39m  [2m0.50 kB[22m [2m│ gzip: 0.29 kB[22m
+[34mℹ[39m [2mdist\[22m[32mcomponents\widgets\tool-more.vue.d.ts[39m     [2m0.50 kB[22m [2m│ gzip: 0.28 kB[22m
+[34mℹ[39m [2mdist\[22m[32mcomponents\widgets\index.d.ts[39m             [2m0.17 kB[22m [2m│ gzip: 0.10 kB[22m
+  - tsdown:external (14%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+[34mℹ[39m 18 files, total: 30.90 kB
+[32m✔[39m Build complete in [32m5694ms[39m
+

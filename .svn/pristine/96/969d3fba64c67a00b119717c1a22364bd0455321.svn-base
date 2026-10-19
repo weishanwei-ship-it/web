@@ -1,0 +1,37 @@
+
+> @vben-core/form-ui@5.7.0 build E:\Project\ICOPWeb\packages\@core\ui-kit\form-ui
+> pnpm exec tsdown
+
+[33m[tsdown] Node.js v22.13.0 is deprecated. Support will be removed in the next minor release. Please upgrade to Node.js 22.18.0 or later.[39m
+[34mℹ[39m tsdown [2mv0.21.3[22m powered by rolldown [2mv1.0.0-rc.9[22m
+[34mℹ[39m config file: [4mE:\Project\ICOPWeb\packages\@core\ui-kit\form-ui\tsdown.config.ts[24m (unrun)
+[34mℹ[39m entry: [34msrc\index.ts[39m
+[34mℹ[39m tsconfig: [34mtsconfig.json[39m
+[34mℹ[39m Build start
+[34mℹ[39m [2mdist\[22m[1mindex.mjs[22m                     [2m 0.17 kB[22m [2m│ gzip: 0.12 kB[22m
+[34mℹ[39m [2mdist\[22mform-render\form-field.mjs    [2m11.92 kB[22m [2m│ gzip: 3.40 kB[22m
+[34mℹ[39m [2mdist\[22mform-api.mjs                  [2m11.75 kB[22m [2m│ gzip: 3.81 kB[22m
+[34mℹ[39m [2mdist\[22mcomponents\form-actions.mjs   [2m 5.61 kB[22m [2m│ gzip: 1.70 kB[22m
+[34mℹ[39m [2mdist\[22mform-render\form.mjs          [2m 5.39 kB[22m [2m│ gzip: 1.93 kB[22m
+[34mℹ[39m [2mdist\[22mvben-use-form.mjs             [2m 5.33 kB[22m [2m│ gzip: 1.80 kB[22m
+[34mℹ[39m [2mdist\[22mform-render\dependencies.mjs  [2m 2.70 kB[22m [2m│ gzip: 0.99 kB[22m
+[34mℹ[39m [2mdist\[22muse-form-context.mjs          [2m 2.60 kB[22m [2m│ gzip: 0.91 kB[22m
+[34mℹ[39m [2mdist\[22mform-render\expandable.mjs    [2m 2.09 kB[22m [2m│ gzip: 0.90 kB[22m
+[34mℹ[39m [2mdist\[22mconfig.mjs                    [2m 1.72 kB[22m [2m│ gzip: 0.68 kB[22m
+[34mℹ[39m [2mdist\[22mform-render\form-label.mjs    [2m 1.61 kB[22m [2m│ gzip: 0.71 kB[22m
+[34mℹ[39m [2mdist\[22mform-render\helper.mjs        [2m 1.14 kB[22m [2m│ gzip: 0.48 kB[22m
+[34mℹ[39m [2mdist\[22muse-vben-form.mjs             [2m 0.97 kB[22m [2m│ gzip: 0.47 kB[22m
+[34mℹ[39m [2mdist\[22mform-render\context.mjs       [2m 0.65 kB[22m [2m│ gzip: 0.30 kB[22m
+[34mℹ[39m [2mdist\[22m[32m[1mindex.d.ts[22m[39m                    [2m 0.36 kB[22m [2m│ gzip: 0.19 kB[22m
+[34mℹ[39m [2mdist\[22m[32mtypes.d.ts[39m                    [2m 6.22 kB[22m [2m│ gzip: 1.80 kB[22m
+[34mℹ[39m [2mdist\[22m[32mform-api.d.ts[39m                 [2m 2.41 kB[22m [2m│ gzip: 0.88 kB[22m
+[34mℹ[39m [2mdist\[22m[32muse-vben-form.d.ts[39m            [2m 0.46 kB[22m [2m│ gzip: 0.26 kB[22m
+[33m[PLUGIN_TIMINGS] Warning:[0m Your build spent significant time in plugins. Here is a breakdown:
+  - rolldown-plugin-dts:generate (42%)
+[34mℹ[39m [2mdist\[22m[32mconfig.d.ts[39m                   [2m 0.30 kB[22m [2m│ gzip: 0.19 kB[22m
+  - tsdown:external (31%)
+  - unplugin-vue (23%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+[34mℹ[39m 19 files, total: 63.42 kB
+
+[32m✔[39m Build complete in [32m6396ms[39m

@@ -1,0 +1,1 @@
+var e=`演示`,t=`TDesign Vue`,n={title:`项目`,about:`关于`,document:`文档`,antdv:`Ant Design Vue 版本`,"antdv-next":`Antdv Next 版本`,"naive-ui":`Naive UI 版本`,"element-plus":`Element Plus 版本`},r={title:e,tdesign:t,vben:n};export{r as default,t as tdesign,e as title,n as vben};

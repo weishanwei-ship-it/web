@@ -1,0 +1,83 @@
+<script lang="ts" setup>
+import type { AnalysisOverviewItem } from '@vben/common-ui';
+import type { TabOption } from '@vben/types';
+
+import {
+  AnalysisChartCard,
+  AnalysisChartsTabs,
+  AnalysisOverview,
+} from '@vben/common-ui';
+import {
+  SvgBellIcon,
+  SvgCakeIcon,
+  SvgCardIcon,
+  SvgDownloadIcon,
+} from '@vben/icons';
+
+import AnalyticsTrends from './analytics-trends.vue';
+import AnalyticsVisits from './analytics-visits.vue';
+import AnalyticsDate from './analytics-date.vue';
+
+// const overviewItems: AnalysisOverviewItem[] = [
+//   {
+//     icon: SvgCardIcon,
+//     title: '用户量',
+//     totalTitle: '总用户量',
+//     totalValue: 120_000,
+//     value: 2000,
+//   },
+//   {
+//     icon: SvgCakeIcon,
+//     title: '访问量',
+//     totalTitle: '总访问量',
+//     totalValue: 500_000,
+//     value: 20_000,
+//   },
+//   {
+//     icon: SvgDownloadIcon,
+//     title: '下载量',
+//     totalTitle: '总下载量',
+//     totalValue: 120_000,
+//     value: 8000,
+//   },
+//   {
+//     icon: SvgBellIcon,
+//     title: '使用量',
+//     totalTitle: '总使用量',
+//     totalValue: 50_000,
+//     value: 5000,
+//   },
+// ];
+
+const chartTabs: TabOption[] = [
+  {
+    label: '产品类型',
+    value: 'trends',
+  },
+  {
+    label: '设计人员',
+    value: 'visits',
+  },
+  {
+    label: '日期',
+    value: 'date',
+  },
+];
+</script>
+
+<template>
+  <div class="p-5">
+    <!-- <AnalysisOverview :items="overviewItems" /> -->
+    <AnalysisChartsTabs :tabs="chartTabs" class="mt-5">
+      <template #trends>
+        <AnalyticsTrends />
+      </template>
+      <template #visits>
+        <AnalyticsVisits />
+      </template>
+      <template #date>
+        <AnalyticsDate />
+      </template>
+    </AnalysisChartsTabs>
+  </div>
+</template>

@@ -1,0 +1,57 @@
+import{E as e,F as t,H as n,I as r,K as i,g as a,j as o,k as s,w as c,xt as l}from"./vue.runtime.esm-bundler-CaGt1XdC.js";import{t as u}from"./objectSpread2-CwpxwSvQ.js";import{t as d}from"./asyncToGenerator-BfVrlLLn.js";import{t as f}from"./objectWithoutProperties-BwoIv8dG.js";import{F as p,L as m,dt as h,q as g,st as _}from"./useMergeSemantic-w4MH8jM3.js";function v(e){var t;return e==null||(t=e.getRootNode)==null?void 0:t.call(e)}function y(e){return v(e)instanceof ShadowRoot}function b(e){return y(e)?v(e):null}var x=Symbol(`IconContext`);function S(e){i(x,e)}var C=e((e,{slots:t})=>(S(a(()=>e)),()=>{var e;return t==null||(e=t.default)==null?void 0:e.call(t)}),{props:{prefixCls:{type:String,required:!1},rootClass:{type:String,required:!1},csp:{type:Object,required:!1},layer:{type:String,required:!1}}});function w(){return o(x,a(()=>({})))}function T(e){return typeof e==`object`&&typeof e.name==`string`&&typeof e.theme==`string`&&(typeof e.icon==`object`||typeof e.icon==`function`)}function E(e,t,n){return n?s(e.tag,u(u({key:t},n),e.attrs),(e.children||[]).map((n,r)=>E(n,`${t}-${e.tag}-${r}`))):s(e.tag,u({key:t},e.attrs),(e.children||[]).map((n,r)=>E(n,`${t}-${e.tag}-${r}`)))}function D(e){return m(e)[0]}function O(e){return e?Array.isArray(e)?e:[e]:[]}var k=`
+.anticon {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  font-style: normal;
+  line-height: 0;
+  text-align: center;
+  text-transform: none;
+  vertical-align: -0.125em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.anticon > * {
+  line-height: 1;
+}
+
+.anticon svg {
+  display: inline-block;
+  vertical-align: inherit;
+}
+
+.anticon::before {
+  display: none;
+}
+
+.anticon .anticon-icon {
+  display: block;
+}
+
+.anticon[tabindex] {
+  cursor: pointer;
+}
+
+.anticon-spin::before,
+.anticon-spin {
+  display: inline-block;
+  -webkit-animation: loadingCircle 1s infinite linear;
+  animation: loadingCircle 1s infinite linear;
+}
+
+@-webkit-keyframes loadingCircle {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loadingCircle {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+`;function A(e){let t=w(),i=k;n(d(function*(){yield r();let{prefixCls:n,csp:a,layer:o}=t.value;n&&(i=i.replace(/anticon/g,n)),o&&(i=`@layer ${o} {\n${i}\n}`);let s=e.value,c=b(s);g(i,`@ant-design-icons`,{prepend:!o,csp:a,attachTo:c})}))}var j={primaryColor:`#333`,secondaryColor:`#E6E6E6`,calculated:!1};function M({primaryColor:e,secondaryColor:t}){j.primaryColor=e,j.secondaryColor=t||D(e),j.calculated=!!t}function N(){return u({},j)}function P(e){if(T(e))return e;let t=e&&typeof e==`object`&&`default`in e?e.default:void 0;if(T(t))return t}var F=e((e,{attrs:t})=>{let n=l();return A(n),()=>{let{icon:r,onClick:i,primaryColor:a,secondaryColor:o}=e,s=P(r),c=j;if(a&&(c={primaryColor:a,secondaryColor:o||D(a)}),_(!!s,`icon should be icon definiton, but got ${r}`),!s)return null;let l=s;return l&&typeof l.icon==`function`&&(l=u(u({},l),{},{icon:l.icon(c.primaryColor,c.secondaryColor)})),E(l.icon,`svg-${l.name}`,u({onClick:i,"data-icon":l.name,width:`1em`,height:`1em`,fill:`currentColor`,"aria-hidden":`true`,ref:n},t))}},{props:{icon:{type:Object,required:!0},onClick:{type:Function,required:!1},primaryColor:{type:String,required:!1},secondaryColor:{type:String,required:!1},focusable:{type:String,required:!1}},name:`IconBase`,inheritAttrs:!1});F.getTwoToneColors=N,F.setTwoToneColors=M;function I(e){let[t,n]=O(e);return F.setTwoToneColors({primaryColor:t,secondaryColor:n})}function L(){let e=F.getTwoToneColors();return e.calculated?[e.primaryColor,e.secondaryColor]:e.primaryColor}var R=[`icon`,`spin`,`rotate`,`onClick`,`tabIndex`,`twoToneColor`];I(p.primary);var z=e((e,{attrs:n})=>{let r=w();return()=>{let{icon:i,spin:a,rotate:o,onClick:s,tabIndex:l,twoToneColor:d}=e,p=f(e,R),{prefixCls:m=`anticon`,rootClass:g}=r.value,_=h(g,m,{[`${m}-${i.name}`]:!!i.name,[`${m}-spin`]:!!a||i.name===`loading`}),v=l;v===void 0&&s&&(v=-1);let y=o?{msTransform:`rotate(${o}deg)`,transform:`rotate(${o}deg)`}:void 0,[b,x]=O(d),S=u({},n);return delete S.class,c(`span`,t({role:`img`,"aria-label":i.name},p,S,{tabindex:v,onClick:s,class:[_,n.class]}),[c(F,{icon:i,primaryColor:b,secondaryColor:x,style:y},null)])}},{props:{icon:{type:Object,required:!0},twoToneColor:{type:[String,Array],required:!1},onClick:{type:Function,required:!1},tabIndex:{type:Number,required:!1},spin:{type:Boolean,required:!1},rotate:{type:Number,required:!1}},inheritAttrs:!1});z.getTwoToneColor=L,z.setTwoToneColor=I;export{C as n,b as r,z as t};

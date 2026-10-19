@@ -1,0 +1,1 @@
+import{O as e,b as t,kt as n,q as r}from"./vue.runtime.esm-bundler-DzX1phpv.js";import"./utils-CJO6EM-9.js";import"./dayjs.min-_2nfziTI.js";import"./defu-DhCqLmIY.js";import{t as i}from"./fallback-BcfbCXMI.js";import"./src-C1ki2rqT.js";import"./src-COHRU8k9.js";var a=e({__name:`menu-3-2-1`,setup(e){return(e,a)=>(r(),t(n(i),{status:`coming-soon`}))}});export{a as default};

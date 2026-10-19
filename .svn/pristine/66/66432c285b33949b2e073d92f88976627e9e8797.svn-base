@@ -1,0 +1,242 @@
+<script lang="ts" setup>
+import type { VbenFormProps } from '#/adapter/form';
+import type { VxeGridProps } from '#/adapter/vxe-table';
+import { Button, message,Card,Select,SelectOption } from 'ant-design-vue';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { GetSJJSDataListPage, UpdateSJJS } from '#/api';
+import { useVbenModal, VbenButton } from '@vben/common-ui';
+import ExtraModal from './exlcelmodal.vue';
+import tzModal from './tzmodal.vue';
+import jsModal from './jsmodal.vue';
+import ssModal from './ssmodal.vue';
+const [Modal, modalApi] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: ExtraModal,
+});
+const [Modaltz, modalApitz] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: tzModal,
+});
+const [Modaljs, modalApijs] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: jsModal,
+});
+const [Modalss, modalApiss] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: ssModal,
+});
+function openModal() {
+  modalApi
+    .setData({
+      content: '零件',
+    })
+    .open();
+}
+
+function openModaltz(row:RowType) {
+  modalApitz
+    .setData({
+      content: row,
+    })
+    .open();
+}
+function openModaljs(row:RowType) {
+  modalApijs
+    .setData({
+      content: row,
+    })
+    .open();
+}
+function openModalss(row:RowType) {
+  modalApiss
+    .setData({
+      content: row,
+    })
+    .open();
+}
+interface RowType {
+  id: number;
+  出厂编号 :string;
+    审核状态 :string;
+  公称通径 :string;
+  压力等级:string;
+  阀门类型:string;
+  执行标准:string;
+  产品名称:string;
+  进口通径:string;
+  进口法兰等级:string;
+  阀芯通径:string;
+  出口通径:string;
+  出口法兰等级 :string;
+  阀体压力等级 :string;
+  阀体结构 :string;
+  阀体型式 :string;
+  阀盖颈部型式:string;
+  执行机构型号 :string;
+  产品材质:string;
+  最大关闭压差 :string;
+  介质流向  :string;
+  密封等级  :string;
+  编制年份  :string;
+  阀体材质  :string;
+  分组标识  :string;
+  版本号:string;
+  版本状态:string;
+  计算书编码:string;
+  介质 :string;
+  操作温度:string;
+}
+
+const formOptions: VbenFormProps = {
+  collapsed: false,
+  schema: [
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '请输入出厂编码',
+      },
+      fieldName: 'code',
+      label: '出厂编码',
+    }
+  ],
+  showCollapseButton: false,
+  submitButtonOptions: {
+    content: '查询',
+  },
+  submitOnChange: false,
+  submitOnEnter: false,
+};
+
+const gridOptions: VxeGridProps<RowType> = {
+  columns: [
+    { title: '', type: 'checkbox', width: 50 },
+    { title: '序号', type: 'seq', width: 50 },
+    {  field: '出厂编号', title: '出厂编号' ,  width: 120},
+    {  field: '审核状态', title: '审核状态' ,  width: 120},
+    {  field: '公称通径', title: '公称通径' ,  width: 120},
+    {  field: '压力等级', title: '压力等级',  width: 120},
+    {  field: '阀门类型', title: '阀门类型',  width: 120},
+    {  field: '执行标准', title: '执行标准',  width: 120},
+    {  field: '产品名称', title: '产品名称',  width: 120},
+    {  field: '进口通径', title: '进口通径',  width: 120},
+    {  field: '进口法兰等级', title: '进口法兰等级',  width: 120},
+    {  field: '阀芯通径', title: '阀芯通径',  width: 120},
+    {  field: '出口通径', title: '出口通径',  width: 120},
+    {  field: '出口法兰等级', title: '出口法兰等级',  width: 120},
+    {  field: '阀体压力等级', title: '阀体压力等级',  width: 120},
+    {  field: '阀体结构', title: '阀体结构',  width: 120},
+    {  field: '阀体型式', title: '阀体型式',  width: 120},
+    {  field: '阀盖颈部型式', title: '阀盖/颈部型式',  width: 120},
+    {  field: '执行机构型号', title: '执行机构型号',  width: 120},
+    {  field: '产品材质', title: '产品材质',  width: 120},
+    {  field: '最大关闭压差', title: '最大关闭压差',  width: 120},
+    {  field: '介质流向', title: '介质流向',  width: 120},
+    {  field: '密封等级', title: '密封等级',  width: 120},
+    {  field: '编制年份', title: '编制年份',  width: 120},
+    {  field: '阀体材质', title: '阀体材质',  width: 120},
+    {  field: '分组标识', title: '分组标识',  width: 120},
+    {  field: '版本号', title: '版本号',  width: 120},
+    {  field: '版本状态', title: '版本状态',  width: 120},
+    {  field: '计算书编码', title: '计算书编码（自动生成）',width: 240},
+    {  field: '介质', title: '介质',  width: 120},
+    {  field: '操作温度', title: '操作温度/压力',  width: 120},
+    { slots: { default: 'action' },fixed: 'right', title: '操作',  width: 300,},
+  ],
+  keepSource: true,
+  editConfig: {
+    mode: 'row',
+    trigger: 'click',
+  },
+  pagerConfig: {    
+    pageSize: 10,
+    pageSizes: [10, 20, 50, 100, 500],
+    total: 0,
+  },
+  proxyConfig: {
+    ajax: {
+      query: async ({ page }, formValues) => {
+        const response =  await GetSJJSDataListPage({
+          page: page.currentPage,
+          pageSize: page.pageSize,
+          ...formValues,
+        });
+
+      // ✅ 正确取值：从 response.data.list 拿数组
+      const list = response.data?.list || [];
+      // ✅ 正确取值：从 response.data.total 拿总数
+      const total = response.data?.total || 0;
+
+      const tableData = {
+        items: list,  // 表格数据
+        total: total  // 总条数
+      };
+
+      return tableData;
+      },
+    },
+  },
+  showOverflow: true,
+};
+
+const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
+
+
+async function saveRowEvent(row: RowType) {
+  await gridApi.grid?.clearEdit();
+
+  gridApi.setLoading(true);
+  try {
+    const roleId = Number(row.id);
+    const response = await UpdateSJJS({ ...row });
+    if (response.data.code == 0) {
+      message.success({ content: `修改成功！` });
+    } else {
+      message.error({ content: `修改失败：${response.data.error}` });
+    }
+  } catch (err) {
+    message.error({ content: `修改失败：${(err as Error).message}` });
+  } finally {
+    gridApi.setLoading(false);
+  }
+}
+
+const openModetz = (_row: RowType) => {
+  openModaltz(_row);
+};
+const openModess = (_row: RowType) => {
+  openModalss(_row);
+};
+const openModeyl = (_row: RowType) => {
+  openModaltz(_row);
+};
+const openModejs = (_row: RowType) => {
+  console.log('AAAAAAAAAAAA',_row);
+  openModaljs(_row);
+};
+</script>
+<template>
+  <div class="vp-raw w-full">
+    <Grid>
+      <template #expand-after>
+        <Button  type="primary" @click="openModal">导入</Button>
+        <Button  type="primary" @click="openModal">导出</Button>
+        <Modal class="w-[800px]"/>
+        <Modaltz class="w-[800px]">
+        </Modaltz>
+        <Modaljs class="w-[80%] h-[80%]"/>
+        <Modalss class="w-[100%] h-[100%]">
+        </Modalss>
+      </template>
+      <!-- 操作列模板 -->
+      <template #action="{ row }">
+        <Button type="primary" @click="openModejs(row)" class="mr-2">配置</Button>
+        <Button type="primary" @click="openModess(row)" class="mr-2">计算书</Button>
+        <Button type="primary" @click="openModetz(row)" class="mr-2">图纸</Button>
+
+        <!-- <Button type="primary" @click="openModeyl(row)" class="mr-2">预览</Button> -->
+      </template>
+    </Grid>
+
+  </div>
+</template>
+

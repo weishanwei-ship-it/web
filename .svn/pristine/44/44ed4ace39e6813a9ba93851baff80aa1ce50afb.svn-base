@@ -1,0 +1,328 @@
+import type { RouteRecordStringComponent } from '@vben/types';
+
+import { requestClient } from '#/api/request';
+
+/**
+ * 获取用户所有菜单
+ */
+// export async function getAllMenusApi( {
+//   return requestClient.get<RouteRecordStringComponent[]>('/menu/all';
+// }
+export async function getAllMenusApi() {
+  const dashboardMenus : any = [
+  {
+    meta: {
+      order: -1,
+      title: 'page.dashboard.title',
+    },
+    name: 'Dashboard',
+    path: '/dashboard',
+    redirect: '/analytics',
+    children: [
+      {
+        name: 'Analytics',
+        path: '/analytics',
+        // 这里为页面的路径，需要去掉 views/ 和 .vue
+        component: '/dashboard/analytics/index',
+        meta: {
+          affixTab: true,
+          title: 'page.dashboard.analytics',
+        },
+      },
+      {
+        name: 'Workspace',
+        path: '/workspace',
+        component: '/dashboard/workspace/index',
+        meta: {
+          title: 'page.dashboard.workspace',
+        },
+      },
+    ],
+  },
+  {
+    meta: {
+      //icon: 'ic:baseline-view-in-ar',
+      //keepAlive: true,
+      order: 1000,
+      title: '系统配置',
+    },
+    name: 'System',
+    path: '/system',
+    children: [
+      {
+        meta: {
+          title: '人员信息',
+        },
+        name: '人员信息',
+        path: '/system/index',
+        component:'/system/index.vue',
+      },
+      {
+        meta: {
+          title: '角色权限',
+        },
+        name: '角色权限',
+        path: '/system/role',
+        component: '/system/role.vue',
+      },
+      {
+        meta: {
+          title: '菜单权限',
+        },
+        name: '菜单权限',
+        path: '/system/menu',
+        component:'/system/menu.vue',
+      },
+    ],
+  },
+  {
+      meta: {
+        //icon: 'ic:baseline-view-in-ar',
+        keepAlive: true,
+        order: 5,
+        title: '设计计算',
+      },
+      name: '设计计算',
+      path: '/sjjs',
+      children: [
+        {
+          name: '计算中心',
+          path: '/sjjs/jisuanzhongxin',
+          children: [
+            {
+              meta: {
+                title: '设计计算列表',
+              },
+              name: '设计计算列表',
+              path: '/sjjs/jisuanzhongxin/part',
+              component: '/sjjs/jisuanzhongxin/part.vue',
+            },
+          ]
+        },
+        {
+          meta: {
+            icon: 'ic:round-menu',
+            title: '报告中心',
+          },
+          name: '报告中心',
+          path: '/bgzx',
+          children: [
+            {
+              meta: {
+                title: '历史报告查询',
+              },
+              name: '历史报告查询',
+              path: '/sjjs/baogaozhongxin/baogao',
+              component:'/sjjs/baogaozhongxin/baogao.vue',
+            },
+          ],
+        },
+        {
+          meta: {
+            icon: 'ic:round-menu',
+            title: '数据管理',
+          },
+          name: '数据管理',
+          path: '/sjgl',
+          children: [
+            {
+              meta: {
+                title: '材料库查询',
+              },
+              name: '材料库查询',
+              path: '/sjjs/shujuguanli/clguanli',
+              component: '/sjjs/shujuguanli/clguanli.vue',
+            },
+            {
+              meta: {
+                title: '介质库查询',
+              },
+              name: '介质库查询',
+              path: '/sjjs/shujuguanli/jzguanli',
+              component: '/sjjs/shujuguanli/jzguanli.vue',
+            },
+            {
+              meta: {
+                title: '尺寸库查询',
+              },
+              name: '尺寸库查询',
+              path: '/sjjs/shujuguanli/ccguanli',
+              component: '/sjjs/shujuguanli/ccguanli.vue',
+            },
+            {
+              meta: {
+                title: '参数库查询',
+              },
+              name: '参数库查询',
+              path: '/sjjs/shujuguanli/csguanli',
+              component: '/sjjs/shujuguanli/csguanli.vue',
+            },
+            {
+              meta: {
+                title: '公式库查询',
+              },
+              name: '公式库查询',
+              path: '/sjjs/shujuguanli/gsguanli',
+              component: '/sjjs/shujuguanli/gsguanli.vue',
+            },
+            {
+              meta: {
+                title: '编码库查询',
+              },
+              name: '编码库查询',
+              path: '/sjjs/shujuguanli/bmguanli',
+              component: '/sjjs/shujuguanli/bmguanli.vue',
+            },
+            {
+              meta: {
+                title: '故障库查询',
+              },
+              name: '故障库查询',
+              path: '/sjjs/shujuguanli/gzguanli',
+              component: '/sjjs/shujuguanli/gzguanli.vue',
+            },
+            {
+              meta: {
+                title: '结构简图库查询',
+              },
+              name: '结构简图库查询',
+              path: '/sjjs/shujuguanli/jiegouguanli',
+              component: '/sjjs/shujuguanli/jiegouguanli.vue',
+            },
+            {
+              meta: {
+                title: '零件图库查询',
+              },
+              name: '零件图库查询',
+              path: '/sjjs/shujuguanli/lingjianguanli',
+              component: '/sjjs/shujuguanli/lingjianguanli.vue',
+            },
+            {
+              meta: {
+                title: '装配图库查询',
+              },
+              name: '装配图库查询',
+              path: '/sjjs/shujuguanli/zhuangpeiguanli',
+              component: '/sjjs/shujuguanli/zhuangpeiguanli.vue',
+            },
+          ],
+        },
+        {
+          meta: {
+            icon: 'ic:round-menu',
+            title: '工具中心',
+          },
+          name: '工具中心',
+          path: '/gjzx',
+          children: [
+            {
+              meta: {
+                title: '数据统计',
+              },
+              name: '数据统计',
+              path: '/sjjs/gongjuzhongxin/index',
+              component:'/sjjs/gongjuzhongxin/index.vue',
+            },
+          ],
+        },
+      ],
+    },
+  {
+    meta: {
+      //icon: 'ic:baseline-view-in-ar',
+      keepAlive: true,
+      order: 999,
+      title: '',
+    },
+    name: '项目管理',
+    path: '/u9',
+    children: [
+      {
+        meta: {
+          icon: 'ic:round-menu',
+          title: '检验项',
+        },
+        name: '检验项',
+        path: '/JY',
+        children: [
+          {
+            meta: {
+              title: '零件信息',
+            },
+            name: '零件信息',
+            path: '/u9/part',
+            component:'/u9/part.vue',
+          },
+          {
+            meta: {
+              title: '标准件信息',
+            },
+            name: '标准件信息',
+            path: '/u9/partbzj',
+            component: '/u9/partbzj.vue',
+          },
+          {
+            meta: {
+              title: '部件信息',
+            },
+            name: '部件信息',
+            path: '/u9/partbj',
+            component: '/u9/partbj.vue',
+          },
+          {
+            meta: {
+              title: '材料信息',
+            },
+            name: '材料信息',
+            path: '/u9/partcl',
+            component: '/u9/partcl.vue',
+          },
+          {
+            meta: {
+              title: '产品信息',
+            },
+            name: '产品信息',
+            path: '/u9/partcp',
+            component: '/u9/partcp.vue',
+          },
+          {
+            meta: {
+              title: '附件信息',
+            },
+            name: '附件信息',
+            path: '/u9/partfj',
+            component: '/u9/partfj.vue',
+          },
+          {
+            meta: {
+              title: '总成信息',
+            },
+            name: '总成信息',
+            path: '/u9/partzc',
+            component: '/u9/partzc.vue',
+          },
+          {
+            meta: {
+              title: '组件信息',
+            },
+            name: '组件信息',
+            path: '/u9/partzj',
+            component: '/u9/partzj.vue',
+          },
+        ]
+      },
+      {
+        meta: {
+          title: '检验项查询',
+        },
+        name: '检验卡',
+        path: '/u9/testitem',
+        component:'/u9/testitem.vue',
+      },
+    ],
+  },
+];
+  return dashboardMenus;//requestClient.get<RouteRecordStringComponent[]>('/menu/all');
+}
+
+

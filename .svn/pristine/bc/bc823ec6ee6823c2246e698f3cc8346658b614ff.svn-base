@@ -1,0 +1,1 @@
+import{Ct as e,W as t}from"./vue.runtime.esm-bundler-DzX1phpv.js";import{n}from"./styleChecker-ZnwMapbr.js";var r=(()=>{let r=e(!1);return t(()=>{r.value=n()}),r});export{r as t};
