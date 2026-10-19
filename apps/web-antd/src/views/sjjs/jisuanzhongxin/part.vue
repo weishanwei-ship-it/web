@@ -687,13 +687,7 @@ async function loadDesignGivenParams(code: string) {
   } finally {
     designGivenLoading.value = false;
   }
-}
-
-function autoMatchDesignGivenCode(model: string): string {
-  if (!model) return '';
-  const candidates = designGivenCodes.value.filter((c) => c.startsWith(model));
-  return candidates[0] || '';
-}
+} 
 
 watch(selectedDesignGivenCode, (newVal) => {
   loadDesignGivenParams(newVal);
@@ -1196,12 +1190,12 @@ function getChapterImage(ch: any): string {
     const k = String(key).trim();
     if (!k) continue;
     if (name && (name.includes(k) || k.includes(name))) {
-      return structureImages.value[k];
+      return structureImages.value[k]!;
     }
   }
   const keys = Object.keys(structureImages.value);
   if (keys.length === 1) {
-    return structureImages.value[keys[0]];
+    return structureImages.value[keys[0]!]!;
   }
   return '';
 }
@@ -1214,7 +1208,7 @@ const baseParamImage = computed(() => {
     if (img) return img;
   }
   const keys = Object.keys(structureImages.value);
-  if (keys.length > 0) return structureImages.value[keys[0]];
+  if (keys.length > 0) return structureImages.value[keys[0]!];
   return '/images/V3D_D2060050000005.png';
 });
 
@@ -1527,8 +1521,8 @@ watch(
       <div
         v-if="activeSearch.column && activeSearch.keyword"
         style="
-          margin-bottom: 12px;
           padding: 8px 12px;
+          margin-bottom: 12px;
           background: #f5f5f5;
           border-radius: 4px;
         "
@@ -1583,14 +1577,14 @@ watch(
       <div v-else>
         <div
           v-if="loading"
-          style="text-align: center; padding: 40px; color: #999"
+          style="padding: 40px; color: #999; text-align: center"
         >
           加载中…
         </div>
 
         <div
           v-else-if="rows.length === 0"
-          style="text-align: center; padding: 40px; color: #999"
+          style="padding: 40px; color: #999; text-align: center"
         >
           暂无数据
         </div>
@@ -1618,10 +1612,9 @@ watch(
               style="
                 display: grid;
                 grid-template-columns: 88px 1fr;
-                row-gap: 4px;
-                column-gap: 8px;
-                font-size: 12px;
+                gap: 4px 8px;
                 margin-bottom: 8px;
+                font-size: 12px;
               "
             >
               <template v-for="col in cardFields" :key="col.ColumnName">
@@ -1634,12 +1627,12 @@ watch(
 
             <div
               style="
-                border-top: 1px solid #f0f0f0;
-                padding-top: 8px;
                 display: flex;
-                justify-content: flex-end;
                 gap: 12px;
+                justify-content: flex-end;
+                padding-top: 8px;
                 font-size: 12px;
+                border-top: 1px solid #f0f0f0;
               "
             >
               <a @click.stop="openConfigModal(record)">配置</a>
@@ -1654,7 +1647,7 @@ watch(
 
         <div
           v-if="!loading && rows.length > 0"
-          style="text-align: right; margin-top: 16px"
+          style="margin-top: 16px; text-align: right"
         >
           <Pagination
             :current="pagination.current"
@@ -1681,22 +1674,22 @@ watch(
     >
       <div
         style="
-          height: calc(100vh - 120px);
           display: flex;
           flex-direction: column;
+          height: calc(100vh - 120px);
           overflow: hidden;
         "
       >
         <div
           style="
+            display: flex;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
             padding: 10px 16px;
             background: #fafafa;
             border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-            flex-wrap: wrap;
           "
         >
           <span style="font-weight: bold; white-space: nowrap">产品组合：</span>
@@ -1705,7 +1698,7 @@ watch(
             style="width: 280px"
             placeholder="请选择产品组合"
             show-search
-            @change="onComboChange"
+            @change="(val) => onComboChange(val as string)"
           >
             <SelectOption
               v-for="c in comboList"
@@ -1717,7 +1710,7 @@ watch(
           </Select>
 
           <span
-            style="font-weight: bold; white-space: nowrap; margin-left: 16px"
+            style="margin-left: 16px; font-weight: bold; white-space: nowrap"
           >
             设计给定产品编码：
           </span>
@@ -1732,11 +1725,11 @@ watch(
 
           <span
             v-if="configChapters.length > 0"
-            style="margin-left: 12px; color: #999; font-size: 12px"
+            style="margin-left: 12px; font-size: 12px; color: #999"
           >
             共 {{ configChapters.length }} 个计算章节
           </span>
-          <span v-else style="margin-left: 12px; color: #bbb; font-size: 12px">
+          <span v-else style="margin-left: 12px; font-size: 12px; color: #bbb">
             点击下方【实时计算】后加载章节
           </span>
         </div>
@@ -1745,8 +1738,8 @@ watch(
           v-model:activeKey="configActiveTab"
           type="card"
           style="
-            flex: 1;
             display: flex;
+            flex: 1;
             flex-direction: column;
             overflow: hidden;
           "
@@ -1755,8 +1748,8 @@ watch(
           <!-- 参数录入 -->
           <TabPane key="1" tab="参数录入">
             <div style="padding: 12px">
-              <div style="margin-bottom: 12px; display: flex; gap: 24px">
-                <div style="display: flex; align-items: center; gap: 8px">
+              <div style="display: flex; gap: 24px; margin-bottom: 12px">
+                <div style="display: flex; gap: 8px; align-items: center">
                   <label style="white-space: nowrap">执行标准</label>
                   <Select
                     v-model:value="configFormSelect.standardType"
@@ -1766,7 +1759,7 @@ watch(
                     <SelectOption value="TSG">TSG规范</SelectOption>
                   </Select>
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px">
+                <div style="display: flex; gap: 8px; align-items: center">
                   <label style="white-space: nowrap">产品类型</label>
                   <Select
                     v-model:value="configFormSelect.calcTarget"
@@ -1907,12 +1900,12 @@ watch(
               <Card title="自动匹配计算项" :bordered="false">
                 <div
                   style="
-                    margin-bottom: 12px;
                     display: flex;
                     align-items: center;
+                    margin-bottom: 12px;
                   "
                 >
-                  <label style="width: 100px; white-space: nowrap; color: #333"
+                  <label style="width: 100px; color: #333; white-space: nowrap"
                     >默认计算项：</label
                   >
                   <CheckboxGroup v-model:value="configCheckbox.defaultItems">
@@ -1925,7 +1918,7 @@ watch(
                   </CheckboxGroup>
                 </div>
                 <div style="display: flex; align-items: center">
-                  <label style="width: 100px; white-space: nowrap; color: #333"
+                  <label style="width: 100px; color: #333; white-space: nowrap"
                     >可选计算项：</label
                   >
                   <CheckboxGroup v-model:value="configCheckbox.optionalItems">
@@ -1945,35 +1938,35 @@ watch(
           <TabPane key="base" tab="产品组合">
             <div
               style="
-                padding: 12px;
+                box-sizing: border-box;
                 display: flex;
                 gap: 12px;
                 height: 100%;
-                box-sizing: border-box;
+                padding: 12px;
               "
             >
               <!-- 左侧：结构简图 -->
               <div
                 style="
-                  flex: 0 0 360px;
+                  box-sizing: border-box;
                   display: flex;
+                  flex: 0 0 360px;
                   flex-direction: column;
+                  padding: 8px;
+                  background: #fafafa;
                   border: 1px solid #f0f0f0;
                   border-radius: 4px;
-                  background: #fafafa;
-                  padding: 8px;
-                  box-sizing: border-box;
                 "
               >
                 <div
                   style="
-                    flex: 1;
                     display: flex;
+                    flex: 1;
                     align-items: center;
                     justify-content: center;
+                    min-height: 200px;
                     overflow: hidden;
                     cursor: zoom-in;
-                    min-height: 200px;
                   "
                   @click="openImagePreview(baseParamImage)"
                 >
@@ -1989,7 +1982,7 @@ watch(
                 </div>
 
                 <div
-                  style="text-align: center; margin-top: 8px; flex-shrink: 0"
+                  style="flex-shrink: 0; margin-top: 8px; text-align: center"
                 >
                   <Button
                     size="small"
@@ -2006,10 +1999,10 @@ watch(
                   v-if="designGivenLoading"
                   style="
                     padding: 4px 12px;
-                    background: #e6f4ff;
-                    color: #1677ff;
-                    font-size: 12px;
                     margin-bottom: 8px;
+                    font-size: 12px;
+                    color: #1677ff;
+                    background: #e6f4ff;
                   "
                 >
                   正在加载设计给定参数…
@@ -2018,9 +2011,9 @@ watch(
                 <table
                   style="
                     width: 100%;
-                    border-collapse: collapse;
                     font-size: 13px;
                     table-layout: fixed;
+                    border-collapse: collapse;
                   "
                 >
                   <colgroup>
@@ -2031,23 +2024,23 @@ watch(
                     <tr v-for="(item, idx) in baseParamFields" :key="idx">
                       <td
                         style="
-                          border: 1px solid #d9d9d9;
                           padding: 6px 12px;
-                          background: #fafafa;
                           font-weight: 500;
-                          text-align: center;
                           color: #333;
+                          text-align: center;
+                          background: #fafafa;
+                          border: 1px solid #d9d9d9;
                         "
                       >
                         {{ item.label }}
                       </td>
                       <td
                         style="
-                          border: 1px solid #d9d9d9;
                           padding: 6px 12px;
-                          background: #fff;
                           color: #333;
                           word-break: break-all;
+                          background: #fff;
+                          border: 1px solid #d9d9d9;
                         "
                       >
                         {{ getBaseParamValue(item) }}
@@ -2065,9 +2058,9 @@ watch(
               <table
                 style="
                   width: 100%;
-                  border-collapse: collapse;
-                  font-size: 13px;
                   margin-bottom: 12px;
+                  font-size: 13px;
+                  border-collapse: collapse;
                 "
               >
                 <tbody>
@@ -2075,35 +2068,35 @@ watch(
                     <td
                       rowspan="2"
                       style="
-                        border: 1px solid #d9d9d9;
-                        padding: 8px;
-                        text-align: center;
-                        font-weight: bold;
                         width: 180px;
+                        padding: 8px;
+                        font-weight: bold;
+                        text-align: center;
                         background: #fafafa;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       产品设计计算书
                     </td>
                     <td
                       style="
-                        border: 1px solid #d9d9d9;
-                        padding: 6px 12px;
-                        text-align: center;
-                        font-weight: bold;
-                        background: #fafafa;
                         width: 220px;
+                        padding: 6px 12px;
+                        font-weight: bold;
+                        text-align: center;
+                        background: #fafafa;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       产品名称
                     </td>
                     <td
                       style="
-                        border: 1px solid #d9d9d9;
                         padding: 6px 12px;
-                        text-align: center;
                         font-weight: bold;
+                        text-align: center;
                         background: #fafafa;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       产品规格
@@ -2112,18 +2105,18 @@ watch(
                   <tr>
                     <td
                       style="
-                        border: 1px solid #d9d9d9;
                         padding: 6px 12px;
                         text-align: center;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       {{ configRecord?.阀门名称 || '-' }}
                     </td>
                     <td
                       style="
-                        border: 1px solid #d9d9d9;
                         padding: 6px 12px;
                         text-align: center;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       {{ configRecord?.产品规格 || '-' }}
@@ -2135,31 +2128,31 @@ watch(
               <table
                 style="
                   width: 100%;
-                  border-collapse: collapse;
-                  font-size: 13px;
                   margin-bottom: 12px;
+                  font-size: 13px;
+                  border-collapse: collapse;
                 "
               >
                 <tbody>
                   <tr>
                     <td
                       style="
-                        border: 1px solid #d9d9d9;
-                        padding: 6px 12px;
-                        text-align: center;
-                        font-weight: bold;
                         width: 60px;
+                        padding: 6px 12px;
+                        font-weight: bold;
+                        text-align: center;
                         background: #fafafa;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       一
                     </td>
                     <td
                       style="
-                        border: 1px solid #d9d9d9;
                         padding: 6px 12px;
                         font-weight: bold;
                         background: #fafafa;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       阀体壁厚校核
@@ -2169,28 +2162,28 @@ watch(
               </table>
 
               <table
-                style="width: 100%; border-collapse: collapse; font-size: 13px"
+                style="width: 100%; font-size: 13px; border-collapse: collapse"
               >
                 <tbody>
                   <tr>
                     <td
                       style="
-                        border: 1px solid #d9d9d9;
-                        padding: 12px;
-                        text-align: center;
-                        font-weight: bold;
                         width: 100px;
-                        background: #fafafa;
+                        padding: 12px;
+                        font-weight: bold;
                         vertical-align: middle;
+                        text-align: center;
+                        background: #fafafa;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       结构简图
                     </td>
                     <td
                       style="
-                        border: 1px solid #d9d9d9;
                         padding: 12px;
                         vertical-align: middle;
+                        border: 1px solid #d9d9d9;
                       "
                     >
                       <div
@@ -2225,10 +2218,10 @@ watch(
               <div
                 v-if="!checkResult"
                 style="
-                  text-align: center;
-                  color: #999;
                   padding: 60px 20px;
                   font-size: 14px;
+                  color: #999;
+                  text-align: center;
                 "
               >
                 点击下方【实时计算】按钮生成计算结果
@@ -2238,23 +2231,23 @@ watch(
                 <!-- 总体结论 -->
                 <div
                   style="
-                    margin-bottom: 16px;
                     display: flex;
-                    align-items: center;
                     gap: 12px;
+                    align-items: center;
+                    margin-bottom: 16px;
                   "
                 >
                   <Tag
                     :color="checkResult.qualified ? 'green' : 'red'"
                     style="
-                      font-size: 16px;
                       padding: 4px 16px;
+                      font-size: 16px;
                       line-height: 26px;
                     "
                   >
                     {{ checkResult.qualified ? '合格' : '不合格' }}
                   </Tag>
-                  <span style="font-size: 14px; color: #333; font-weight: 500">
+                  <span style="font-size: 14px; font-weight: 500; color: #333">
                     {{ checkResult.message }}
                   </span>
                 </div>
@@ -2265,20 +2258,20 @@ watch(
                   :key="ch.chapterCode"
                   style="
                     margin-bottom: 16px;
+                    overflow: hidden;
                     border: 1px solid #f0f0f0;
                     border-radius: 4px;
-                    overflow: hidden;
                   "
                 >
                   <!-- 章节标题栏 -->
                   <div
                     style="
+                      display: flex;
+                      gap: 12px;
+                      align-items: center;
                       padding: 10px 16px;
                       background: #fafafa;
                       border-bottom: 1px solid #f0f0f0;
-                      display: flex;
-                      align-items: center;
-                      gap: 12px;
                     "
                   >
                     <Tag :color="ch.passed ? 'green' : 'red'" style="margin: 0">
@@ -2289,7 +2282,7 @@ watch(
                     }}</strong>
                     <span
                       v-if="!ch.passed"
-                      style="color: #ff4d4f; margin-left: auto; font-size: 13px"
+                      style="margin-left: auto; font-size: 13px; color: #ff4d4f"
                     >
                       {{ ch.message }}
                     </span>
@@ -2346,37 +2339,37 @@ watch(
           >
             <div
               style="
-                padding: 12px;
-                height: 100%;
+                box-sizing: border-box;
                 display: flex;
                 gap: 12px;
-                box-sizing: border-box;
                 align-items: stretch;
+                height: 100%;
+                padding: 12px;
               "
             >
               <!-- 左侧：结构简图 -->
               <div
                 v-if="getChapterImage(ch)"
                 style="
-                  flex: 0 0 360px;
+                  box-sizing: border-box;
                   display: flex;
+                  flex: 0 0 360px;
                   flex-direction: column;
+                  padding: 8px;
+                  background: #fafafa;
                   border: 1px solid #f0f0f0;
                   border-radius: 4px;
-                  background: #fafafa;
-                  padding: 8px;
-                  box-sizing: border-box;
                 "
               >
                 <div
                   style="
-                    flex: 1;
                     display: flex;
+                    flex: 1;
                     align-items: center;
                     justify-content: center;
+                    min-height: 200px;
                     overflow: hidden;
                     cursor: zoom-in;
-                    min-height: 200px;
                   "
                   @click="openImagePreview(getChapterImage(ch))"
                 >
@@ -2392,7 +2385,7 @@ watch(
                 </div>
 
                 <div
-                  style="text-align: center; margin-top: 8px; flex-shrink: 0"
+                  style="flex-shrink: 0; margin-top: 8px; text-align: center"
                 >
                   <Button
                     size="small"
@@ -2406,10 +2399,10 @@ watch(
               <!-- 右侧：计算表格（flex 撑满高度） -->
               <div
                 style="
-                  flex: 1;
-                  min-width: 0;
                   display: flex;
+                  flex: 1;
                   flex-direction: column;
+                  min-width: 0;
                   height: 100%;
                 "
               >
@@ -2417,11 +2410,11 @@ watch(
                 <div
                   style="
                     display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    gap: 8px;
-                    margin-bottom: 6px;
                     flex-shrink: 0;
+                    gap: 8px;
+                    align-items: center;
+                    justify-content: flex-end;
+                    margin-bottom: 6px;
                   "
                 >
                   <span style="font-size: 12px; color: #999">
@@ -2435,7 +2428,7 @@ watch(
                 <!-- 表格容器：flex:1 撑满剩余空间 -->
                 <div style="flex: 1; min-height: 0; overflow: auto">
                   <Table
-                    :columns="bookColumns"
+                    :columns="bookColumns as any"
                     :data-source="chapterResults[ch.章节编码] || []"
                     :pagination="false"
                     bordered
@@ -2509,11 +2502,11 @@ watch(
                                 position: absolute;
                                 top: -2px;
                                 right: -2px;
+                                display: inline-block;
                                 width: 6px;
                                 height: 6px;
                                 background: #faad14;
                                 border-radius: 50%;
-                                display: inline-block;
                               "
                             ></span>
                           </Tooltip>
@@ -2544,14 +2537,14 @@ watch(
         <div
           style="
             display: flex;
-            justify-content: flex-end;
-            align-items: center;
+            flex-shrink: 0;
             gap: 8px;
+            align-items: center;
+            justify-content: flex-end;
             padding: 10px 16px;
-            border-top: 1px solid #f0f0f0;
             overflow-x: auto;
             white-space: nowrap;
-            flex-shrink: 0;
+            border-top: 1px solid #f0f0f0;
           "
         >
           <Button type="primary" @click="tempSaveConfig">临时保存</Button>
@@ -2578,21 +2571,21 @@ watch(
       <div
         style="
           display: flex;
-          justify-content: center;
           align-items: center;
+          justify-content: center;
           max-height: 80vh;
-          overflow: auto;
           padding: 4px;
+          overflow: auto;
         "
       >
         <img
           :src="imagePreviewSrc"
           alt="结构简图"
           style="
+            display: block;
             max-width: 90vw;
             max-height: 78vh;
             object-fit: contain;
-            display: block;
           "
         />
       </div>
@@ -2607,16 +2600,16 @@ watch(
     >
       <pre
         style="
-          white-space: pre-wrap;
-          word-break: break-all;
           max-height: 60vh;
+          padding: 12px;
+          margin: 0;
           overflow: auto;
           font-size: 12px;
           line-height: 1.6;
+          word-break: break-all;
+          white-space: pre-wrap;
           background: #fafafa;
-          padding: 12px;
           border-radius: 4px;
-          margin: 0;
         "
         >{{ formulaModalContent }}</pre
       >
@@ -2633,16 +2626,16 @@ watch(
     >
       <div
         style="
-          height: calc(100vh - 120px);
           display: flex;
           flex-direction: column;
+          height: calc(100vh - 120px);
         "
       >
         <div
           style="
             padding: 12px 16px;
-            border-bottom: 1px solid #f0f0f0;
             background: #fafafa;
+            border-bottom: 1px solid #f0f0f0;
           "
         >
           <Space size="large" wrap>
@@ -2661,7 +2654,7 @@ watch(
           </Space>
         </div>
 
-        <div style="flex: 1; overflow: auto; padding: 16px">
+        <div style="flex: 1; padding: 16px; overflow: auto">
           <div
             style="
               display: grid;
@@ -2675,11 +2668,11 @@ watch(
               style="
                 padding: 10px 12px;
                 background: #fafafa;
-                border-radius: 4px;
                 border: 1px solid #f0f0f0;
+                border-radius: 4px;
               "
             >
-              <div style="color: #888; font-size: 12px; margin-bottom: 4px">
+              <div style="margin-bottom: 4px; font-size: 12px; color: #888">
                 {{ col.ColumnName }}
               </div>
               <div style="font-size: 14px; word-break: break-all">
@@ -2692,8 +2685,8 @@ watch(
         <div
           style="
             padding: 12px;
-            border-top: 1px solid #f0f0f0;
             text-align: right;
+            border-top: 1px solid #f0f0f0;
           "
         >
           <Space
@@ -2738,7 +2731,7 @@ watch(
           />
         </FormItem>
 
-        <div style="text-align: right; margin-top: 16px">
+        <div style="margin-top: 16px; text-align: right">
           <Space>
             <Button @click="advQueryVisible = false">取消</Button>
             <Button @click="resetAdvQuery">重置</Button>
@@ -2865,36 +2858,41 @@ watch(
 <style scoped>
 :deep(.config-fullscreen-modal) {
   top: 0 !important;
-  padding-bottom: 0 !important;
   max-width: 100vw;
+  padding-bottom: 0 !important;
 }
+
 :deep(.config-fullscreen-modal .ant-modal) {
   top: 0;
-  padding-bottom: 0;
   width: 100vw !important;
   max-width: 100vw;
+  padding-bottom: 0;
   margin: 0;
 }
+
 :deep(.config-fullscreen-modal .ant-modal-content) {
-  border-radius: 0;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  border-radius: 0;
 }
 
 .config-tabs :deep(.ant-tabs-nav) {
   margin-bottom: 0;
 }
+
 .config-tabs :deep(.ant-tabs-content-holder) {
   flex: 1;
   overflow: auto;
+  background: #fff;
   border: 1px solid #f0f0f0;
   border-top: none;
-  background: #fff;
 }
+
 .config-tabs :deep(.ant-tabs-content) {
   height: 100%;
 }
+
 .config-tabs :deep(.ant-tabs-tabpane) {
   height: 100%;
 }
@@ -2904,25 +2902,31 @@ watch(
   padding: 0 12px;
   font-size: 13px;
 }
+
 .config-tabs :deep(.ant-card-head-title) {
   padding: 6px 0;
   font-size: 13px;
 }
+
 .config-tabs :deep(.ant-card-body) {
   padding: 8px 12px;
 }
+
 .config-tabs :deep(.ant-form-item) {
   margin-bottom: 4px;
 }
+
 .config-tabs :deep(.ant-form-item-label) {
   padding-bottom: 0;
   line-height: 1;
 }
+
 .config-tabs :deep(.ant-form-item-label > label) {
   height: 18px;
-  line-height: 18px;
   font-size: 12px;
+  line-height: 18px;
 }
+
 .config-tabs :deep(.ant-input),
 .config-tabs :deep(.ant-input-affix-wrapper),
 .config-tabs :deep(.ant-select-single),
@@ -2930,48 +2934,58 @@ watch(
   height: 22px !important;
   font-size: 12px;
 }
+
 .config-tabs
   :deep(.ant-select-single .ant-select-selector .ant-select-selection-item),
 .config-tabs
   :deep(
     .ant-select-single .ant-select-selector .ant-select-selection-placeholder
   ) {
-  line-height: 20px !important;
   font-size: 12px;
+  line-height: 20px !important;
 }
+
 .config-tabs :deep(.ant-select-single .ant-select-arrow) {
   top: 50%;
   margin-top: -5px;
   font-size: 10px;
 }
+
 .config-tabs :deep(.ant-input) {
   padding: 0 6px;
   line-height: 20px;
 }
+
 .config-tabs :deep(textarea.ant-input) {
   height: auto !important;
   padding: 2px 6px;
   line-height: 18px;
 }
+
 .config-tabs :deep(.ant-input-number) {
   height: 22px !important;
   font-size: 12px;
 }
+
 .config-tabs :deep(.ant-input-number-input) {
   height: 20px !important;
-  line-height: 20px !important;
   font-size: 12px;
+  line-height: 20px !important;
 }
+
 .config-tabs :deep(.ant-space) {
   gap: 12px !important;
 }
+
 .config-tabs :deep(.ant-checkbox-wrapper) {
-  font-size: 12px;
   margin-right: 12px;
+  font-size: 12px;
 }
+
 .config-tabs :deep(.ant-checkbox) {
   top: 2px;
 }
+
 .config-tabs :deep([style*='grid-template-columns']) {
   gap: 8px 12px !important;
 }
@@ -2980,40 +2994,46 @@ watch(
 .config-tabs :deep(.ant-table-wrapper) {
   height: 100%;
 }
+
 .config-tabs :deep(.ant-spin-nested-loading) {
   height: 100%;
 }
+
 .config-tabs :deep(.ant-spin-container) {
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
+
 .config-tabs :deep(.ant-table) {
   flex: 1;
   min-height: 0;
 }
+
 .config-tabs :deep(.ant-table-container) {
   height: 100%;
 }
 
 .ellipsis-1-line {
   display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  line-clamp: 1; 
   white-space: nowrap;
+  -webkit-box-orient: vertical;
 }
 
 .ellipsis-2-lines {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  max-height: 2.8em;
   overflow: hidden;
   text-overflow: ellipsis;
-  word-break: break-all;
+  -webkit-line-clamp: 2;
+  line-clamp: 2; 
   line-height: 1.4;
-  max-height: 2.8em;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
 }
 </style>
 
@@ -3022,65 +3042,76 @@ watch(
   max-width: 600px;
   max-height: 400px;
   overflow: auto;
-  white-space: pre-wrap;
-  word-break: break-all;
   font-size: 12px;
   line-height: 1.5;
+  word-break: break-all;
+  white-space: pre-wrap;
 }
 
 .edit-compact-modal .ant-modal-body {
   padding: 6px 12px;
 }
+
 .edit-compact-modal .ant-form-item {
-  margin-bottom: 4px !important;
   padding: 0 !important;
+  margin-bottom: 4px !important;
 }
+
 .edit-compact-modal .ant-form-item-label {
   padding: 0 !important;
   margin: 0 !important;
   line-height: 1 !important;
 }
+
 .edit-compact-modal .ant-form-item-label > label {
   height: auto !important;
-  line-height: 16px !important;
-  font-size: 12px !important;
-  margin: 0 !important;
   padding: 0 !important;
+  margin: 0 !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
 }
+
 .edit-compact-modal .ant-form-item-label > label::after {
   display: none !important;
 }
+
 .edit-compact-modal .ant-form-item-control,
 .edit-compact-modal .ant-form-item-control-input {
   min-height: 0 !important;
 }
+
 .edit-compact-modal .ant-form-item-row {
   display: block !important;
 }
+
 .edit-compact-modal .ant-input,
 .edit-compact-modal .ant-input-affix-wrapper,
 .edit-compact-modal .ant-input-number {
   height: 22px !important;
   min-height: 22px !important;
-  line-height: 22px !important;
-  font-size: 12px !important;
   padding: 0 6px !important;
+  font-size: 12px !important;
+  line-height: 22px !important;
 }
+
 .edit-compact-modal .ant-input-number-input {
   height: 20px !important;
-  line-height: 20px !important;
-  font-size: 12px !important;
   padding: 0 4px !important;
+  font-size: 12px !important;
+  line-height: 20px !important;
 }
+
 .edit-compact-modal .ant-input-number-handler-wrap {
   display: none !important;
 }
+
 .edit-compact-modal textarea.ant-input {
   height: auto !important;
   min-height: 32px !important;
   padding: 2px 6px !important;
   line-height: 16px !important;
 }
+
 .edit-compact-modal .ant-form > div {
   gap: 4px 12px !important;
 }

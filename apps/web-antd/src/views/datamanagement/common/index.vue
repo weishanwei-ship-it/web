@@ -25,6 +25,16 @@ import { SettingOutlined } from '@ant-design/icons-vue';
 import { DataApi } from '#/api/core/data';
 import type { ColumnInfo } from '#/api/core/data';
 
+const hasValue = (record: any, column: any) => {
+  const val = record[column?.dataIndex as string];
+  return val !== null && val !== undefined && val !== '';
+};
+
+const getColor = (record: any, column: any) => {
+  const val = record[column?.dataIndex as string];
+  return statusColor(val); // 你的原有方法
+};
+
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
@@ -182,7 +192,7 @@ function initColumnWidths() {
       });
       // 补齐 schema 里新增但没存的字段
       schema.value.forEach((c) => {
-        if (filtered[c.ColumnName] == null) {
+        if (filtered[c.ColumnName] === null) {
           filtered[c.ColumnName] = estimateColumnWidth(c);
         }
       });
@@ -366,7 +376,7 @@ function handleEdit(record: any) {
 async function handleSave() {
   saving.value = true;
   try {
-    if (editingId.value == null) {
+    if (editingId.value === null) {
       await DataApi.create(tableName.value, { ...formModel });
       alert('新增成功');
     } else {
@@ -471,7 +481,7 @@ async function onFileChange(e: Event) {
     }
     const sheet = workbook.Sheets[sheetName];
 
-    const jsonRows: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet, {
+    const jsonRows: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet!, {
       defval: null,
       raw: false,
     });
@@ -485,7 +495,7 @@ async function onFileChange(e: Event) {
       .filter((c) => !c.IsIdentity)
       .map((c) => c.ColumnName);
 
-    const excelHeaders = Object.keys(jsonRows[0]).filter(
+    const excelHeaders = Object.keys(jsonRows[0]!).filter(
       (h) => !h.startsWith('_EMPTY') && h.trim() !== '',
     );
 
@@ -524,7 +534,7 @@ async function onFileChange(e: Event) {
     if ('计算项' in firstRow) {
       const dist: Record<string, number> = {};
       for (const r of cleaned) {
-        const k = r['计算项'] == null ? '(空)' : String(r['计算项']);
+        const k = r['计算项'] === null ? '(空)' : String(r['计算项']);
         dist[k] = (dist[k] || 0) + 1;
       }
       summary +=
@@ -684,34 +694,29 @@ watch(
           <!-- 状态列：彩色 Tag -->
           <template v-else-if="(column as any)._isStatus">
             <Tag
-              v-if="
-                record[column.dataIndex] !== null &&
-                record[column.dataIndex] !== undefined &&
-                record[column.dataIndex] !== ''
-              "
-              :color="statusColor(record[column.dataIndex])"
+              v-if="hasValue(record, column)"
+              :color="getColor(record, column)"
             >
-              {{ record[column.dataIndex] }}
+              {{ record[column?.dataIndex as string] }}
             </Tag>
             <span v-else>-</span>
           </template>
-
-          <!-- 其他列：截断 + Tooltip -->
+ 
+          <!-- 其他列: 截断 + Tooltip -->
           <template v-else>
-            <Tooltip
-              v-if="
-                record[column.dataIndex] !== null &&
-                record[column.dataIndex] !== undefined &&
-                record[column.dataIndex] !== ''
-              "
-              :title="String(record[column.dataIndex])"
-              placement="topLeft"
-            >
-              <span class="ellipsis-text">
-                {{ record[column.dataIndex] }}
-              </span>
-            </Tooltip>
-            <span v-else>-</span>
+            <!-- 直接在这里把值取出来，如果是 undefined 就兜底为空字符串 -->
+            <template v-slot:default="{ record, column }">
+              <Tooltip
+                v-if="record[column?.dataIndex as string] !== null && record[column?.dataIndex as string] !== undefined && record[column?.dataIndex as string] !== ''"
+                :title="String(record[column?.dataIndex as string])"
+                placement="topLeft"
+              >
+                <span class="ellipsis-text">
+                  {{ record[column?.dataIndex as string] }}
+                </span>
+              </Tooltip>
+              <span v-else>-</span>
+            </template>
           </template>
         </template>
 

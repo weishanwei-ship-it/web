@@ -156,7 +156,7 @@ async function copyValue(v: any) {
 function orderOfParam(code: string): number {
   const m = code.match(/^X(\d{3})N(\d+)$/i);
   if (!m) return 999999;
-  return parseInt(m[1], 10) * 10000 + parseInt(m[2], 10);
+  return parseInt(m[1]!, 10) * 10000 + parseInt(m[2]!, 10);
 }
 
 // ============================================================
@@ -257,9 +257,9 @@ async function onFileChange(e: Event) {
 
 function parseDesignGivenExcel(workbook: XLSX.WorkBook) {
   // ★ 默认取第一个 sheet
-  const ws = workbook.Sheets[workbook.SheetNames[0]];
+  const ws = workbook.Sheets[workbook.SheetNames[0]!];
 
-  const rows: any[][] = XLSX.utils.sheet_to_json(ws, {
+  const rows: any[][] = XLSX.utils.sheet_to_json(ws!, {
     header: 1,
     defval: null,
     raw: true,
@@ -370,7 +370,7 @@ onMounted(loadAll);
     <Card title="设计给定" :body-style="{ padding: 0 }">
       <template #extra>
         <Space>
-          <span style="color: #888; font-size: 12px">
+          <span style="font-size: 12px; color: #888">
             共 {{ productList.length }} 个产品 / {{ allRows.length }} 条参数
           </span>
           <Button :loading="loading" @click="loadAll">
@@ -395,7 +395,7 @@ onMounted(loadAll);
           border-bottom: 1px solid #91caff;
         "
       >
-        <div style="font-size: 12px; color: #1677ff; margin-bottom: 4px">
+        <div style="margin-bottom: 4px; font-size: 12px; color: #1677ff">
           {{ importProgress.text }}
         </div>
         <Progress
@@ -416,11 +416,11 @@ onMounted(loadAll);
           <!-- 左侧产品列表 -->
           <div
             style="
-              width: 280px;
-              flex-shrink: 0;
-              border-right: 1px solid #f0f0f0;
               display: flex;
+              flex-shrink: 0;
               flex-direction: column;
+              width: 280px;
+              border-right: 1px solid #f0f0f0;
             "
           >
             <div style="padding: 10px 12px; border-bottom: 1px solid #f0f0f0">
@@ -432,7 +432,7 @@ onMounted(loadAll);
               />
             </div>
 
-            <div style="flex: 1; overflow-y: auto; padding: 6px">
+            <div style="flex: 1; padding: 6px; overflow-y: auto">
               <div
                 v-for="p in filteredProductList"
                 :key="p.code"
@@ -471,20 +471,20 @@ onMounted(loadAll);
 
           <!-- 右侧参数表格 -->
           <div
-            style="flex: 1; min-width: 0; display: flex; flex-direction: column"
+            style="display: flex; flex: 1; flex-direction: column; min-width: 0"
           >
             <div
               style="
-                padding: 10px 14px;
-                border-bottom: 1px solid #f0f0f0;
                 display: flex;
-                align-items: center;
                 gap: 12px;
+                align-items: center;
+                padding: 10px 14px;
                 background: #fafafa;
+                border-bottom: 1px solid #f0f0f0;
               "
             >
               <div style="flex: 1; min-width: 0">
-                <div style="color: #888; font-size: 11px">当前产品</div>
+                <div style="font-size: 11px; color: #888">当前产品</div>
                 <div
                   style="
                     font-family: Consolas, Monaco, monospace;
@@ -508,7 +508,7 @@ onMounted(loadAll);
 
             <div style="flex: 1; overflow: hidden">
               <Table
-                :columns="paramColumns"
+                :columns!="paramColumns"
                 :data-source="filteredParams"
                 :pagination="false"
                 :scroll="{ y: 'calc(100vh - 330px)', x: 720 }"
@@ -562,13 +562,13 @@ onMounted(loadAll);
 
             <div
               style="
+                display: flex;
+                justify-content: space-between;
                 padding: 6px 14px;
-                border-top: 1px solid #f0f0f0;
                 font-size: 12px;
                 color: #888;
                 background: #fafafa;
-                display: flex;
-                justify-content: space-between;
+                border-top: 1px solid #f0f0f0;
               "
             >
               <span>
@@ -600,19 +600,23 @@ onMounted(loadAll);
   padding: 4px 8px !important;
   font-size: 12px;
 }
+
 :deep(.ant-table-thead > tr > th) {
   padding: 6px 8px !important;
   font-size: 12px;
   background: #fafafa !important;
 }
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
