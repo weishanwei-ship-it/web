@@ -46,9 +46,27 @@ const props = withDefaults(defineProps<Props>(), {
   title: '',
   // 默认卡片数据
   cardList: () => [
-    { id: 1, title: '计算平台', desc: '计算平台', icon: '📊', path: '/dashboard' },
-    { id: 2, title: '业务中心', desc: '流程管理', icon: '📋', path: '/business' },
-    { id: 3, title: '消息中心', desc: '通知待办', icon: '💬', path: '/message' },
+    {
+      id: 1,
+      title: '计算平台',
+      desc: '计算平台',
+      icon: '📊',
+      path: '/dashboard',
+    },
+    {
+      id: 2,
+      title: '业务中心',
+      desc: '流程管理',
+      icon: '📋',
+      path: '/business',
+    },
+    {
+      id: 3,
+      title: '消息中心',
+      desc: '通知待办',
+      icon: '💬',
+      path: '/message',
+    },
     { id: 4, title: '系统设置', desc: '权限配置', icon: '⚙️', path: '/system' },
   ],
 });
@@ -101,8 +119,8 @@ function handleGo(path: string) {
 
 // 点击卡片跳转主页
 function handleCardClick() {
-            const path = "/analytics";
-          window.location.href = path;
+  const path = '/analytics';
+  window.location.href = path;
 }
 
 // 返回登录表单
@@ -220,7 +238,12 @@ defineExpose({
       <div class="card-header text-center mb-6">
         <h2 class="text-xl font-bold">🎉 登录成功</h2>
         <p class="text-muted-foreground mt-2">请选择进入对应功能模块</p>
-        <VbenButton class="mt-4" variant="outline" size="sm" @click="backToForm">
+        <VbenButton
+          class="mt-4"
+          variant="outline"
+          size="sm"
+          @click="backToForm"
+        >
           返回登录
         </VbenButton>
       </div>
@@ -255,35 +278,35 @@ defineExpose({
 }
 
 .card-item {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
   padding: 20px 12px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s ease;
   background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.2s ease;
 }
 
 .card-item:hover {
   border-color: #3b82f6;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
   transform: translateY(-2px);
 }
 
 .card-icon {
-  font-size: 32px;
   margin-bottom: 12px;
+  font-size: 32px;
 }
 
 .card-title {
+  margin: 0 0 6px;
   font-size: 16px;
   font-weight: 600;
-  margin: 0 0 6px;
 }
 
 .card-desc {
+  margin: 0;
   font-size: 13px;
   color: #6b7280;
-  margin: 0;
 }
 </style>

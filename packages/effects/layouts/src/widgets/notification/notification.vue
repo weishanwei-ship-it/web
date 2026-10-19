@@ -137,9 +137,11 @@ function navigateTo(
                   {{ item.message }}
                 </p>
                 <p class="line-clamp-2 text-xs text-muted-foreground">
-                  {{ item.date }}<span class="text-xs text-gray-500 float-right">来自：{{item.sendName}}</span>
+                  {{ item.date
+                  }}<span class="text-xs text-gray-500 float-right"
+                    >来自：{{ item.sendName }}</span
+                  >
                 </p>
-                
               </div>
               <div
                 class="absolute top-1/2 right-3 flex -translate-y-1/2 flex-col gap-2"

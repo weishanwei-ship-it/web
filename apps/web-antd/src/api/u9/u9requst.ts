@@ -2,98 +2,98 @@ import { baseRequestClient, requestClient } from '#/api/request';
 
 export namespace u9Api {
   export interface PartInfo {
-  id?: number;
-  ERP分类码:string;
-  大类编码:string;
-  大类名称:string;
-  大类属性:string;
-  中类编码:string;
-  中类名称:string;
-  中类属性:string;
-  小类编码:string;
-  小类名称:string;
-  小类属性:string;
-  财务分类:string;
-  修改说明:string;
-  交货提交资料包工包料委外:string;
-  交货提交资料供料委外自制无需提交资料:string;
-  存储合格期:string;
-  是否关键物料:string;
-  抽样数量:string;
-  抽样频次:string;
-  常规检验:string;
-  尺寸检验:string;
-  机械性能:string;
-  化学成分:string;
-  无损检验:string;
-  包装方式:string;
-  合理损耗率?: number;
-  是否承压:string;
-  工艺特殊要求1:string;
-  工艺特殊要求2:string;
-  工艺特殊要求3:string;
-  工艺特殊要求4:string;
- }
+    id?: number;
+    ERP分类码: string;
+    大类编码: string;
+    大类名称: string;
+    大类属性: string;
+    中类编码: string;
+    中类名称: string;
+    中类属性: string;
+    小类编码: string;
+    小类名称: string;
+    小类属性: string;
+    财务分类: string;
+    修改说明: string;
+    交货提交资料包工包料委外: string;
+    交货提交资料供料委外自制无需提交资料: string;
+    存储合格期: string;
+    是否关键物料: string;
+    抽样数量: string;
+    抽样频次: string;
+    常规检验: string;
+    尺寸检验: string;
+    机械性能: string;
+    化学成分: string;
+    无损检验: string;
+    包装方式: string;
+    合理损耗率?: number;
+    是否承压: string;
+    工艺特殊要求1: string;
+    工艺特殊要求2: string;
+    工艺特殊要求3: string;
+    工艺特殊要求4: string;
+  }
   export interface PartInfoBZJ {
-  id?: number;
-  ERP分类码:string;
-  大类编码:string;
-  大类名称:string;
-  大类属性:string;
-  中类编码:string;
-  中类名称:string;
-  中类属性:string;
-  小类编码:string;
-  小类名称:string;
-  小类属性:string;
-  财务分类:string;
-  plM组别码:string;
-  修改说明:string;
-  交货提交资料:string;
-  存储合格期:string;
-  是否关键物料:string;
-  包装方式:string;
-  合理损耗率?: number;
-  是否承压:string;
-  工艺特殊要求1:string;
-  工艺特殊要求2:string;
-  工艺特殊要求3:string;
-  工艺特殊要求4:string;
- }
-   export interface PartInfoBJ {
-  id?: number;
-  ERP分类码:string;
-  大类编码:string;
-  大类名称:string;
-  大类属性:string;
-  中类编码:string;
-  中类名称:string;
-  中类属性:string;
-  小类编码:string;
-  小类名称:string;
-  小类属性:string;
-  财务分类:string;
-  plM组别码:string;
-  修改说明:string;
-  交货提交资料:string;
-  存储合格期:string;
-  是否关键物料:string;
-  抽样数量:string;
-  抽样频次:string;
-  检验内容:string;
-  包装方式:string;
-  合理损耗率?: number;
-  是否承压:string;
-  工艺特殊要求1:string;
-  工艺特殊要求2:string;
-  工艺特殊要求3:string;
-  工艺特殊要求4:string;
- }
+    id?: number;
+    ERP分类码: string;
+    大类编码: string;
+    大类名称: string;
+    大类属性: string;
+    中类编码: string;
+    中类名称: string;
+    中类属性: string;
+    小类编码: string;
+    小类名称: string;
+    小类属性: string;
+    财务分类: string;
+    plM组别码: string;
+    修改说明: string;
+    交货提交资料: string;
+    存储合格期: string;
+    是否关键物料: string;
+    包装方式: string;
+    合理损耗率?: number;
+    是否承压: string;
+    工艺特殊要求1: string;
+    工艺特殊要求2: string;
+    工艺特殊要求3: string;
+    工艺特殊要求4: string;
+  }
+  export interface PartInfoBJ {
+    id?: number;
+    ERP分类码: string;
+    大类编码: string;
+    大类名称: string;
+    大类属性: string;
+    中类编码: string;
+    中类名称: string;
+    中类属性: string;
+    小类编码: string;
+    小类名称: string;
+    小类属性: string;
+    财务分类: string;
+    plM组别码: string;
+    修改说明: string;
+    交货提交资料: string;
+    存储合格期: string;
+    是否关键物料: string;
+    抽样数量: string;
+    抽样频次: string;
+    检验内容: string;
+    包装方式: string;
+    合理损耗率?: number;
+    是否承压: string;
+    工艺特殊要求1: string;
+    工艺特殊要求2: string;
+    工艺特殊要求3: string;
+    工艺特殊要求4: string;
+  }
   export interface BasePage {
-     page: number;
-     pageSize: number;
-     erP分类码:string;
- }
+    page: number;
+    pageSize: number;
+    erP分类码: string;
+  }
 }
 
 //查询
@@ -169,12 +169,12 @@ export async function UpdateU9ZJ(data: u9Api.PartInfoBZJ) {
 }
 
 //获取模板
-export async function GetExcelTemplate(type:string) {
-  return requestClient.get('/GetExcelTemplate', {      
+export async function GetExcelTemplate(type: string) {
+  return requestClient.get('/GetExcelTemplate', {
     params: {
-        type: type
-      }
-    });
+      type: type,
+    },
+  });
 }
 
 export async function ImportTemplate(formFiles: FormData) {
@@ -189,10 +189,10 @@ export async function ImportTemplate(formFiles: FormData) {
 //查询组件
 //1:焊接，2:热处理 3:PT
 export async function SelectJYX(code: string, leixing: number) {
-  return baseRequestClient.get('/SelectJYX', {      
+  return baseRequestClient.get('/SelectJYX', {
     params: {
-        code: code,
-        leixing:leixing
-      }
-    });
+      code: code,
+      leixing: leixing,
+    },
+  });
 }

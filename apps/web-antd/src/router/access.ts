@@ -14,7 +14,6 @@ import { $t } from '#/locales';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 
-
 async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   const pageMap: ComponentRecordType = import.meta.glob('../views/**/*.vue');
 
@@ -23,18 +22,17 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
     IFrameView,
   };
 
- 
-// return dashboardMenus;
-  return await  generateAccessible(preferences.app.accessMode, {
+  // return dashboardMenus;
+  return await generateAccessible(preferences.app.accessMode, {
     ...options,
     fetchMenuListAsync: async () => {
       message.loading({
         content: `${$t('common.loadingMenu')}...`,
         duration: 1.5,
       });
-      var data = await getAllMenusApi();
-      console.log("fetchMenuListAsync",data);
-      
+      const data = await getAllMenusApi();
+      console.log('fetchMenuListAsync', data);
+
       return data;
     },
     // 可以指定没有权限跳转403页面

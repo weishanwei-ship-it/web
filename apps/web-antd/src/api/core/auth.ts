@@ -11,18 +11,17 @@ export namespace AuthApi {
   // export interface LoginResult {
   //   accessToken: string;
   // }
- export interface LoginResult {
-     code: number;
-     data: boolean;
-     error: string;
-     message : string;
- }
+  export interface LoginResult {
+    code: number;
+    data: boolean;
+    error: string;
+    message: string;
+  }
 
   export interface RefreshTokenResult {
     data: string;
     status: number;
   }
-
 }
 
 /**
@@ -59,16 +58,15 @@ export async function getAccessCodesApi() {
   return requestClient.get<string[]>('/auth/codes');
 }
 
-
-export async function ReceiveMessage(account:string) {
-  return requestClient.get('/ReceiveMessage', {      
+export async function ReceiveMessage(account: string) {
+  return requestClient.get('/ReceiveMessage', {
     params: {
-        account: account
-      }
-    });
+      account: account,
+    },
+  });
 }
 
-export async function OneMessage(msgid:string) {
+export async function OneMessage(msgid: string) {
   return baseRequestClient.post('/OneMessage', msgid);
 }
 

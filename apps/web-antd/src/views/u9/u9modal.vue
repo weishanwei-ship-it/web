@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useVbenModal } from '@vben/common-ui';
 import { Button, message, Upload } from 'ant-design-vue';
-import {GetExcelTemplate,downloadFile,ImportTemplate } from '#/api';
+import { GetExcelTemplate, downloadFile, ImportTemplate } from '#/api';
 import { ref } from 'vue';
 import type { UploadFile } from 'ant-design-vue/es/upload/interface';
 const data = ref();
@@ -20,14 +20,13 @@ const [Modal, modalApi] = useVbenModal({
   },
 });
 
-
 // 下载导入模板（可选）
 const downloadTemplate = async () => {
   try {
-    console.log('data.value.content ========>',data.value.content);
+    console.log('data.value.content ========>', data.value.content);
     const res = await GetExcelTemplate(data.value.content);
     const filePath = typeof res === 'object' && res.data ? res.data : res;
-    console.log("filePath ===============>",filePath);
+    console.log('filePath ===============>', filePath);
     downloadFile(filePath);
     message.success('模板下载成功');
   } catch (err) {
@@ -36,10 +35,12 @@ const downloadTemplate = async () => {
 };
 
 // 文件上传前处理
-const handleBeforeUpload = async (file:any) => {
+const handleBeforeUpload = async (file: any) => {
   // 1. Excel格式校验
-  const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
-                  file.type === 'application/vnd.ms-excel';
+  const isExcel =
+    file.type ===
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+    file.type === 'application/vnd.ms-excel';
   if (!isExcel) {
     message.error('请上传Excel文件（.xlsx/.xls）');
     return false;
@@ -56,7 +57,7 @@ const handleBeforeUpload = async (file:any) => {
   try {
     //importLoading.value = true;
     const formData = new FormData();
-    formData.append('file',file);
+    formData.append('file', file);
     const response = await ImportTemplate(formData);
 
     if (response.data.code === 0) {
@@ -76,24 +77,23 @@ const handleBeforeUpload = async (file:any) => {
 };
 </script>
 <template>
-    <Modal title="数据导入">
-      <Upload
-        class="upload-demo"
-        :before-upload="handleBeforeUpload"
-        :show-upload-list="false"
-        accept=".xlsx,.xls"
-      >
-        <Button type="primary" >选择Excel文件</Button>
-      </Upload>
-      <div class="mt-4 text-gray-500 text-sm">
-        <p>支持格式：.xlsx / .xls（最大5MB）</p>
-        <p class="mt-1">
-          <a @click="downloadTemplate" class="text-primary">点击下载导入模板</a>
-        </p>
-      </div>
-      
-    </Modal>
-   <!-- <Modal title="数据共享示例">
+  <Modal title="数据导入">
+    <Upload
+      class="upload-demo"
+      :before-upload="handleBeforeUpload"
+      :show-upload-list="false"
+      accept=".xlsx,.xls"
+    >
+      <Button type="primary">选择Excel文件</Button>
+    </Upload>
+    <div class="mt-4 text-gray-500 text-sm">
+      <p>支持格式：.xlsx / .xls（最大5MB）</p>
+      <p class="mt-1">
+        <a @click="downloadTemplate" class="text-primary">点击下载导入模板</a>
+      </p>
+    </div>
+  </Modal>
+  <!-- <Modal title="数据共享示例">
     <div class="flex-col-center">外部传递数据： {{ data }}</div>
   </Modal>  -->
 </template>
@@ -103,9 +103,9 @@ const handleBeforeUpload = async (file:any) => {
   display: flex;
   justify-content: center;
   padding: 20px;
+  cursor: pointer;
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
-  cursor: pointer;
   transition: border-color 0.3s;
 }
 

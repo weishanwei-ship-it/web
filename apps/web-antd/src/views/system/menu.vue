@@ -9,10 +9,9 @@ import { useVbenModal, VbenButton } from '@vben/common-ui';
 
 import { useVbenForm, z } from '#/adapter/form';
 
-import { InsertMenu,GetMenuDataListPage } from '#/api';
+import { InsertMenu, GetMenuDataListPage } from '#/api';
 
 import { ref } from 'vue';
-
 
 const currentMenu = ref<number>(0);
 
@@ -52,24 +51,23 @@ const [Form] = useVbenForm({
       fieldName: 'menuUrl',
       label: '菜单路由',
       // rules: z.string().default('默认值').optional(),
-    }
+    },
   ],
   wrapperClass: 'grid-cols-1',
 });
 
-async function onSubmit(values: Record<string, any>){
+async function onSubmit(values: Record<string, any>) {
   const submitData = {
-    ...values, 
-    parentId: currentMenu.value, 
+    ...values,
+    parentId: currentMenu.value,
   };
   gridApi.setLoading(true);
   const response = await InsertMenu(submitData);
-  if(response.data.code == 0){
+  if (response.data.code == 0) {
     message.success({
       content: `添加成功！`,
     });
-  }
-  else{
+  } else {
     message.error({
       content: `添加失败：${response.data.error}`,
     });
@@ -110,7 +108,7 @@ interface RowType {
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { type: 'seq', width: 70 },
-    { align: 'left', title: 'ID',field: 'menuId',visible : false},
+    { align: 'left', title: 'ID', field: 'menuId', visible: false },
     { field: 'menuName', minWidth: 300, title: '菜单', treeNode: true },
     { field: 'menuUrl', title: '路由' },
     { field: 'createName', title: '创建人' },
@@ -124,19 +122,21 @@ const gridOptions: VxeGridProps<RowType> = {
     total: 0,
   },
   proxyConfig: {
-     ajax: {
+    ajax: {
       query: async ({ page }) => {
-        const response =  await GetMenuDataListPage({
-          roleId:99999,//单纯不想看见红色报错
+        const response = await GetMenuDataListPage({
+          roleId: 99999, //单纯不想看见红色报错
           page: page.currentPage,
           pageSize: page.pageSize,
         });
 
-        const list = Array.isArray(response.data.data) ? response.data.data : [];
-        const total = response.data.total ;
+        const list = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
+        const total = response.data.total;
         const tableData = {
-            items: list, 
-            total: total 
+          items: list,
+          total: total,
         };
 
         return tableData;
@@ -198,12 +198,18 @@ const [Modal, modalApi] = useVbenModal();
         <Button class="mr-2" type="primary" @click="expandAll">
           展开全部
         </Button>
-        <Button type="primary" class="mr-2" @click="collapseAll"> 折叠全部 </Button>
-        <Button type="primary" class="mr-2" @click="handleCreateTopMenu()">创建顶级菜单</Button>
-        <Modal class="w-[600px]" title="新建角色" :footer = false>  <Form /> </Modal>
+        <Button type="primary" class="mr-2" @click="collapseAll">
+          折叠全部
+        </Button>
+        <Button type="primary" class="mr-2" @click="handleCreateTopMenu()"
+          >创建顶级菜单</Button
+        >
+        <Modal class="w-[600px]" title="新建角色" :footer="false">
+          <Form />
+        </Modal>
       </template>
       <template #action="{ row }">
-          <Button type="link" @click="handleAddSubMenu(row)">添加子菜单</Button>
+        <Button type="link" @click="handleAddSubMenu(row)">添加子菜单</Button>
       </template>
     </Grid>
   </div>

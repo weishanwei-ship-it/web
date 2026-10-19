@@ -4,7 +4,7 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { Button } from 'ant-design-vue';
 import { SelectBaoGao } from '#/api';
-import { ref } from 'vue'; 
+import { ref } from 'vue';
 interface RowType {
   id: number;
   文件编号: string;
@@ -75,7 +75,6 @@ const queryType = ref(1);
 
 <template>
   <div class="vp-raw w-full">
-    <Grid>
-    </Grid>
+    <Grid> </Grid>
   </div>
 </template>

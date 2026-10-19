@@ -27,9 +27,11 @@ export interface ImportResult {
 // ★ 动态规则计算请求参数
 export interface RuleCalcPayload {
   阀门型号: string;
+  设计给定产品编码?: string; // ★ 新增
   params: Record<string, any>;
 }
 
+// ★ 动态规则计算响应
 // ★ 动态规则计算响应
 export interface RuleCalcResult {
   code: number;
@@ -41,10 +43,17 @@ export interface RuleCalcResult {
     合格: boolean;
     判定结论: string;
     合格判定: Array<{
-      name: string;
+      chapterCode: string;
+      chapterName: string;
       passed: boolean;
       message: string;
-      expression?: string;
+      details: Array<{
+        name: string;
+        passed: boolean;
+        skipped?: boolean;
+        message: string;
+        expression?: string;
+      }>;
     }>;
     执行日志: Array<{
       item: string;
@@ -103,6 +112,14 @@ export const DataApi = {
     return requestClient.get<ColumnInfo[]>(
       `/api/data/${encodeURIComponent(tableName)}/schema`,
     );
+  },
+
+  /**
+   * ★ 动态拼接产品编码
+   * POST /api/calc/build-code
+   */
+  buildProductCode(data: Record<string, any>) {
+    return requestClient.post('/api/calc/build-code', data);
   },
 
   /**
@@ -231,13 +248,14 @@ export const DataApi = {
   // ============================================================
 
   /**
-   * 生成设计计算书（旧接口，基于【公式库】长字符串）
+   * 生成设计计算书（基于【公式库】长字符串）
    * POST /api/calc/book
    */
   generateBook(payload: {
     阀门型号: string;
     标准体系?: string;
     下单日期?: string;
+    设计给定产品编码?: string; // ★ 新增
     params: Record<string, any>;
   }) {
     return requestClient.post('/api/calc/book', payload);
@@ -248,14 +266,15 @@ export const DataApi = {
    * POST /api/calc/rule-calc
    */
   async ruleCalc(payload: RuleCalcPayload): Promise<RuleCalcResult> {
-    const res: any = await requestClient.post(
-      '/api/calc/rule-calc',
-      payload,
-    );
+    const res: any = await requestClient.post('/api/calc/rule-calc', payload);
     console.log('[ruleCalc] 原始响应 =', res);
 
     // 兼容：如果拦截器已经把 { code, data } 解包，就直接用
-    if (res?.data && typeof res.data === 'object' && '计算结果可读' in res.data) {
+    if (
+      res?.data &&
+      typeof res.data === 'object' &&
+      '计算结果可读' in res.data
+    ) {
       return { code: 0, data: res.data };
     }
     if (res && typeof res === 'object' && '计算结果可读' in res) {
@@ -289,6 +308,23 @@ export const DataApi = {
    */
   addProducts(codes: string[]) {
     return requestClient.post('/api/calc/add-products', { codes });
+  },
+
+  /**
+   * 按指定列的多个值批量删除
+   * POST /api/data/{tableName}/delete-by-field
+   */
+  async deleteByField(
+    tableName: string,
+    field: string,
+    values: string[],
+  ): Promise<{ deleted: number }> {
+    const res: any = await requestClient.post(
+      `/api/data/${encodeURIComponent(tableName)}/delete-by-field`,
+      { field, values },
+    );
+    const payload = res?.data ?? res;
+    return { deleted: payload?.deleted ?? 0 };
   },
 };
 

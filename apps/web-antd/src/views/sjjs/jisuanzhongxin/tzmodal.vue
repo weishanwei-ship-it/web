@@ -16,17 +16,16 @@ const [Modal, modalApi] = useVbenModal({
     }
   },
 });
-
 </script>
 <template>
   <Modal title="图纸可视化">
     <!-- 图片：自适应全屏显示 -->
     <div class="w-full h-full flex items-center justify-center overflow-auto">
-      <img 
-        src="/images/V3D_D2060050000005.png" 
-        alt="图纸" 
+      <img
+        src="/images/V3D_D2060050000005.png"
+        alt="图纸"
         class="max-w-full max-h-[70vh] object-contain"
-      >
+      />
     </div>
   </Modal>
 </template>
@@ -34,14 +33,14 @@ const [Modal, modalApi] = useVbenModal({
 <style scoped>
 /* 弹窗内容铺满 */
 :deep(.vben-modal-content) {
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
+
 :deep(.vben-modal-body) {
   flex: 1;
   padding: 0;
   overflow: hidden;
 }
 </style>
-

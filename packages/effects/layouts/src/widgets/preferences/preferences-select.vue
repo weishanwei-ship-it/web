@@ -25,10 +25,10 @@ function clearPreferencesAndLogout() {
 
     <DropdownMenuContent align="end" class="w-56 p-2">
       <VbenButton class="hover:animate-[shrink_0.3s_ease-in-out] mr-5 ml-1">
-          计算平台
+        计算平台
       </VbenButton>
       <VbenButton class="hover:animate-[shrink_0.3s_ease-in-out] mr-1">
-          系统配置
+        系统配置
       </VbenButton>
     </DropdownMenuContent>
   </DropdownMenu>

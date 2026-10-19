@@ -1,4 +1,3 @@
-
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
@@ -9,26 +8,26 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { GetEmployeeInfoDataListPage } from '#/api';
 
 interface RowType {
-     empName: string;
-     empNo: boolean;
-     sexName: string;
-     productName : string;
-     homeAddr:string;
-     mobile:string;
-     passWord:string;
-     empTypeName:string;
-     empCurrentStateName:string;    
-     educationName:string;
-     perField4:string;
-     special:string;
-     qtTypeName:string;
-     qtName:string;
-     perField7:string;
-     companyNo:string;
-     quartersNo:string;
-     partNo:string;
-     idCardAddr:string;
-     birthday:string;
+  empName: string;
+  empNo: boolean;
+  sexName: string;
+  productName: string;
+  homeAddr: string;
+  mobile: string;
+  passWord: string;
+  empTypeName: string;
+  empCurrentStateName: string;
+  educationName: string;
+  perField4: string;
+  special: string;
+  qtTypeName: string;
+  qtName: string;
+  perField7: string;
+  companyNo: string;
+  quartersNo: string;
+  partNo: string;
+  idCardAddr: string;
+  birthday: string;
 }
 
 const formOptions: VbenFormProps = {
@@ -50,7 +49,7 @@ const formOptions: VbenFormProps = {
       },
       fieldName: 'empName',
       label: '员工姓名',
-    }
+    },
   ],
   // 控制表单是否显示折叠按钮
   showCollapseButton: false,
@@ -72,7 +71,7 @@ const gridOptions: VxeGridProps<RowType> = {
     { title: '序号', type: 'seq', width: 100 },
     // { align: 'left', title: 'ID',field: 'empID',visible : false},
     // { title: '身份证号码',field: 'idCardNo',visible : false},
-    { align: 'left', title: '员工姓名',field: 'empName', width: 100 },
+    { align: 'left', title: '员工姓名', field: 'empName', width: 100 },
     { field: 'empNo', title: '员工工号' },
     { field: 'sexName', title: '性别' },
     { field: 'partName', title: '部门' },
@@ -94,10 +93,11 @@ const gridOptions: VxeGridProps<RowType> = {
     //{ field: 'releaseDate', formatter: 'formatDateTime', title: 'DateTime' },
   ],
   keepSource: true,
-  pagerConfig: {    
+  pagerConfig: {
     pageSize: 10,
     pageSizes: [10, 20, 50, 100, 500],
-    total: 0,},
+    total: 0,
+  },
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
@@ -109,22 +109,23 @@ const gridOptions: VxeGridProps<RowType> = {
         });
         //console.log("response 原始数据:", response); // 可展开的对象，方便查看
         //console.log("response 格式化JSON:", JSON.stringify(response, null, 2)); // 文本格式
-        const list = Array.isArray(response.data.data) ? response.data.data : [];
-        const total = response.data.total ;
+        const list = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
+        const total = response.data.total;
         const tableData = {
-            items: list, 
-            total: total 
+          items: list,
+          total: total,
         };
         //console.log("tableData 真实内容:", list);
 
         return tableData;
       },
     },
-    
   },
   toolbarConfig: {
     // 是否显示搜索表单控制按钮
-    // @ts-ignore 正式环境时有完整的类型声明
+    // @ts-expect-error 正式环境时有完整的类型声明
     search: true,
   },
 };

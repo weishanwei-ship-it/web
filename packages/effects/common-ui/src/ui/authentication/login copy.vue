@@ -65,11 +65,11 @@ const localUsername = localStorage.getItem(REMEMBER_ME_KEY) || '';
 const rememberMe = ref(!!localUsername);
 
 async function handleSubmit() {
-  console.log("rememberMe:" ,rememberMe.value);
+  console.log('rememberMe:', rememberMe.value);
   const { valid } = await formApi.validate();
   const values = await formApi.getValues();
-    console.log("valid:" ,valid);
-    console.log("values:" ,values);
+  console.log('valid:', valid);
+  console.log('values:', values);
   if (valid) {
     localStorage.setItem(
       REMEMBER_ME_KEY,

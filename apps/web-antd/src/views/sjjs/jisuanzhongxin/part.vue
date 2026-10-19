@@ -27,7 +27,8 @@ import {
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 
-import { DataApi, type ColumnInfo } from '#/api/core/data';
+import { DataApi } from '#/api/core/data';
+import type { ColumnInfo } from '#/api/core/data';
 
 const route = useRoute();
 
@@ -48,8 +49,15 @@ function getRowKey(record: any): any {
 
 function isNumberType(dt: string) {
   return [
-    'int', 'bigint', 'smallint', 'tinyint',
-    'decimal', 'numeric', 'float', 'real', 'money',
+    'int',
+    'bigint',
+    'smallint',
+    'tinyint',
+    'decimal',
+    'numeric',
+    'float',
+    'real',
+    'money',
   ].includes((dt || '').toLowerCase());
 }
 
@@ -67,47 +75,305 @@ const total = ref(0);
 const pagination = reactive({ current: 1, pageSize: 20 });
 
 // ============================================================
-// ★ 基础参数 表格字段定义
-// 取值优先级：configForm > configRecord > 默认值
+// 基础参数 字段定义
 // ============================================================
-const baseParamFields = computed(() => [ 
-  { label: '指示单版本',   field: '指示单版本',   default: 'A_26_版本' },
-  { label: '是否为标准产品',   field: '是否为标准产品',   default: '' },
-  { label: '阀门名称',         field: '阀门名称',         default: '' },
-  { label: '公称通径 DN/mm',   field: '入口尺寸',         default: '' },
-  { label: '阀芯规格 dn/mm',   field: '阀芯尺寸',         default: '' },
-  { label: '压力等级 Lb&PN',   field: '阀体等级',         default: '' },
-  { label: '最大关闭压差/MPa', field: '最大压差',         default: '' },
-  { label: '介质流向',         field: '流向',             default: '' },
-  { label: '密封等级',         field: '泄漏等级',         default: '' },
-  { label: '执行机构推力/N',   field: '执行机构推力',     default: '' },
-  { label: '安全系数',         field: '安全系数',         default: '1.5' },
-  { label: '产品执行标准',     field: '执行标准',         default: '' },
-  { label: '压板结构',         field: '填料压板结构',     default: '' },
-  { label: '支架连接件',       field: '连接支架形式',     default: '' },
-  { label: '产品规格',         field: '产品规格',         default: '' },
-  { label: '公称压力/MPa',     field: '公称压力',         default: '' },
-  { label: '设计压力/MPa',     field: '设计压力',         default: '' },
-  { label: '是否为波纹管型',   field: '是否为波纹管型',   default: '否' },
-  { label: '是否为平衡密封型', field: '是否为平衡密封型', default: '否' },
-  { label: '是否为延伸型',     field: '是否为延伸型',     default: '否' },
+const baseParamFields = computed(() => [
+  {
+    label: '阀门型号',
+    field: '阀门型号',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '阀体型式',
+    field: '阀体型式',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '入口公称通径',
+    field: '入口尺寸',
+    paramCode: 'X001N008',
+    symbol: 'd1',
+    default: '',
+  },
+  {
+    label: '入口法兰等级',
+    field: '入口法兰等级',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '阀芯尺寸',
+    field: '阀芯尺寸',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '出口公称通径',
+    field: '出口尺寸',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '出口法兰等级',
+    field: '出口法兰等级',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '阀体等级',
+    field: '阀体等级',
+    paramCode: 'X001N001',
+    symbol: 'N',
+    default: '',
+  },
+  {
+    label: '上盖或阀颈形式',
+    field: '阀盖形式',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '流量特性',
+    field: '流量特性',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '填料结构',
+    field: '填料结构',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  { label: '流向', field: '流向', paramCode: null, symbol: null, default: '' },
+  {
+    label: '阀体材质',
+    field: '阀体材质',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '阀体材料特殊要求',
+    field: '阀体材料特殊要求',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '阀内件材质',
+    field: '阀内件材质',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '执行机构型号',
+    field: '执行机构型号',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '动作形式',
+    field: '动作形式',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '作用形式',
+    field: '作用形式',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '执行机构规格',
+    field: '执行机构规格',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '气源压力',
+    field: '气源压力',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '电源电压',
+    field: '电源电压',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '弹簧范围',
+    field: '弹簧范围',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '行程',
+    field: '额定行程',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '手轮机构',
+    field: '手轮机构',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '标准体系',
+    field: '标准体系',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '发布年份',
+    field: '发布年份',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '发布版本',
+    field: '发布版本',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '发布状态',
+    field: '发布状态',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '泄漏等级',
+    field: '泄漏等级',
+    paramCode: null,
+    symbol: 'm',
+    default: '',
+  },
+  {
+    label: '最大压差',
+    field: '最大压差',
+    paramCode: null,
+    symbol: 'pm',
+    default: '',
+  },
+  {
+    label: '流量系数',
+    field: '流量系数',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '出厂编号',
+    field: '出厂编号',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '本体编码',
+    field: '本体编码',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '执行机构编码',
+    field: '执行机构编码',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '客户名称',
+    field: '客户名称',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '工况介质',
+    field: '工况介质',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '介质温度',
+    field: '介质温度',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '介质状态',
+    field: '介质状态',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '故障位置',
+    field: '故障位置',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '下单日期',
+    field: '下单日期',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '导单人员',
+    field: '导单人员',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
+  {
+    label: '导单日期',
+    field: '导单日期',
+    paramCode: null,
+    symbol: null,
+    default: '',
+  },
 ]);
-
-function getBaseParamValue(item: any): any {
-  // 优先 configForm
-  const v1 = configForm[item.field];
-  if (v1 !== undefined && v1 !== null && v1 !== '') return v1;
-  // 其次 configRecord
-  const v2 = configRecord.value?.[item.field];
-  if (v2 !== undefined && v2 !== null && v2 !== '') return v2;
-  // 最后默认值
-  return item.default ?? '-';
-}
 
 // ============================================================
 // 视图模式
 // ============================================================
-const VIEW_MODE_KEY = computed(() => `design_calc_view_mode_${tableName.value}`);
+const VIEW_MODE_KEY = computed(
+  () => `design_calc_view_mode_${tableName.value}`,
+);
 const viewMode = ref<'card' | 'list'>(
   (localStorage.getItem(VIEW_MODE_KEY.value) as 'card' | 'list') || 'list',
 );
@@ -120,11 +386,18 @@ function toggleViewMode() {
 const cardFields = computed(() =>
   schema.value.filter((c) =>
     [
-      '阀门名称', '阀门型号', '产品规格',
-      '入口尺寸', '出口尺寸',
-      '阀体等级', '执行标准',
-      '客户名称', '工况介质', '介质温度',
-      '出厂编号', '阀体材质',
+      '阀门名称',
+      '阀门型号',
+      '产品规格',
+      '入口尺寸',
+      '出口尺寸',
+      '阀体等级',
+      '执行标准',
+      '客户名称',
+      '工况介质',
+      '介质温度',
+      '出厂编号',
+      '阀体材质',
     ].includes(c.ColumnName),
   ),
 );
@@ -249,6 +522,13 @@ const configCheckbox = reactive({
 // ============================================================
 const comboList = ref<any[]>([]);
 const selectedComboCode = ref<string>('');
+
+const designGivenCodes = ref<string[]>([]);
+const selectedDesignGivenCode = ref<string>('');
+
+const designGivenParamsMap = ref<Record<string, string>>({});
+const designGivenLoading = ref(false);
+
 const configChapters = ref<any[]>([]);
 const chapterResults = ref<Record<string, any[]>>({});
 const calculating = ref(false);
@@ -257,11 +537,18 @@ const structureImages = ref<Record<string, string>>({});
 const checkResult = ref<{
   qualified: boolean;
   message: string;
-  details: Array<{
-    name: string;
+  chapters: Array<{
+    chapterCode: string;
+    chapterName: string;
     passed: boolean;
     message: string;
-    expression?: string;
+    details: Array<{
+      name: string;
+      passed: boolean;
+      skipped?: boolean;
+      message: string;
+      expression?: string;
+    }>;
   }>;
 } | null>(null);
 
@@ -275,13 +562,52 @@ function openImagePreview(src?: string) {
 }
 
 const bookColumns = [
-  { title: '序号', dataIndex: 'index', key: 'index', width: 60, align: 'center', fixed: 'left' },
-  { title: '计算内容', dataIndex: 'content', key: 'content', width: 180, align: 'left', fixed: 'left' },
-  { title: '符号', dataIndex: 'symbol', key: 'symbol', width: 80, align: 'center' },
-  { title: '公式', dataIndex: 'formula', key: 'formula', width: 320, align: 'left' },
-  { title: '索引', dataIndex: 'reference', key: 'reference', width: 220, align: 'left' },
+  {
+    title: '序号',
+    dataIndex: 'index',
+    key: 'index',
+    width: 60,
+    align: 'center',
+    fixed: 'left',
+  },
+  {
+    title: '计算内容',
+    dataIndex: 'content',
+    key: 'content',
+    width: 180,
+    align: 'left',
+    fixed: 'left',
+  },
+  {
+    title: '符号',
+    dataIndex: 'symbol',
+    key: 'symbol',
+    width: 80,
+    align: 'center',
+  },
+  {
+    title: '公式',
+    dataIndex: 'formula',
+    key: 'formula',
+    width: 320,
+    align: 'left',
+  },
+  {
+    title: '索引',
+    dataIndex: 'reference',
+    key: 'reference',
+    width: 220,
+    align: 'left',
+  },
   { title: '单位', dataIndex: 'unit', key: 'unit', width: 70, align: 'center' },
-  { title: '计算值', dataIndex: 'value', key: 'value', width: 100, align: 'center', fixed: 'right' },
+  {
+    title: '计算值',
+    dataIndex: 'value',
+    key: 'value',
+    width: 130,
+    align: 'center',
+    fixed: 'right',
+  },
 ];
 
 async function loadComboList() {
@@ -296,6 +622,83 @@ async function loadComboList() {
   }
 }
 
+async function loadDesignGivenCodes() {
+  try {
+    const BATCH = 2000;
+    let page = 1;
+    const set = new Set<string>();
+
+    while (page <= 20) {
+      const res = await DataApi.getList('设计给定', page, BATCH);
+      const items = res.items || [];
+      for (const row of items) {
+        const c = String(row.产品编码 || '').trim();
+        if (c) set.add(c);
+      }
+      if (items.length < BATCH) break;
+      page += 1;
+    }
+
+    designGivenCodes.value = Array.from(set).toSorted();
+    console.log(
+      '[loadDesignGivenCodes] 共',
+      designGivenCodes.value.length,
+      '个产品编码',
+    );
+  } catch (e) {
+    console.error('[loadDesignGivenCodes] 失败', e);
+    designGivenCodes.value = [];
+  }
+}
+
+async function loadDesignGivenParams(code: string) {
+  if (!code) {
+    designGivenParamsMap.value = {};
+    return;
+  }
+  designGivenLoading.value = true;
+  try {
+    const BATCH = 2000;
+    let page = 1;
+    const map: Record<string, string> = {};
+
+    while (page <= 20) {
+      const res = await DataApi.getList('设计给定', page, BATCH);
+      const items = res.items || [];
+      const filtered = items.filter(
+        (r: any) => String(r.产品编码 || '').trim() === code,
+      );
+      for (const r of filtered) {
+        const val = r.值 == null ? '' : String(r.值);
+        if (r.参数编码) map[String(r.参数编码).trim()] = val;
+        if (r.符号) map[String(r.符号).trim()] = val;
+      }
+      if (items.length < BATCH) break;
+      page += 1;
+    }
+
+    designGivenParamsMap.value = map;
+    console.log(
+      `[loadDesignGivenParams] ${code} 加载 ${Object.keys(map).length} 个 key`,
+    );
+  } catch (e) {
+    console.error('[loadDesignGivenParams] 失败', e);
+    designGivenParamsMap.value = {};
+  } finally {
+    designGivenLoading.value = false;
+  }
+}
+
+function autoMatchDesignGivenCode(model: string): string {
+  if (!model) return '';
+  const candidates = designGivenCodes.value.filter((c) => c.startsWith(model));
+  return candidates[0] || '';
+}
+
+watch(selectedDesignGivenCode, (newVal) => {
+  loadDesignGivenParams(newVal);
+});
+
 function onComboChange(_code: string) {
   configChapters.value = [];
   chapterResults.value = {};
@@ -304,11 +707,33 @@ function onComboChange(_code: string) {
 }
 
 // ============================================================
+// 基础参数取值
+// ============================================================
+function getBaseParamValue(item: any): any {
+  if (item.paramCode) {
+    const v = designGivenParamsMap.value[item.paramCode];
+    if (v !== undefined && v !== null && v !== '') return v;
+  }
+  if (item.symbol) {
+    const v = designGivenParamsMap.value[item.symbol];
+    if (v !== undefined && v !== null && v !== '') return v;
+  }
+  const v1 = configForm[item.field];
+  if (v1 !== undefined && v1 !== null && v1 !== '') return v1;
+  const v2 = configRecord.value?.[item.field];
+  if (v2 !== undefined && v2 !== null && v2 !== '') return v2;
+  return item.default ?? '-';
+}
+
+// ============================================================
 // 打开配置弹窗
 // ============================================================
 async function openConfigModal(record: any) {
   configRecord.value = record;
   configActiveTab.value = '1';
+
+  // 清空上次的遗留
+  selectedDesignGivenCode.value = '';
 
   Object.keys(configForm).forEach((k) => delete configForm[k]);
   Object.keys(record).forEach((k) => {
@@ -339,11 +764,63 @@ async function openConfigModal(record: any) {
   checkResult.value = null;
   structureImages.value = {};
 
+  // ============================================================
+  // ★★★ 重点：动态请求后端拼接编码 ★★★
+  // ============================================================
+  try {
+    const res: any = await DataApi.buildProductCode(record);
+    console.log('[openConfigModal] 拼接接口原始返回 =', res);
+
+    // 兼容多种返回格式
+    let codeStr = '';
+    if (typeof res === 'string') {
+      codeStr = res; // 直接返回了字符串
+    } else if (res?.data && typeof res.data === 'string') {
+      codeStr = res.data; // { data: "P2A..." }
+    } else if (res?.data?.data) {
+      codeStr = res.data.data; // 多层嵌套
+    }
+
+    if (codeStr) {
+      selectedDesignGivenCode.value = codeStr;
+      console.log('[openConfigModal] 动态生成编码成功 =', codeStr);
+    } else {
+      console.warn('[openConfigModal] 动态生成编码失败，解析后为空');
+    }
+  } catch (e) {
+    console.error('[openConfigModal] 请求拼接编码接口异常 =', e);
+  }
+
+  if (selectedDesignGivenCode.value) {
+    await loadDesignGivenParams(selectedDesignGivenCode.value);
+  }
+
+  // 打开弹窗就加载结构简图
+  try {
+    const 产品结构编码 = extractProductCode(record);
+    if (产品结构编码) {
+      const imgRes: any = await DataApi.getStructureImages(产品结构编码);
+      const imgData: any = imgRes?.data ?? imgRes;
+      const rows01 = Array.isArray(imgData) ? imgData : imgData?.data || [];
+      const imgMap: Record<string, string> = {};
+      rows01.forEach((row: any) => {
+        if (!row.图片路径) return;
+        if (row.计算项) imgMap[String(row.计算项).trim()] = row.图片路径;
+        if (row.计算项目) imgMap[String(row.计算项目).trim()] = row.图片路径;
+        if (row.图纸编号) imgMap[String(row.图纸编号).trim()] = row.图片路径;
+      });
+      structureImages.value = imgMap;
+      console.log('[openConfigModal] 结构简图映射 =', imgMap);
+    }
+  } catch (e) {
+    console.warn('[openConfigModal] 加载结构简图失败', e);
+  }
+
   configModalVisible.value = true;
 }
 
 // ============================================================
-// 保存 / 临时保存 / 新版本
+// 保存
 // ============================================================
 async function saveConfig() {
   try {
@@ -363,7 +840,11 @@ async function saveConfig() {
 
 async function tempSaveConfig() {
   try {
-    console.log('临时保存数据：', { ...configForm, configFormSelect, configCheckbox });
+    console.log('临时保存数据：', {
+      ...configForm,
+      configFormSelect,
+      configCheckbox,
+    });
     message.success('临时保存成功');
   } catch (e: any) {
     message.error(e?.message || '临时保存失败');
@@ -372,7 +853,11 @@ async function tempSaveConfig() {
 
 async function saveNewVersion() {
   try {
-    console.log('存入新版本数据：', { ...configForm, configFormSelect, configCheckbox });
+    console.log('存入新版本数据：', {
+      ...configForm,
+      configFormSelect,
+      configCheckbox,
+    });
     message.success('新版本已存入');
     configModalVisible.value = false;
     loadData();
@@ -404,62 +889,49 @@ function extractProductCode(record: any): string {
 // ============================================================
 function extractCalcParams(record: any): Record<string, any> {
   if (!record) return {};
+
+  // ★ 只传设计给定表里没有的、或需要临时覆盖的字段
+  //   其它 X001Nxxx 全部由后端从设计给定表读取（权威数据）
+
   const params: Record<string, any> = {};
 
-  const map: Record<string, string> = {
-    X001N001: '阀体等级',
-    X001N008: '最大压差',
-    X001N009: '阀体标志位',
-    X001N011: '最大压差',
-    X001N012: '中腔标志位',
-    X001N013: '中腔直径',
-    d1: '入口尺寸',
-    d2: '中腔直径',
-    d2_prime: '中腔等效直径',
-    Pc: '阀体等级',
-    P: '最大压差',
-  };
-
-  for (const [symbol, field] of Object.entries(map)) {
-    const v = record[field];
-    if (v === undefined || v === null || v === '') continue;
-
-    if (symbol === 'X001N001') {
-      params[symbol] = String(v);
-    } else {
-      const num = parseFloat(String(v).replace(/[^0-9.\-]/g, ''));
-      params[symbol] = isNaN(num) ? v : num;
-    }
-  }
-
-  Object.keys(record).forEach((k) => {
-    if (!(k in params)) params[k] = record[k];
-  });
-
-  if (params['X001N009'] === undefined || params['X001N009'] === null) {
-    params['X001N009'] = 1;
-  }
-  if (params['X001N012'] === undefined || params['X001N012'] === null) {
-    params['X001N012'] = 1;
-  }
-  if (params['X001N008'] === undefined || params['X001N008'] === null) {
-    params['X001N008'] = 0;
-  }
-  if (params['X001N011'] === undefined || params['X001N011'] === null) {
-    params['X001N011'] = params['X001N008'] ?? 0;
-  }
-  if (params['X001N013'] === undefined || params['X001N013'] === null) {
-    params['X001N013'] = params['d2'] ?? 0;
-  }
-  if (
-    (params['d2_prime'] === undefined || params['d2_prime'] === null) &&
-    params['d2'] !== undefined
-  ) {
-    const d2Num = Number(params['d2']);
-    if (!isNaN(d2Num)) params['d2_prime'] = (2 / 3) * d2Num;
+  // 阀体等级（字符串，用于后端判断标准体系，X001N001）
+  const x001 = record['阀体等级'];
+  if (x001 !== undefined && x001 !== null && x001 !== '') {
+    params['X001N001'] = String(x001);
   }
 
   return params;
+}
+
+// ============================================================
+// 计算值编辑
+// ============================================================
+function onValueEdit(record: any) {
+  record._edited = true;
+  if (record.value === '' || record.value == null) {
+    record._edited = false;
+  }
+}
+
+function resetCurrentChapterEdits() {
+  const chapterCode = configActiveTab.value;
+  const list = chapterResults.value[chapterCode] || [];
+  let count = 0;
+  for (const row of list) {
+    if (row._edited) {
+      if (row._originalValue !== undefined && row._originalValue !== null) {
+        row.value = row._originalValue;
+      }
+      row._edited = false;
+      count++;
+    }
+  }
+  if (count > 0) {
+    message.success(`已重置 ${count} 条手动编辑（已恢复为公式计算结果）`);
+  } else {
+    message.info('当前章节没有手动编辑的记录');
+  }
 }
 
 // ============================================================
@@ -483,27 +955,15 @@ async function realtimeCalc() {
     Object.assign(formParams, configFormSelect);
     const params = { ...autoParams, ...formParams };
 
-    if (params['X001N009'] === undefined || params['X001N009'] === null) {
-      params['X001N009'] = 1;
-    }
-    if (params['X001N012'] === undefined || params['X001N012'] === null) {
-      params['X001N012'] = 1;
-    }
-    if (params['X001N011'] === undefined || params['X001N011'] === null) {
-      params['X001N011'] = params['X001N008'] ?? 0;
-    }
-    if (params['X001N013'] === undefined || params['X001N013'] === null) {
-      params['X001N013'] = params['d2'] ?? 0;
-    }
-    if (
-      (params['d2_prime'] === undefined || params['d2_prime'] === null) &&
-      params['d2'] !== undefined
-    ) {
-      const d2Num = Number(params['d2']);
-      if (!isNaN(d2Num)) params['d2_prime'] = (2 / 3) * d2Num;
+    // ★ 后端已按需填充默认值，这里不再乱设 X001Nxxx 默认值
+    //   只保证 X001N001 一定存在
+    if (params['X001N001'] === undefined || params['X001N001'] === null) {
+      params['X001N001'] = 'Class150'; // 兜底，按实际业务调整
     }
 
-    const 执行标准 = String(configRecord.value['执行标准'] || 'API').toUpperCase();
+    const 执行标准 = String(
+      configRecord.value['执行标准'] || 'API',
+    ).toUpperCase();
     let 标准体系 = 'A';
     if (
       执行标准.includes('GB') ||
@@ -527,15 +987,46 @@ async function realtimeCalc() {
     }
 
     console.log('=== 计算入参 ===');
-    console.log('阀门型号 =', 阀门型号, ', 标准体系 =', 标准体系, ', 下单日期 =', 下单日期);
+    console.log(
+      '阀门型号 =',
+      阀门型号,
+      ', 标准体系 =',
+      标准体系,
+      ', 下单日期 =',
+      下单日期,
+    );
     console.log('params =', params);
 
     const 产品结构编码 = extractProductCode(configRecord.value);
     console.log('产品结构编码 =', 产品结构编码);
 
+    let designGivenCode = selectedDesignGivenCode.value;
+    if (!designGivenCode) {
+      const model = String(configRecord.value['阀门型号'] || '').trim();
+      const candidates = designGivenCodes.value.filter((c) =>
+        c.startsWith(model),
+      );
+      designGivenCode = candidates[0] || '';
+      if (designGivenCode) {
+        selectedDesignGivenCode.value = designGivenCode;
+        console.log('[realtimeCalc] 兜底匹配设计给定编码 =', designGivenCode);
+      }
+    }
+    console.log('设计给定产品编码 =', designGivenCode);
+
     const [bookRes, ruleRes, imgRes] = await Promise.all([
-      DataApi.generateBook({ 阀门型号, 标准体系, 下单日期, params }),
-      DataApi.ruleCalc({ 阀门型号, params }),
+      DataApi.generateBook({
+        阀门型号,
+        标准体系,
+        下单日期,
+        设计给定产品编码: designGivenCode || undefined,
+        params,
+      }),
+      DataApi.ruleCalc({
+        阀门型号,
+        设计给定产品编码: designGivenCode || undefined,
+        params,
+      }),
       产品结构编码
         ? DataApi.getStructureImages(产品结构编码)
         : Promise.resolve({ code: 0, data: [] }),
@@ -543,27 +1034,36 @@ async function realtimeCalc() {
 
     const imgData: any = (imgRes as any)?.data ?? imgRes;
     const imgMap: Record<string, string> = {};
-    const rows01 = Array.isArray(imgData) ? imgData : (imgData?.data || []);
+    const rows01 = Array.isArray(imgData) ? imgData : imgData?.data || [];
     rows01.forEach((row: any) => {
-      if (row.计算项目 && row.图片路径) {
-        imgMap[row.计算项目] = row.图片路径;
-      }
+      if (!row.图片路径) return;
+      if (row.计算项) imgMap[String(row.计算项).trim()] = row.图片路径;
+      if (row.计算项目) imgMap[String(row.计算项目).trim()] = row.图片路径;
+      if (row.图纸编号) imgMap[String(row.图纸编号).trim()] = row.图片路径;
     });
     structureImages.value = imgMap;
     console.log('=== 结构简图映射 ===', imgMap);
 
-    const bookData: any =
-      (bookRes as any)?.chapters ? bookRes : (bookRes as any)?.data ?? bookRes;
-    const ruleData: any =
-      (ruleRes as any)?.计算结果可读 ? ruleRes : (ruleRes as any)?.data ?? ruleRes;
+    console.log('=== bookRes 原始响应 ===', bookRes);
+    console.log('=== ruleRes 原始响应 ===', ruleRes);
+
+    const bookData: any = (bookRes as any)?.chapters
+      ? bookRes
+      : ((bookRes as any)?.data ?? bookRes);
+    const ruleData: any = (ruleRes as any)?.计算结果可读
+      ? ruleRes
+      : ((ruleRes as any)?.data ?? ruleRes);
+
+    console.log('=== bookData.chapters 数量 ===', bookData?.chapters?.length);
 
     const chapters = bookData?.chapters || [];
     if (chapters.length === 0) {
-      message.error('未能生成章节，请检查【公式库】或【计算项与公式和日期关联规则】配置');
+      message.error(
+        '未能生成章节，请检查【公式库】或【计算项与公式和日期关联规则】配置',
+      );
       return;
     }
 
-    // 建立匹配映射（只用于覆盖计算值，公式显示由后端 formulaDisplay 提供）
     const resultMap: Record<string, string> = {};
 
     if (ruleData) {
@@ -587,20 +1087,46 @@ async function realtimeCalc() {
 
     console.log('=== rule-calc 结果映射 ===', resultMap);
 
-    // 覆盖计算值（公式用后端返回的 formulaDisplay，前端不覆盖）
+    const previousEdits = new Map<
+      string,
+      { value: string; original: string; edited: boolean }
+    >();
+    for (const ch of Object.values(chapterResults.value)) {
+      for (const row of ch) {
+        if (row.code) {
+          previousEdits.set(row.code, {
+            value: row.value,
+            original: row._originalValue ?? row.value,
+            edited: !!row._edited,
+          });
+        }
+      }
+    }
+
     for (const ch of chapters) {
       for (const row of ch.rows || []) {
         const sym = (row.symbol || '').trim();
         const code = (row.code || '').trim();
         const content = (row.content || '').trim();
 
+        const prev = code ? previousEdits.get(code) : null;
+        if (prev && prev.edited) {
+          row.value = prev.value;
+          row._originalValue = prev.original;
+          row._edited = true;
+          continue;
+        }
+
         const newVal = resultMap[sym] ?? resultMap[code] ?? resultMap[content];
         if (newVal !== undefined) {
           row.value = newVal;
+          row._originalValue = newVal;
           row.err = null;
         } else if (!row.value) {
           row.value = '-';
+          row._originalValue = '-';
         }
+        row._edited = false;
       }
     }
 
@@ -616,16 +1142,13 @@ async function realtimeCalc() {
     });
     chapterResults.value = map;
 
-    if (configChapters.value.length > 0) {
-      configActiveTab.value = configChapters.value[0].章节编码;
-    }
-
     if (ruleData && ruleData.合格 !== undefined) {
       checkResult.value = {
         qualified: !!ruleData.合格,
         message: ruleData.判定结论 || (ruleData.合格 ? '合格' : '不合格'),
-        details: ruleData.合格判定 || [],
+        chapters: ruleData.合格判定 || [], // ★ 按章节分组
       };
+      configActiveTab.value = 'result';
       if (ruleData.合格) {
         message.success(`计算完成：${阀门型号}，判定合格`);
       } else {
@@ -636,6 +1159,9 @@ async function realtimeCalc() {
       }
     } else {
       checkResult.value = null;
+      if (configChapters.value.length > 0) {
+        configActiveTab.value = configChapters.value[0].章节编码;
+      }
       message.success(`计算完成：${阀门型号}，共 ${chapters.length} 个章节`);
     }
   } catch (e: any) {
@@ -650,6 +1176,47 @@ async function realtimeCalc() {
     calculating.value = false;
   }
 }
+
+// ============================================================
+// 宽松匹配章节结构简图
+// ============================================================
+function getChapterImage(ch: any): string {
+  if (!ch) return '';
+
+  const name = String(ch.章节名称 || '').trim();
+  const code = String(ch.章节编码 || '').trim();
+
+  if (name && structureImages.value[name]) {
+    return structureImages.value[name];
+  }
+  if (code && structureImages.value[code]) {
+    return structureImages.value[code];
+  }
+  for (const key of Object.keys(structureImages.value)) {
+    const k = String(key).trim();
+    if (!k) continue;
+    if (name && (name.includes(k) || k.includes(name))) {
+      return structureImages.value[k];
+    }
+  }
+  const keys = Object.keys(structureImages.value);
+  if (keys.length === 1) {
+    return structureImages.value[keys[0]];
+  }
+  return '';
+}
+
+// 基础参数 Tab 左侧显示的图
+const baseParamImage = computed(() => {
+  const first = configChapters.value[0];
+  if (first) {
+    const img = getChapterImage(first);
+    if (img) return img;
+  }
+  const keys = Object.keys(structureImages.value);
+  if (keys.length > 0) return structureImages.value[keys[0]];
+  return '/images/V3D_D2060050000005.png';
+});
 
 // ============================================================
 // 公式详情弹窗
@@ -706,7 +1273,6 @@ async function submitProduct() {
     return;
   }
 
-  // 按换行 / 逗号 / 分号 / 空格 分割成编号数组
   const codes = raw
     .split(/[\r\n,，;；\s]+/)
     .map((s) => s.trim())
@@ -722,17 +1288,17 @@ async function submitProduct() {
     const res: any = await DataApi.addProducts(codes);
     console.log('[submitProduct] 原始响应 =', res);
 
-    // 兼容拦截器已解包 / 未解包两种情况
     const d: any =
       res?.data && typeof res.data === 'object' && 'inserted' in res.data
         ? res.data
         : res;
 
-    // 如果响应里既没有 code 也没有 inserted，说明格式完全不对
     if (
       !d ||
       (d.code !== undefined && d.code !== 0) ||
-      (d.inserted === undefined && d.skipped === undefined && d.failed === undefined)
+      (d.inserted === undefined &&
+        d.skipped === undefined &&
+        d.failed === undefined)
     ) {
       message.error(d?.message || res?.message || '新增失败');
       return;
@@ -749,7 +1315,9 @@ async function submitProduct() {
       );
       console.warn('失败明细：', d.failed);
     } else {
-      message.success(`新增完成：成功 ${inserted} 条，跳过（已存在）${skipped} 条`);
+      message.success(
+        `新增完成：成功 ${inserted} 条，跳过（已存在）${skipped} 条`,
+      );
     }
 
     productModalVisible.value = false;
@@ -847,7 +1415,7 @@ const editSaving = ref(false);
 function handleEdit(record: any) {
   const key = getRowKey(record);
   if (key == null || key === '') {
-    alert(`未取到主键值（主键列：${pkColumn.value}）`);
+    message.error(`未取到主键值（主键列：${pkColumn.value}）`);
     return;
   }
   editKey.value = key;
@@ -876,12 +1444,16 @@ async function submitEdit() {
 async function handleDelete(record: any) {
   const key = getRowKey(record);
   if (key == null || key === '') {
-    alert(`未取到主键值（主键列：${pkColumn.value}）`);
+    message.error(`未取到主键值（主键列：${pkColumn.value}）`);
     return;
   }
-  if (!confirm(`确定删除【${key}】这条记录吗？`)) return;
+
+  const display = record['出厂编号'] ?? key;
+
+  if (!confirm(`确定删除【${display}】这条记录吗？`)) return;
+
   try {
-    await DataApi.removeByKey(tableName.value, key);
+    await DataApi.removeByPk(tableName.value, String(key));
     message.success('删除成功');
     loadData();
   } catch (e: any) {
@@ -893,9 +1465,26 @@ async function handleDelete(record: any) {
 // 生命周期
 // ============================================================
 onMounted(async () => {
-  try { await loadSchema(); } catch (e) { console.error(e); }
-  try { await loadData(); } catch (e) { console.error(e); }
-  try { await loadComboList(); } catch (e) { console.error(e); }
+  try {
+    await loadSchema();
+  } catch (e) {
+    console.error(e);
+  }
+  try {
+    await loadData();
+  } catch (e) {
+    console.error(e);
+  }
+  try {
+    await loadComboList();
+  } catch (e) {
+    console.error(e);
+  }
+  try {
+    await loadDesignGivenCodes();
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 watch(
@@ -906,8 +1495,16 @@ watch(
     activeSearch.keyword = '';
     viewMode.value =
       (localStorage.getItem(VIEW_MODE_KEY.value) as 'card' | 'list') || 'list';
-    try { await loadSchema(); } catch (e) { console.error(e); }
-    try { await loadData(); } catch (e) { console.error(e); }
+    try {
+      await loadSchema();
+    } catch (e) {
+      console.error(e);
+    }
+    try {
+      await loadData();
+    } catch (e) {
+      console.error(e);
+    }
   },
 );
 </script>
@@ -929,16 +1526,22 @@ watch(
 
       <div
         v-if="activeSearch.column && activeSearch.keyword"
-        style="margin-bottom: 12px; padding: 8px 12px; background: #f5f5f5; border-radius: 4px;"
+        style="
+          margin-bottom: 12px;
+          padding: 8px 12px;
+          background: #f5f5f5;
+          border-radius: 4px;
+        "
       >
         当前查询：
         <strong>{{ activeSearch.column }}</strong>
         包含
         <strong>{{ activeSearch.keyword }}</strong>
-        <a style="margin-left: 12px; color: #ff4d4f" @click="resetAdvQuery">清除</a>
+        <a style="margin-left: 12px; color: #ff4d4f" @click="resetAdvQuery"
+          >清除</a
+        >
       </div>
 
-      <!-- 列表视图 -->
       <Table
         v-if="viewMode === 'list'"
         :data-source="rows"
@@ -977,13 +1580,18 @@ watch(
         </template>
       </Table>
 
-      <!-- 卡片视图 -->
       <div v-else>
-        <div v-if="loading" style="text-align: center; padding: 40px; color: #999;">
+        <div
+          v-if="loading"
+          style="text-align: center; padding: 40px; color: #999"
+        >
           加载中…
         </div>
 
-        <div v-else-if="rows.length === 0" style="text-align: center; padding: 40px; color: #999;">
+        <div
+          v-else-if="rows.length === 0"
+          style="text-align: center; padding: 40px; color: #999"
+        >
           暂无数据
         </div>
 
@@ -1017,8 +1625,8 @@ watch(
               "
             >
               <template v-for="col in cardFields" :key="col.ColumnName">
-                <div style="color: #888;">{{ col.ColumnName }}</div>
-                <div style="word-break: break-all;">
+                <div style="color: #888">{{ col.ColumnName }}</div>
+                <div style="word-break: break-all">
                   {{ record[col.ColumnName] ?? '-' }}
                 </div>
               </template>
@@ -1037,12 +1645,17 @@ watch(
               <a @click.stop="openConfigModal(record)">配置</a>
               <a @click.stop="openPreviewModal(record)">预览</a>
               <a @click.stop="handleEdit(record)">编辑</a>
-              <a style="color: #ff4d4f" @click.stop="handleDelete(record)">删除</a>
+              <a style="color: #ff4d4f" @click.stop="handleDelete(record)"
+                >删除</a
+              >
             </div>
           </Card>
         </div>
 
-        <div v-if="!loading && rows.length > 0" style="text-align: right; margin-top: 16px;">
+        <div
+          v-if="!loading && rows.length > 0"
+          style="text-align: right; margin-top: 16px"
+        >
           <Pagination
             :current="pagination.current"
             :page-size="pagination.pageSize"
@@ -1066,15 +1679,61 @@ watch(
       wrap-class-name="config-fullscreen-modal"
       :style="{ top: 0, paddingBottom: 0 }"
     >
-      <div style="height: calc(100vh - 120px); display: flex; flex-direction: column; overflow: hidden;">
-        <div style="padding: 10px 16px; background: #fafafa; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+      <div
+        style="
+          height: calc(100vh - 120px);
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        "
+      >
+        <div
+          style="
+            padding: 10px 16px;
+            background: #fafafa;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+          "
+        >
           <span style="font-weight: bold; white-space: nowrap">产品组合：</span>
-          <Select v-model:value="selectedComboCode" style="width: 320px" placeholder="请选择产品组合" show-search @change="onComboChange">
-            <SelectOption v-for="c in comboList" :key="c.组合代号" :value="c.组合代号">
+          <Select
+            v-model:value="selectedComboCode"
+            style="width: 280px"
+            placeholder="请选择产品组合"
+            show-search
+            @change="onComboChange"
+          >
+            <SelectOption
+              v-for="c in comboList"
+              :key="c.组合代号"
+              :value="c.组合代号"
+            >
               {{ c.组合代号 }} - {{ c.阀门型号 }} {{ c.阀体毛坯类型 }}
             </SelectOption>
           </Select>
-          <span v-if="configChapters.length > 0" style="margin-left: 12px; color: #999; font-size: 12px">
+
+          <span
+            style="font-weight: bold; white-space: nowrap; margin-left: 16px"
+          >
+            设计给定产品编码：
+          </span>
+          <Select
+            v-model:value="selectedDesignGivenCode"
+            style="width: 400px"
+            placeholder="请选择（用于取设计给定表参数）"
+            show-search
+            allow-clear
+            :options="designGivenCodes.map((c) => ({ label: c, value: c }))"
+          />
+
+          <span
+            v-if="configChapters.length > 0"
+            style="margin-left: 12px; color: #999; font-size: 12px"
+          >
             共 {{ configChapters.length }} 个计算章节
           </span>
           <span v-else style="margin-left: 12px; color: #bbb; font-size: 12px">
@@ -1082,88 +1741,180 @@ watch(
           </span>
         </div>
 
-        <Tabs v-model:activeKey="configActiveTab" type="card" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;" class="config-tabs">
+        <Tabs
+          v-model:activeKey="configActiveTab"
+          type="card"
+          style="
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+          "
+          class="config-tabs"
+        >
           <!-- 参数录入 -->
           <TabPane key="1" tab="参数录入">
             <div style="padding: 12px">
               <div style="margin-bottom: 12px; display: flex; gap: 24px">
                 <div style="display: flex; align-items: center; gap: 8px">
                   <label style="white-space: nowrap">执行标准</label>
-                  <Select v-model:value="configFormSelect.standardType" style="width: 260px">
+                  <Select
+                    v-model:value="configFormSelect.standardType"
+                    style="width: 260px"
+                  >
                     <SelectOption value="API">API标准</SelectOption>
                     <SelectOption value="TSG">TSG规范</SelectOption>
                   </Select>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px">
                   <label style="white-space: nowrap">产品类型</label>
-                  <Select v-model:value="configFormSelect.calcTarget" style="width: 260px">
+                  <Select
+                    v-model:value="configFormSelect.calcTarget"
+                    style="width: 260px"
+                  >
                     <SelectOption value="actuator">执行机构</SelectOption>
                     <SelectOption value="valve">阀本体</SelectOption>
                   </Select>
                 </div>
               </div>
 
-              <Card title="订单/产品基础信息" :bordered="false" style="margin-bottom: 12px">
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 16px;">
-                  <FormItem label="出口通径"><Input v-model:value="configForm['出口尺寸']" /></FormItem>
-                  <FormItem label="出口法兰等级"><Input v-model:value="configForm['出口法兰等级']" /></FormItem>
-                  <FormItem label="阀体压力等级"><Input v-model:value="configForm['阀体等级']" /></FormItem>
-                  <FormItem label="阀体结构"><Input v-model:value="configForm['阀体结构']" /></FormItem>
-                  <FormItem label="阀体型式"><Input v-model:value="configForm['阀体型式']" /></FormItem>
-                  <FormItem label="阀盖/颈部型式"><Input v-model:value="configForm['阀盖形式']" /></FormItem>
-                  <FormItem label="执行机构型号"><Input v-model:value="configForm['执行机构型号']" /></FormItem>
-                  <FormItem label="产品材质"><Input v-model:value="configForm['产品材质']" /></FormItem>
-                  <FormItem label="最大关闭压差"><Input v-model:value="configForm['最大压差']" /></FormItem>
-                  <FormItem label="介质流向"><Input v-model:value="configForm['流向']" /></FormItem>
-                  <FormItem label="密封等级"><Input v-model:value="configForm['泄漏等级']" /></FormItem>
-                  <FormItem label="编制年份"><Input v-model:value="configForm['编制年份']" /></FormItem>
+              <Card
+                title="订单/产品基础信息"
+                :bordered="false"
+                style="margin-bottom: 12px"
+              >
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 12px 16px;
+                  "
+                >
+                  <FormItem label="出口通径"
+                    ><Input v-model:value="configForm['出口尺寸']"
+                  /></FormItem>
+                  <FormItem label="出口法兰等级"
+                    ><Input v-model:value="configForm['出口法兰等级']"
+                  /></FormItem>
+                  <FormItem label="阀体压力等级"
+                    ><Input v-model:value="configForm['阀体等级']"
+                  /></FormItem>
+                  <FormItem label="阀体结构"
+                    ><Input v-model:value="configForm['阀体结构']"
+                  /></FormItem>
+                  <FormItem label="阀体型式"
+                    ><Input v-model:value="configForm['阀体型式']"
+                  /></FormItem>
+                  <FormItem label="阀盖/颈部型式"
+                    ><Input v-model:value="configForm['阀盖形式']"
+                  /></FormItem>
+                  <FormItem label="执行机构型号"
+                    ><Input v-model:value="configForm['执行机构型号']"
+                  /></FormItem>
+                  <FormItem label="产品材质"
+                    ><Input v-model:value="configForm['产品材质']"
+                  /></FormItem>
+                  <FormItem label="最大关闭压差"
+                    ><Input v-model:value="configForm['最大压差']"
+                  /></FormItem>
+                  <FormItem label="介质流向"
+                    ><Input v-model:value="configForm['流向']"
+                  /></FormItem>
+                  <FormItem label="密封等级"
+                    ><Input v-model:value="configForm['泄漏等级']"
+                  /></FormItem>
+                  <FormItem label="编制年份"
+                    ><Input v-model:value="configForm['编制年份']"
+                  /></FormItem>
                   <FormItem label="阀体材质">
                     <Select v-model:value="configForm['阀体材质']">
                       <SelectOption value="CS-碳钢">CS-碳钢</SelectOption>
                       <SelectOption value="SS-不锈钢">SS-不锈钢</SelectOption>
-                      <SelectOption value="YC-硬质合金">YC-硬质合金</SelectOption>
-                      <SelectOption value="PL-内衬材质">PL-内衬材质</SelectOption>
-                      <SelectOption value="QT-球墨铸铁">QT-球墨铸铁</SelectOption>
+                      <SelectOption value="YC-硬质合金"
+                        >YC-硬质合金</SelectOption
+                      >
+                      <SelectOption value="PL-内衬材质"
+                        >PL-内衬材质</SelectOption
+                      >
+                      <SelectOption value="QT-球墨铸铁"
+                        >QT-球墨铸铁</SelectOption
+                      >
                     </Select>
                   </FormItem>
-                  <FormItem label="分组标识"><Input v-model:value="configForm['分组标识']" /></FormItem>
-                  <FormItem label="版本号"><Input v-model:value="configForm['版本号']" /></FormItem>
+                  <FormItem label="分组标识"
+                    ><Input v-model:value="configForm['分组标识']"
+                  /></FormItem>
+                  <FormItem label="版本号"
+                    ><Input v-model:value="configForm['版本号']"
+                  /></FormItem>
                 </div>
               </Card>
 
-              <Card title="结构与公式选择" :bordered="false" style="margin-bottom: 12px">
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 16px;">
+              <Card
+                title="结构与公式选择"
+                :bordered="false"
+                style="margin-bottom: 12px"
+              >
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 12px 16px;
+                  "
+                >
                   <FormItem label="阀轴连接方式">
-                    <Select v-model:value="configFormSelect.阀轴连接方式" style="width: 100%">
+                    <Select
+                      v-model:value="configFormSelect.阀轴连接方式"
+                      style="width: 100%"
+                    >
                       <SelectOption value="键连接">键连接</SelectOption>
                       <SelectOption value="销连接">销连接</SelectOption>
                       <SelectOption value="法兰连接">法兰连接</SelectOption>
                     </Select>
                   </FormItem>
                   <FormItem label="填料压板结构">
-                    <Select v-model:value="configFormSelect.填料压板结构" style="width: 100%">
+                    <Select
+                      v-model:value="configFormSelect.填料压板结构"
+                      style="width: 100%"
+                    >
                       <SelectOption value="平板式">平板式</SelectOption>
                       <SelectOption value="法兰式">法兰式</SelectOption>
                     </Select>
                   </FormItem>
                   <FormItem label="连接支架形式">
-                    <Select v-model:value="configFormSelect.连接支架形式" style="width: 100%">
+                    <Select
+                      v-model:value="configFormSelect.连接支架形式"
+                      style="width: 100%"
+                    >
                       <SelectOption value="标准">标准</SelectOption>
                       <SelectOption value="加长">加长</SelectOption>
                     </Select>
                   </FormItem>
                   <FormItem label="强度计算公式">
-                    <Select v-model:value="configFormSelect.强度计算公式" style="width: 100%">
+                    <Select
+                      v-model:value="configFormSelect.强度计算公式"
+                      style="width: 100%"
+                    >
                       <SelectOption value="GB/T 17213">GB/T 17213</SelectOption>
-                      <SelectOption value="ASME B16.34">ASME B16.34</SelectOption>
+                      <SelectOption value="ASME B16.34"
+                        >ASME B16.34</SelectOption
+                      >
                     </Select>
                   </FormItem>
                 </div>
               </Card>
 
               <Card title="自动匹配计算项" :bordered="false">
-                <div style="margin-bottom: 12px; display: flex; align-items: center;">
-                  <label style="width: 100px; white-space: nowrap; color: #333;">默认计算项：</label>
+                <div
+                  style="
+                    margin-bottom: 12px;
+                    display: flex;
+                    align-items: center;
+                  "
+                >
+                  <label style="width: 100px; white-space: nowrap; color: #333"
+                    >默认计算项：</label
+                  >
                   <CheckboxGroup v-model:value="configCheckbox.defaultItems">
                     <Checkbox value="1">流量系数Cv</Checkbox>
                     <Checkbox value="2">阀杆强度</Checkbox>
@@ -1174,7 +1925,9 @@ watch(
                   </CheckboxGroup>
                 </div>
                 <div style="display: flex; align-items: center">
-                  <label style="width: 100px; white-space: nowrap; color: #333;">可选计算项：</label>
+                  <label style="width: 100px; white-space: nowrap; color: #333"
+                    >可选计算项：</label
+                  >
                   <CheckboxGroup v-model:value="configCheckbox.optionalItems">
                     <Checkbox value="1">流量系数Cv</Checkbox>
                     <Checkbox value="2">阀杆强度</Checkbox>
@@ -1188,111 +1941,19 @@ watch(
             </div>
           </TabPane>
 
-          <!-- ========== 基础参数 ========== -->
-          <TabPane key="base" tab="基础参数">
-            <div style="padding: 12px">
-              <table
-                style="
-                  width: 100%;
-                  border-collapse: collapse;
-                  font-size: 13px;
-                  table-layout: fixed;
-                "
-              >
-                <colgroup>
-                  <col style="width: 240px" />
-                  <col />
-                </colgroup>
-                <tbody>
-                  <tr v-for="(item, idx) in baseParamFields" :key="idx">
-                    <td
-                      style="
-                        border: 1px solid #d9d9d9;
-                        padding: 6px 12px;
-                        background: #fafafa;
-                        font-weight: 500;
-                        text-align: center;
-                        color: #333;
-                      "
-                    >
-                      {{ item.label }}
-                    </td>
-                    <td
-                      style="
-                        border: 1px solid #d9d9d9;
-                        padding: 6px 12px;
-                        background: #fff;
-                        color: #333;
-                        word-break: break-all;
-                      "
-                    >
-                      {{ getBaseParamValue(item) }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </TabPane>
-
-          <!-- 图纸信息 -->
-          <TabPane key="2" tab="图纸信息">
-            <div style="padding: 12px">
-              <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px;">
-                <tbody>
-                  <tr>
-                    <td rowspan="2" style="border: 1px solid #d9d9d9; padding: 8px; text-align: center; font-weight: bold; width: 180px; background: #fafafa;">产品设计计算书</td>
-                    <td style="border: 1px solid #d9d9d9; padding: 6px 12px; text-align: center; font-weight: bold; background: #fafafa; width: 220px;">产品名称</td>
-                    <td style="border: 1px solid #d9d9d9; padding: 6px 12px; text-align: center; font-weight: bold; background: #fafafa;">产品规格</td>
-                  </tr>
-                  <tr>
-                    <td style="border: 1px solid #d9d9d9; padding: 6px 12px; text-align: center;">{{ configRecord?.阀门名称 || '-' }}</td>
-                    <td style="border: 1px solid #d9d9d9; padding: 6px 12px; text-align: center;">{{ configRecord?.产品规格 || '-' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px;">
-                <tbody>
-                  <tr>
-                    <td style="border: 1px solid #d9d9d9; padding: 6px 12px; text-align: center; font-weight: bold; width: 60px; background: #fafafa;">一</td>
-                    <td style="border: 1px solid #d9d9d9; padding: 6px 12px; font-weight: bold; background: #fafafa;">阀体壁厚校核</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                <tbody>
-                  <tr>
-                    <td style="border: 1px solid #d9d9d9; padding: 12px; text-align: center; font-weight: bold; width: 100px; background: #fafafa; vertical-align: middle;">结构简图</td>
-                    <td style="border: 1px solid #d9d9d9; padding: 12px; vertical-align: middle;">
-                      <div style="display: flex; align-items: center; justify-content: center; min-height: 360px; background: #fafafa;">
-                        <img src="/images/V3D_D2060050000005.png" alt="结构简图" style="max-width: 100%; max-height: 500px; object-fit: contain;" />
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </TabPane>
-
-          <!-- 动态章节：左右布局 -->
-          <TabPane
-            v-for="ch in configChapters"
-            :key="ch.章节编码"
-            :tab="`${ch.章节序号}. ${ch.章节名称}`"
-          >
+          <!-- 基础参数（左侧结构简图 + 右侧参数表） -->
+          <TabPane key="base" tab="产品组合">
             <div
               style="
                 padding: 12px;
-                height: 100%;
                 display: flex;
                 gap: 12px;
+                height: 100%;
                 box-sizing: border-box;
               "
             >
               <!-- 左侧：结构简图 -->
               <div
-                v-if="structureImages[ch.章节名称]"
                 style="
                   flex: 0 0 360px;
                   display: flex;
@@ -1314,73 +1975,552 @@ watch(
                     cursor: zoom-in;
                     min-height: 200px;
                   "
-                  @click="openImagePreview(structureImages[ch.章节名称])"
+                  @click="openImagePreview(baseParamImage)"
                 >
                   <img
-                    :src="structureImages[ch.章节名称]"
-                    :alt="`${ch.章节名称} 结构简图`"
-                    style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                    :src="baseParamImage"
+                    alt="结构简图"
+                    style="
+                      max-width: 100%;
+                      max-height: 100%;
+                      object-fit: contain;
+                    "
                   />
                 </div>
 
-                <div style="text-align: center; margin-top: 8px; flex-shrink: 0;">
-                  <Button size="small" @click="openImagePreview(structureImages[ch.章节名称])">
+                <div
+                  style="text-align: center; margin-top: 8px; flex-shrink: 0"
+                >
+                  <Button
+                    size="small"
+                    @click="openImagePreview(baseParamImage)"
+                  >
                     查看原图
                   </Button>
                 </div>
               </div>
 
-              <!-- 右侧：计算表格 -->
-              <div style="flex: 1; min-width: 0;">
-                <Table
-                  :columns="bookColumns"
-                  :data-source="chapterResults[ch.章节编码] || []"
-                  :pagination="false"
-                  bordered
-                  size="small"
-                  :row-key="(r: any) => r.code || r.index"
-                  :scroll="{ x: 900, y: 'calc(100vh - 460px)' }"
+              <!-- 右侧：参数表 -->
+              <div style="flex: 1; min-width: 0; overflow: auto">
+                <div
+                  v-if="designGivenLoading"
+                  style="
+                    padding: 4px 12px;
+                    background: #e6f4ff;
+                    color: #1677ff;
+                    font-size: 12px;
+                    margin-bottom: 8px;
+                  "
                 >
-                  <template #bodyCell="{ column, record }">
-                    <template v-if="column.key === 'formula'">
-                      <Tooltip
-                        v-if="record.formulaDisplay || record.formula"
-                        :title="record.formula"
-                        placement="topLeft"
-                        overlay-class-name="formula-tooltip"
-                      >
-                        <div class="ellipsis-2-lines" style="cursor: pointer" @click="showFormula(record)">
-                          {{ record.formulaDisplay || record.formula }}
-                        </div>
-                      </Tooltip>
-                      <span v-else>-</span>
-                    </template>
+                  正在加载设计给定参数…
+                </div>
 
-                    <template v-else-if="column.key === 'reference'">
-                      <Tooltip v-if="record.reference" :title="record.reference" placement="topLeft">
-                        <div class="ellipsis-1-line">{{ record.reference }}</div>
-                      </Tooltip>
-                      <span v-else>-</span>
-                    </template>
-
-                    <template v-else-if="column.key === 'value'">
-                      <span
-                        :style="{
-                          color: record.value === '合格' ? '#52c41a' : record.value === '不合格' ? '#ff4d4f' : '',
-                          fontWeight: record.value === '合格' || record.value === '不合格' ? 'bold' : 'normal',
-                        }"
+                <table
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 13px;
+                    table-layout: fixed;
+                  "
+                >
+                  <colgroup>
+                    <col style="width: 240px" />
+                    <col />
+                  </colgroup>
+                  <tbody>
+                    <tr v-for="(item, idx) in baseParamFields" :key="idx">
+                      <td
+                        style="
+                          border: 1px solid #d9d9d9;
+                          padding: 6px 12px;
+                          background: #fafafa;
+                          font-weight: 500;
+                          text-align: center;
+                          color: #333;
+                        "
                       >
-                        {{ record.value }}
-                      </span>
+                        {{ item.label }}
+                      </td>
+                      <td
+                        style="
+                          border: 1px solid #d9d9d9;
+                          padding: 6px 12px;
+                          background: #fff;
+                          color: #333;
+                          word-break: break-all;
+                        "
+                      >
+                        {{ getBaseParamValue(item) }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabPane>
+
+          <!-- 图纸信息 -->
+          <TabPane key="2" tab="图纸信息">
+            <div style="padding: 12px">
+              <table
+                style="
+                  width: 100%;
+                  border-collapse: collapse;
+                  font-size: 13px;
+                  margin-bottom: 12px;
+                "
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      rowspan="2"
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 8px;
+                        text-align: center;
+                        font-weight: bold;
+                        width: 180px;
+                        background: #fafafa;
+                      "
+                    >
+                      产品设计计算书
+                    </td>
+                    <td
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 6px 12px;
+                        text-align: center;
+                        font-weight: bold;
+                        background: #fafafa;
+                        width: 220px;
+                      "
+                    >
+                      产品名称
+                    </td>
+                    <td
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 6px 12px;
+                        text-align: center;
+                        font-weight: bold;
+                        background: #fafafa;
+                      "
+                    >
+                      产品规格
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 6px 12px;
+                        text-align: center;
+                      "
+                    >
+                      {{ configRecord?.阀门名称 || '-' }}
+                    </td>
+                    <td
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 6px 12px;
+                        text-align: center;
+                      "
+                    >
+                      {{ configRecord?.产品规格 || '-' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table
+                style="
+                  width: 100%;
+                  border-collapse: collapse;
+                  font-size: 13px;
+                  margin-bottom: 12px;
+                "
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 6px 12px;
+                        text-align: center;
+                        font-weight: bold;
+                        width: 60px;
+                        background: #fafafa;
+                      "
+                    >
+                      一
+                    </td>
+                    <td
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 6px 12px;
+                        font-weight: bold;
+                        background: #fafafa;
+                      "
+                    >
+                      阀体壁厚校核
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table
+                style="width: 100%; border-collapse: collapse; font-size: 13px"
+              >
+                <tbody>
+                  <tr>
+                    <td
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 12px;
+                        text-align: center;
+                        font-weight: bold;
+                        width: 100px;
+                        background: #fafafa;
+                        vertical-align: middle;
+                      "
+                    >
+                      结构简图
+                    </td>
+                    <td
+                      style="
+                        border: 1px solid #d9d9d9;
+                        padding: 12px;
+                        vertical-align: middle;
+                      "
+                    >
+                      <div
+                        style="
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          min-height: 360px;
+                          background: #fafafa;
+                        "
+                      >
+                        <img
+                          src="/images/V3D_D2060050000005.png"
+                          alt="结构简图"
+                          style="
+                            max-width: 100%;
+                            max-height: 500px;
+                            object-fit: contain;
+                          "
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </TabPane>
+
+          <!-- 计算结果 Tab -->
+          <TabPane key="result" tab="计算结果">
+            <div style="padding: 12px">
+              <div
+                v-if="!checkResult"
+                style="
+                  text-align: center;
+                  color: #999;
+                  padding: 60px 20px;
+                  font-size: 14px;
+                "
+              >
+                点击下方【实时计算】按钮生成计算结果
+              </div>
+
+              <div v-else>
+                <!-- 总体结论 -->
+                <div
+                  style="
+                    margin-bottom: 16px;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                  "
+                >
+                  <Tag
+                    :color="checkResult.qualified ? 'green' : 'red'"
+                    style="
+                      font-size: 16px;
+                      padding: 4px 16px;
+                      line-height: 26px;
+                    "
+                  >
+                    {{ checkResult.qualified ? '合格' : '不合格' }}
+                  </Tag>
+                  <span style="font-size: 14px; color: #333; font-weight: 500">
+                    {{ checkResult.message }}
+                  </span>
+                </div>
+
+                <!-- ★ 按章节展示 -->
+                <div
+                  v-for="ch in checkResult.chapters"
+                  :key="ch.chapterCode"
+                  style="
+                    margin-bottom: 16px;
+                    border: 1px solid #f0f0f0;
+                    border-radius: 4px;
+                    overflow: hidden;
+                  "
+                >
+                  <!-- 章节标题栏 -->
+                  <div
+                    style="
+                      padding: 10px 16px;
+                      background: #fafafa;
+                      border-bottom: 1px solid #f0f0f0;
+                      display: flex;
+                      align-items: center;
+                      gap: 12px;
+                    "
+                  >
+                    <Tag :color="ch.passed ? 'green' : 'red'" style="margin: 0">
+                      {{ ch.passed ? '合格' : '不合格' }}
+                    </Tag>
+                    <strong style="font-size: 14px">{{
+                      ch.chapterName
+                    }}</strong>
+                    <span
+                      v-if="!ch.passed"
+                      style="color: #ff4d4f; margin-left: auto; font-size: 13px"
+                    >
+                      {{ ch.message }}
+                    </span>
+                  </div>
+
+                  <!-- 判定明细 -->
+                  <Table
+                    v-if="ch.details && ch.details.length > 0"
+                    :data-source="ch.details"
+                    :columns="[
+                      { title: '判定项', dataIndex: 'name', width: 260 },
+                      { title: '结果', dataIndex: 'passed', width: 120 },
+                      { title: '提示', dataIndex: 'message' },
+                    ]"
+                    :pagination="false"
+                    size="small"
+                    bordered
+                    :row-key="(r: any) => r.name"
+                  >
+                    <template #bodyCell="{ column, record }">
+                      <template v-if="column.dataIndex === 'passed'">
+                        <Tag v-if="record.skipped" color="default">跳过</Tag>
+                        <Tag v-else :color="record.passed ? 'green' : 'red'">
+                          {{ record.passed ? '通过' : '不通过' }}
+                        </Tag>
+                      </template>
+
+                      <template v-else-if="column.dataIndex === 'message'">
+                        <span
+                          :style="{
+                            color:
+                              record.passed || record.skipped ? '' : '#ff4d4f',
+                            fontWeight:
+                              record.passed || record.skipped
+                                ? 'normal'
+                                : '500',
+                          }"
+                        >
+                          {{ record.message }}
+                        </span>
+                      </template>
                     </template>
-                  </template>
-                </Table>
+                  </Table>
+                </div>
+              </div>
+            </div>
+          </TabPane>
+
+          <!-- 动态章节：左右布局（右侧撑满高度） -->
+          <TabPane
+            v-for="ch in configChapters"
+            :key="ch.章节编码"
+            :tab="`${ch.章节序号}. ${ch.章节名称}`"
+          >
+            <div
+              style="
+                padding: 12px;
+                height: 100%;
+                display: flex;
+                gap: 12px;
+                box-sizing: border-box;
+                align-items: stretch;
+              "
+            >
+              <!-- 左侧：结构简图 -->
+              <div
+                v-if="getChapterImage(ch)"
+                style="
+                  flex: 0 0 360px;
+                  display: flex;
+                  flex-direction: column;
+                  border: 1px solid #f0f0f0;
+                  border-radius: 4px;
+                  background: #fafafa;
+                  padding: 8px;
+                  box-sizing: border-box;
+                "
+              >
+                <div
+                  style="
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    cursor: zoom-in;
+                    min-height: 200px;
+                  "
+                  @click="openImagePreview(getChapterImage(ch))"
+                >
+                  <img
+                    :src="getChapterImage(ch)"
+                    :alt="`${ch.章节名称} 结构简图`"
+                    style="
+                      max-width: 100%;
+                      max-height: 100%;
+                      object-fit: contain;
+                    "
+                  />
+                </div>
 
                 <div
-                  v-if="!chapterResults[ch.章节编码] || chapterResults[ch.章节编码].length === 0"
-                  style="text-align: center; color: #999; padding: 30px; font-size: 14px;"
+                  style="text-align: center; margin-top: 8px; flex-shrink: 0"
                 >
-                  点下方【实时计算】按钮生成此章节内容
+                  <Button
+                    size="small"
+                    @click="openImagePreview(getChapterImage(ch))"
+                  >
+                    查看原图
+                  </Button>
+                </div>
+              </div>
+
+              <!-- 右侧：计算表格（flex 撑满高度） -->
+              <div
+                style="
+                  flex: 1;
+                  min-width: 0;
+                  display: flex;
+                  flex-direction: column;
+                  height: 100%;
+                "
+              >
+                <!-- 工具栏 -->
+                <div
+                  style="
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    gap: 8px;
+                    margin-bottom: 6px;
+                    flex-shrink: 0;
+                  "
+                >
+                  <span style="font-size: 12px; color: #999">
+                    提示：计算值可直接编辑，黄色圆点 = 已手动修改
+                  </span>
+                  <Button size="small" @click="resetCurrentChapterEdits">
+                    重置手动编辑
+                  </Button>
+                </div>
+
+                <!-- 表格容器：flex:1 撑满剩余空间 -->
+                <div style="flex: 1; min-height: 0; overflow: auto">
+                  <Table
+                    :columns="bookColumns"
+                    :data-source="chapterResults[ch.章节编码] || []"
+                    :pagination="false"
+                    bordered
+                    size="small"
+                    :row-key="(r: any) => r.code || r.index"
+                    :scroll="{ x: 900 }"
+                  >
+                    <template #bodyCell="{ column, record }">
+                      <template v-if="column.key === 'formula'">
+                        <Tooltip
+                          v-if="record.formulaDisplay || record.formula"
+                          :title="record.formula"
+                          placement="topLeft"
+                          overlay-class-name="formula-tooltip"
+                        >
+                          <div
+                            class="ellipsis-2-lines"
+                            style="cursor: pointer"
+                            @click="showFormula(record)"
+                          >
+                            {{ record.formulaDisplay || record.formula }}
+                          </div>
+                        </Tooltip>
+                        <span v-else>-</span>
+                      </template>
+
+                      <template v-else-if="column.key === 'reference'">
+                        <Tooltip
+                          v-if="record.reference"
+                          :title="record.reference"
+                          placement="topLeft"
+                        >
+                          <div class="ellipsis-1-line">
+                            {{ record.reference }}
+                          </div>
+                        </Tooltip>
+                        <span v-else>-</span>
+                      </template>
+
+                      <template v-else-if="column.key === 'value'">
+                        <div style="position: relative">
+                          <Input
+                            v-model:value="record.value"
+                            size="small"
+                            :bordered="false"
+                            :style="{
+                              color:
+                                record.value === '合格'
+                                  ? '#52c41a'
+                                  : record.value === '不合格'
+                                    ? '#ff4d4f'
+                                    : '',
+                              fontWeight:
+                                record.value === '合格' ||
+                                record.value === '不合格'
+                                  ? 'bold'
+                                  : 'normal',
+                              padding: '0 4px',
+                              background: record._edited
+                                ? '#fffbe6'
+                                : 'transparent',
+                            }"
+                            @change="onValueEdit(record)"
+                          />
+                          <Tooltip
+                            v-if="record._edited"
+                            title="已手动修改，重新计算时会保留"
+                          >
+                            <span
+                              style="
+                                position: absolute;
+                                top: -2px;
+                                right: -2px;
+                                width: 6px;
+                                height: 6px;
+                                background: #faad14;
+                                border-radius: 50%;
+                                display: inline-block;
+                              "
+                            ></span>
+                          </Tooltip>
+                        </div>
+                      </template>
+                    </template>
+                  </Table>
                 </div>
               </div>
             </div>
@@ -1390,53 +2530,35 @@ watch(
           <TabPane key="99" tab="其他">
             <div style="padding: 12px">
               <p><strong>执行标准：</strong>{{ configRecord?.执行标准 }}</p>
-              <p><strong>是否为标准产品：</strong>{{ configRecord?.是否为标准产品 }}</p>
+              <p>
+                <strong>是否为标准产品：</strong
+                >{{ configRecord?.是否为标准产品 }}
+              </p>
               <p><strong>故障位置：</strong>{{ configRecord?.故障位置 }}</p>
               <p><strong>产品规格：</strong>{{ configRecord?.产品规格 }}</p>
             </div>
           </TabPane>
         </Tabs>
 
-        <!-- 合格判定面板 -->
-        <div
-          v-if="checkResult"
-          style="padding: 10px 16px; border-top: 1px solid #f0f0f0; background: #fff; flex-shrink: 0; max-height: 240px; overflow-y: auto;"
-        >
-          <Space align="center" style="margin-bottom: 8px">
-            <Tag :color="checkResult.qualified ? 'green' : 'red'" style="font-size: 14px; padding: 2px 12px; line-height: 22px">
-              {{ checkResult.qualified ? '合格' : '不合格' }}
-            </Tag>
-            <span style="font-size: 13px; color: #333">{{ checkResult.message }}</span>
-          </Space>
-
-          <Table
-            v-if="checkResult.details.length > 0"
-            :data-source="checkResult.details"
-            :columns="[
-              { title: '判定项', dataIndex: 'name', width: 220 },
-              { title: '结果', dataIndex: 'passed', width: 100 },
-              { title: '提示', dataIndex: 'message' },
-            ]"
-            :pagination="false"
-            size="small"
-            bordered
-            :row-key="(_r: any, i: number) => i"
-          >
-            <template #bodyCell="{ column, record }">
-              <template v-if="column.dataIndex === 'passed'">
-                <Tag :color="record.passed ? 'green' : 'red'">
-                  {{ record.passed ? '通过' : '不通过' }}
-                </Tag>
-              </template>
-            </template>
-          </Table>
-        </div>
-
         <!-- 底部按钮 -->
-        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding: 10px 16px; border-top: 1px solid #f0f0f0; overflow-x: auto; white-space: nowrap; flex-shrink: 0;">
+        <div
+          style="
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-top: 1px solid #f0f0f0;
+            overflow-x: auto;
+            white-space: nowrap;
+            flex-shrink: 0;
+          "
+        >
           <Button type="primary" @click="tempSaveConfig">临时保存</Button>
           <Button type="primary" @click="saveNewVersion">存入新版本</Button>
-          <Button type="primary" :loading="calculating" @click="realtimeCalc">实时计算</Button>
+          <Button type="primary" :loading="calculating" @click="realtimeCalc"
+            >实时计算</Button
+          >
           <Button type="primary" @click="saveConfig">保存配置</Button>
           <Button @click="configModalVisible = false">关闭</Button>
         </div>
@@ -1477,48 +2599,143 @@ watch(
     </Modal>
 
     <!-- 公式详情 -->
-    <Modal v-model:open="formulaModalVisible" :title="formulaModalTitle" :footer="null" width="800px">
-      <pre style="white-space: pre-wrap; word-break: break-all; max-height: 60vh; overflow: auto; font-size: 12px; line-height: 1.6; background: #fafafa; padding: 12px; border-radius: 4px; margin: 0;">{{ formulaModalContent }}</pre>
+    <Modal
+      v-model:open="formulaModalVisible"
+      :title="formulaModalTitle"
+      :footer="null"
+      width="800px"
+    >
+      <pre
+        style="
+          white-space: pre-wrap;
+          word-break: break-all;
+          max-height: 60vh;
+          overflow: auto;
+          font-size: 12px;
+          line-height: 1.6;
+          background: #fafafa;
+          padding: 12px;
+          border-radius: 4px;
+          margin: 0;
+        "
+        >{{ formulaModalContent }}</pre
+      >
     </Modal>
 
     <!-- 预览 -->
-    <Modal v-model:open="previewModalVisible" title="预览" :footer="null" :width="'100vw'" wrap-class-name="config-fullscreen-modal" :style="{ top: 0, paddingBottom: 0 }">
-      <div style="height: calc(100vh - 120px); display: flex; flex-direction: column;">
-        <div style="padding: 12px 16px; border-bottom: 1px solid #f0f0f0; background: #fafafa;">
+    <Modal
+      v-model:open="previewModalVisible"
+      title="预览"
+      :footer="null"
+      :width="'100vw'"
+      wrap-class-name="config-fullscreen-modal"
+      :style="{ top: 0, paddingBottom: 0 }"
+    >
+      <div
+        style="
+          height: calc(100vh - 120px);
+          display: flex;
+          flex-direction: column;
+        "
+      >
+        <div
+          style="
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fafafa;
+          "
+        >
           <Space size="large" wrap>
-            <span><strong>出厂编号：</strong>{{ previewRecord?.[pkColumn] }}</span>
-            <span><strong>阀门名称：</strong>{{ previewRecord?.阀门名称 }}</span>
-            <span><strong>产品规格：</strong>{{ previewRecord?.产品规格 }}</span>
-            <span><strong>阀门型号：</strong>{{ previewRecord?.阀门型号 }}</span>
+            <span
+              ><strong>出厂编号：</strong>{{ previewRecord?.[pkColumn] }}</span
+            >
+            <span
+              ><strong>阀门名称：</strong>{{ previewRecord?.阀门名称 }}</span
+            >
+            <span
+              ><strong>产品规格：</strong>{{ previewRecord?.产品规格 }}</span
+            >
+            <span
+              ><strong>阀门型号：</strong>{{ previewRecord?.阀门型号 }}</span
+            >
           </Space>
         </div>
 
         <div style="flex: 1; overflow: auto; padding: 16px">
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-            <div v-for="col in schema" :key="col.ColumnName" style="padding: 10px 12px; background: #fafafa; border-radius: 4px; border: 1px solid #f0f0f0;">
-              <div style="color: #888; font-size: 12px; margin-bottom: 4px">{{ col.ColumnName }}</div>
-              <div style="font-size: 14px; word-break: break-all">{{ previewRecord?.[col.ColumnName] ?? '-' }}</div>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 12px;
+            "
+          >
+            <div
+              v-for="col in schema"
+              :key="col.ColumnName"
+              style="
+                padding: 10px 12px;
+                background: #fafafa;
+                border-radius: 4px;
+                border: 1px solid #f0f0f0;
+              "
+            >
+              <div style="color: #888; font-size: 12px; margin-bottom: 4px">
+                {{ col.ColumnName }}
+              </div>
+              <div style="font-size: 14px; word-break: break-all">
+                {{ previewRecord?.[col.ColumnName] ?? '-' }}
+              </div>
             </div>
           </div>
         </div>
 
-        <div style="padding: 12px; border-top: 1px solid #f0f0f0; text-align: right;">
-          <Space><Button @click="previewModalVisible = false">关闭</Button></Space>
+        <div
+          style="
+            padding: 12px;
+            border-top: 1px solid #f0f0f0;
+            text-align: right;
+          "
+        >
+          <Space
+            ><Button @click="previewModalVisible = false">关闭</Button></Space
+          >
         </div>
       </div>
     </Modal>
 
     <!-- 高级查询 -->
-    <Modal v-model:open="advQueryVisible" title="高级查询" :footer="null" width="560px">
+    <Modal
+      v-model:open="advQueryVisible"
+      title="高级查询"
+      :footer="null"
+      width="560px"
+    >
       <Form layout="vertical">
         <FormItem label="查询选项">
-          <Select v-model:value="advancedQuery.column" placeholder="请选择要查询的列" style="width: 100%" allow-clear show-search option-filter-prop="children">
-            <SelectOption v-for="col in schema" :key="col.ColumnName" :value="col.ColumnName">{{ col.ColumnName }}</SelectOption>
+          <Select
+            v-model:value="advancedQuery.column"
+            placeholder="请选择要查询的列"
+            style="width: 100%"
+            allow-clear
+            show-search
+            option-filter-prop="children"
+          >
+            <SelectOption
+              v-for="col in schema"
+              :key="col.ColumnName"
+              :value="col.ColumnName"
+              >{{ col.ColumnName }}</SelectOption
+            >
           </Select>
         </FormItem>
 
         <FormItem label="查询内容">
-          <TextArea v-model:value="advancedQuery.keyword" :rows="3" placeholder="请输入查询内容（支持模糊匹配）" style="width: 100%" />
+          <TextArea
+            v-model:value="advancedQuery.keyword"
+            :rows="3"
+            placeholder="请输入查询内容（支持模糊匹配）"
+            style="width: 100%"
+          />
         </FormItem>
 
         <div style="text-align: right; margin-top: 16px">
@@ -1532,23 +2749,65 @@ watch(
     </Modal>
 
     <!-- 新增产品 -->
-    <Modal v-model:open="productModalVisible" title="新增产品" :confirm-loading="productSaving" width="600px" ok-text="确定" cancel-text="取消" @ok="submitProduct">
-      <TextArea v-model:value="productText" :rows="8" placeholder="请输入产品内容（可换行）" style="width: 100%" />
+    <Modal
+      v-model:open="productModalVisible"
+      title="新增产品"
+      :confirm-loading="productSaving"
+      width="600px"
+      ok-text="确定"
+      cancel-text="取消"
+      @ok="submitProduct"
+    >
+      <TextArea
+        v-model:value="productText"
+        :rows="8"
+        placeholder="请输入产品内容（可换行）"
+        style="width: 100%"
+      />
     </Modal>
 
     <!-- 新增项目 -->
-    <Modal v-model:open="projectModalVisible" title="新增项目" :confirm-loading="projectSaving" width="800px" ok-text="保存" cancel-text="取消" @ok="submitProject">
+    <Modal
+      v-model:open="projectModalVisible"
+      title="新增项目"
+      :confirm-loading="projectSaving"
+      width="800px"
+      ok-text="保存"
+      cancel-text="取消"
+      @ok="submitProject"
+    >
       <Form :model="projectModel" layout="vertical">
-        <FormItem v-for="col in schema.filter((c) => !c.IsIdentity)" :key="col.ColumnName" :label="col.ColumnName" style="margin-bottom: 2px">
-          <InputNumber v-if="isNumberType(col.DataType)" v-model:value="projectModel[col.ColumnName]" style="width: 100%" />
-          <TextArea v-else-if="isLongText(col.DataType, col.MaxLength)" v-model:value="projectModel[col.ColumnName]" :rows="3" />
+        <FormItem
+          v-for="col in schema.filter((c) => !c.IsIdentity)"
+          :key="col.ColumnName"
+          :label="col.ColumnName"
+          style="margin-bottom: 2px"
+        >
+          <InputNumber
+            v-if="isNumberType(col.DataType)"
+            v-model:value="projectModel[col.ColumnName]"
+            style="width: 100%"
+          />
+          <TextArea
+            v-else-if="isLongText(col.DataType, col.MaxLength)"
+            v-model:value="projectModel[col.ColumnName]"
+            :rows="3"
+          />
           <Input v-else v-model:value="projectModel[col.ColumnName]" />
         </FormItem>
       </Form>
     </Modal>
 
     <!-- 导出 -->
-    <Modal v-model:open="exportModalVisible" title="导出设计书" :confirm-loading="exporting" width="480px" ok-text="导出" cancel-text="取消" @ok="submitExport">
+    <Modal
+      v-model:open="exportModalVisible"
+      title="导出设计书"
+      :confirm-loading="exporting"
+      width="480px"
+      ok-text="导出"
+      cancel-text="取消"
+      @ok="submitExport"
+    >
       <div style="padding: 8px 0">
         <div style="margin-bottom: 12px; color: #666">请选择导出格式：</div>
         <Radio.Group v-model:value="exportFormat">
@@ -1559,13 +2818,43 @@ watch(
     </Modal>
 
     <!-- 编辑 -->
-    <Modal v-model:open="editModalVisible" title="编辑" :confirm-loading="editSaving" width="900px" ok-text="保存" cancel-text="取消" wrap-class-name="edit-compact-modal" @ok="submitEdit">
+    <Modal
+      v-model:open="editModalVisible"
+      title="编辑"
+      :confirm-loading="editSaving"
+      width="900px"
+      ok-text="保存"
+      cancel-text="取消"
+      wrap-class-name="edit-compact-modal"
+      @ok="submitEdit"
+    >
       <Form :model="editModel" layout="vertical">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px;">
-          <FormItem v-for="col in schema.filter((c) => !c.IsIdentity)" :key="col.ColumnName" :label="col.ColumnName" style="margin-bottom: 4px">
-            <InputNumber v-if="isNumberType(col.DataType)" v-model:value="editModel[col.ColumnName]" style="width: 100%" size="small" />
-            <TextArea v-else-if="isLongText(col.DataType, col.MaxLength)" v-model:value="editModel[col.ColumnName]" :rows="2" size="small" />
-            <Input v-else v-model:value="editModel[col.ColumnName]" size="small" />
+        <div
+          style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px"
+        >
+          <FormItem
+            v-for="col in schema.filter((c) => !c.IsIdentity)"
+            :key="col.ColumnName"
+            :label="col.ColumnName"
+            style="margin-bottom: 4px"
+          >
+            <InputNumber
+              v-if="isNumberType(col.DataType)"
+              v-model:value="editModel[col.ColumnName]"
+              style="width: 100%"
+              size="small"
+            />
+            <TextArea
+              v-else-if="isLongText(col.DataType, col.MaxLength)"
+              v-model:value="editModel[col.ColumnName]"
+              :rows="2"
+              size="small"
+            />
+            <Input
+              v-else
+              v-model:value="editModel[col.ColumnName]"
+              size="small"
+            />
           </FormItem>
         </div>
       </Form>
@@ -1593,7 +2882,9 @@ watch(
   flex-direction: column;
 }
 
-.config-tabs :deep(.ant-tabs-nav) { margin-bottom: 0; }
+.config-tabs :deep(.ant-tabs-nav) {
+  margin-bottom: 0;
+}
 .config-tabs :deep(.ant-tabs-content-holder) {
   flex: 1;
   overflow: auto;
@@ -1601,30 +2892,109 @@ watch(
   border-top: none;
   background: #fff;
 }
-.config-tabs :deep(.ant-tabs-content) { height: 100%; }
-.config-tabs :deep(.ant-tab-pane) { height: 100%; }
+.config-tabs :deep(.ant-tabs-content) {
+  height: 100%;
+}
+.config-tabs :deep(.ant-tabs-tabpane) {
+  height: 100%;
+}
 
-.config-tabs :deep(.ant-card-head) { min-height: 28px; padding: 0 12px; font-size: 13px; }
-.config-tabs :deep(.ant-card-head-title) { padding: 6px 0; font-size: 13px; }
-.config-tabs :deep(.ant-card-body) { padding: 8px 12px; }
-.config-tabs :deep(.ant-form-item) { margin-bottom: 4px; }
-.config-tabs :deep(.ant-form-item-label) { padding-bottom: 0; line-height: 1; }
-.config-tabs :deep(.ant-form-item-label > label) { height: 18px; line-height: 18px; font-size: 12px; }
+.config-tabs :deep(.ant-card-head) {
+  min-height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+.config-tabs :deep(.ant-card-head-title) {
+  padding: 6px 0;
+  font-size: 13px;
+}
+.config-tabs :deep(.ant-card-body) {
+  padding: 8px 12px;
+}
+.config-tabs :deep(.ant-form-item) {
+  margin-bottom: 4px;
+}
+.config-tabs :deep(.ant-form-item-label) {
+  padding-bottom: 0;
+  line-height: 1;
+}
+.config-tabs :deep(.ant-form-item-label > label) {
+  height: 18px;
+  line-height: 18px;
+  font-size: 12px;
+}
 .config-tabs :deep(.ant-input),
 .config-tabs :deep(.ant-input-affix-wrapper),
 .config-tabs :deep(.ant-select-single),
-.config-tabs :deep(.ant-select-single .ant-select-selector) { height: 22px !important; font-size: 12px; }
-.config-tabs :deep(.ant-select-single .ant-select-selector .ant-select-selection-item),
-.config-tabs :deep(.ant-select-single .ant-select-selector .ant-select-selection-placeholder) { line-height: 20px !important; font-size: 12px; }
-.config-tabs :deep(.ant-select-single .ant-select-arrow) { top: 50%; margin-top: -5px; font-size: 10px; }
-.config-tabs :deep(.ant-input) { padding: 0 6px; line-height: 20px; }
-.config-tabs :deep(textarea.ant-input) { height: auto !important; padding: 2px 6px; line-height: 18px; }
-.config-tabs :deep(.ant-input-number) { height: 22px !important; font-size: 12px; }
-.config-tabs :deep(.ant-input-number-input) { height: 20px !important; line-height: 20px !important; font-size: 12px; }
-.config-tabs :deep(.ant-space) { gap: 12px !important; }
-.config-tabs :deep(.ant-checkbox-wrapper) { font-size: 12px; margin-right: 12px; }
-.config-tabs :deep(.ant-checkbox) { top: 2px; }
-.config-tabs :deep([style*='grid-template-columns']) { gap: 8px 12px !important; }
+.config-tabs :deep(.ant-select-single .ant-select-selector) {
+  height: 22px !important;
+  font-size: 12px;
+}
+.config-tabs
+  :deep(.ant-select-single .ant-select-selector .ant-select-selection-item),
+.config-tabs
+  :deep(
+    .ant-select-single .ant-select-selector .ant-select-selection-placeholder
+  ) {
+  line-height: 20px !important;
+  font-size: 12px;
+}
+.config-tabs :deep(.ant-select-single .ant-select-arrow) {
+  top: 50%;
+  margin-top: -5px;
+  font-size: 10px;
+}
+.config-tabs :deep(.ant-input) {
+  padding: 0 6px;
+  line-height: 20px;
+}
+.config-tabs :deep(textarea.ant-input) {
+  height: auto !important;
+  padding: 2px 6px;
+  line-height: 18px;
+}
+.config-tabs :deep(.ant-input-number) {
+  height: 22px !important;
+  font-size: 12px;
+}
+.config-tabs :deep(.ant-input-number-input) {
+  height: 20px !important;
+  line-height: 20px !important;
+  font-size: 12px;
+}
+.config-tabs :deep(.ant-space) {
+  gap: 12px !important;
+}
+.config-tabs :deep(.ant-checkbox-wrapper) {
+  font-size: 12px;
+  margin-right: 12px;
+}
+.config-tabs :deep(.ant-checkbox) {
+  top: 2px;
+}
+.config-tabs :deep([style*='grid-template-columns']) {
+  gap: 8px 12px !important;
+}
+
+/* 表格撑满容器 */
+.config-tabs :deep(.ant-table-wrapper) {
+  height: 100%;
+}
+.config-tabs :deep(.ant-spin-nested-loading) {
+  height: 100%;
+}
+.config-tabs :deep(.ant-spin-container) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.config-tabs :deep(.ant-table) {
+  flex: 1;
+  min-height: 0;
+}
+.config-tabs :deep(.ant-table-container) {
+  height: 100%;
+}
 
 .ellipsis-1-line {
   display: -webkit-box;
@@ -1658,19 +3028,60 @@ watch(
   line-height: 1.5;
 }
 
-.edit-compact-modal .ant-modal-body { padding: 6px 12px; }
-.edit-compact-modal .ant-form-item { margin-bottom: 4px !important; padding: 0 !important; }
-.edit-compact-modal .ant-form-item-label { padding: 0 !important; margin: 0 !important; line-height: 1 !important; }
-.edit-compact-modal .ant-form-item-label > label { height: auto !important; line-height: 16px !important; font-size: 12px !important; margin: 0 !important; padding: 0 !important; }
-.edit-compact-modal .ant-form-item-label > label::after { display: none !important; }
+.edit-compact-modal .ant-modal-body {
+  padding: 6px 12px;
+}
+.edit-compact-modal .ant-form-item {
+  margin-bottom: 4px !important;
+  padding: 0 !important;
+}
+.edit-compact-modal .ant-form-item-label {
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+}
+.edit-compact-modal .ant-form-item-label > label {
+  height: auto !important;
+  line-height: 16px !important;
+  font-size: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.edit-compact-modal .ant-form-item-label > label::after {
+  display: none !important;
+}
 .edit-compact-modal .ant-form-item-control,
-.edit-compact-modal .ant-form-item-control-input { min-height: 0 !important; }
-.edit-compact-modal .ant-form-item-row { display: block !important; }
+.edit-compact-modal .ant-form-item-control-input {
+  min-height: 0 !important;
+}
+.edit-compact-modal .ant-form-item-row {
+  display: block !important;
+}
 .edit-compact-modal .ant-input,
 .edit-compact-modal .ant-input-affix-wrapper,
-.edit-compact-modal .ant-input-number { height: 22px !important; min-height: 22px !important; line-height: 22px !important; font-size: 12px !important; padding: 0 6px !important; }
-.edit-compact-modal .ant-input-number-input { height: 20px !important; line-height: 20px !important; font-size: 12px !important; padding: 0 4px !important; }
-.edit-compact-modal .ant-input-number-handler-wrap { display: none !important; }
-.edit-compact-modal textarea.ant-input { height: auto !important; min-height: 32px !important; padding: 2px 6px !important; line-height: 16px !important; }
-.edit-compact-modal .ant-form > div { gap: 4px 12px !important; }
+.edit-compact-modal .ant-input-number {
+  height: 22px !important;
+  min-height: 22px !important;
+  line-height: 22px !important;
+  font-size: 12px !important;
+  padding: 0 6px !important;
+}
+.edit-compact-modal .ant-input-number-input {
+  height: 20px !important;
+  line-height: 20px !important;
+  font-size: 12px !important;
+  padding: 0 4px !important;
+}
+.edit-compact-modal .ant-input-number-handler-wrap {
+  display: none !important;
+}
+.edit-compact-modal textarea.ant-input {
+  height: auto !important;
+  min-height: 32px !important;
+  padding: 2px 6px !important;
+  line-height: 16px !important;
+}
+.edit-compact-modal .ant-form > div {
+  gap: 4px 12px !important;
+}
 </style>

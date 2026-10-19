@@ -22,13 +22,13 @@ import {
 } from 'ant-design-vue';
 
 import { SettingOutlined } from '@ant-design/icons-vue';
+import { DataApi } from '#/api/core/data';
+import type { ColumnInfo } from '#/api/core/data';
 
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 const DescriptionsItem = Descriptions.Item;
-
-import { DataApi, type ColumnInfo } from '#/api/core/data';
 
 const route = useRoute();
 
@@ -167,9 +167,7 @@ function handleCheckAll(e: any) {
 // ============================================================
 const columnWidths = ref<Record<string, number>>({});
 
-const COL_WIDTH_STORAGE_KEY = computed(
-  () => `col_width_${tableName.value}`,
-);
+const COL_WIDTH_STORAGE_KEY = computed(() => `col_width_${tableName.value}`);
 
 function initColumnWidths() {
   const saved = localStorage.getItem(COL_WIDTH_STORAGE_KEY.value);
@@ -260,10 +258,7 @@ function onResizeEnd() {
 function onResizeDblClick(colKey: string) {
   const col = schema.value.find((c) => c.ColumnName === colKey);
   if (!col) return;
-  const newWidth = Math.min(
-    400,
-    Math.max(80, col.ColumnName.length * 14 + 40),
-  );
+  const newWidth = Math.min(400, Math.max(80, col.ColumnName.length * 14 + 40));
   columnWidths.value = { ...columnWidths.value, [colKey]: newWidth };
   persistColumnWidths();
 }
@@ -453,7 +448,28 @@ async function onFileChange(e: Event) {
   try {
     const buffer = await file.arrayBuffer();
     const workbook = XLSX.read(buffer, { type: 'array' });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+    // ★ 多工作表时让用户显式选择（此前静默读第一个表，选错文件/表会导错数据）
+    let sheetName = workbook.SheetNames[0]!;
+    if (workbook.SheetNames.length > 1) {
+      const pick = prompt(
+        `该 Excel 包含 ${workbook.SheetNames.length} 个工作表：\n` +
+          workbook.SheetNames.map((n, i) => `${i + 1}. ${n}`).join('\n') +
+          `\n\n请输入要导入的工作表名称（直接点确定 = 第一个）：`,
+        sheetName,
+      );
+      if (pick === null) return;
+      const chosen = pick.trim();
+      if (chosen && workbook.SheetNames.includes(chosen)) {
+        sheetName = chosen;
+      } else if (chosen) {
+        alert(
+          `工作表【${chosen}】不存在，请重新导入。可选：${workbook.SheetNames.join('、')}`,
+        );
+        return;
+      }
+    }
+    const sheet = workbook.Sheets[sheetName];
 
     const jsonRows: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet, {
       defval: null,
@@ -502,7 +518,30 @@ async function onFileChange(e: Event) {
       return out;
     });
 
-    if (!confirm(`共读取到 ${cleaned.length} 行数据，确认导入吗？`)) return;
+    // ★ 导入前摘要：把"计算项分布 / 唯一编码"亮出来，选错文件能当场发现
+    let summary = `工作表【${sheetName}】共读取到 ${cleaned.length} 行数据`;
+    const firstRow = cleaned[0] || {};
+    if ('计算项' in firstRow) {
+      const dist: Record<string, number> = {};
+      for (const r of cleaned) {
+        const k = r['计算项'] == null ? '(空)' : String(r['计算项']);
+        dist[k] = (dist[k] || 0) + 1;
+      }
+      summary +=
+        '\n计算项分布：' +
+        Object.entries(dist)
+          .map(([k, v]) => `${k} × ${v}`)
+          .join('，');
+    }
+    if ('计算页信息唯一编码' in firstRow) {
+      const codes = cleaned
+        .map((r) => r['计算页信息唯一编码'])
+        .filter((v) => v != null && String(v).trim() !== '')
+        .map((v) => String(v).trim());
+      const uniq = [...new Set(codes)];
+      summary += `\n唯一编码共 ${uniq.length} 个，示例：${uniq.slice(0, 6).join('、')}`;
+    }
+    if (!confirm(`${summary}\n\n确认导入吗？`)) return;
 
     const res = await DataApi.batchImport(tableName.value, cleaned);
     alert(res.message || '导入成功');
@@ -569,7 +608,9 @@ watch(
           <!-- 列设置 -->
           <Popover trigger="click" placement="bottomRight">
             <template #content>
-              <div style="max-height: 320px; overflow-y: auto; min-width: 180px">
+              <div
+                style="min-width: 180px; max-height: 320px; overflow-y: auto"
+              >
                 <Checkbox
                   :checked="checkAll"
                   :indeterminate="indeterminate"
@@ -769,12 +810,12 @@ watch(
 
 .resize-handle {
   position: absolute;
-  right: -8px;
   top: 0;
+  right: -8px;
   bottom: 0;
+  z-index: 10;
   width: 8px;
   cursor: col-resize;
-  z-index: 10;
   user-select: none;
 }
 
@@ -788,7 +829,7 @@ watch(
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
   vertical-align: bottom;
+  white-space: nowrap;
 }
 </style>

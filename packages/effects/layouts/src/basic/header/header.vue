@@ -160,8 +160,8 @@ function clearPreferencesAndLogout() {
         </template>
 
         <template v-else-if="slot.name === 'preferences'">
-          <PreferencesSelect  class="mr-2"/>
-          
+          <PreferencesSelect class="mr-2" />
+
           <PreferencesButton
             class="mr-1 ml-3"
             @clear-preferences-and-logout="clearPreferencesAndLogout"

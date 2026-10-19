@@ -5,11 +5,11 @@ import { useVbenModal } from '@vben/common-ui';
 
 import type { VxeGridProps } from '#/adapter/vxe-table';
 
-import { Button,message } from 'ant-design-vue';
+import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
-import {GetMenuDataListPage,InsertRoleMenu} from '#/api';
+import { GetMenuDataListPage, InsertRoleMenu } from '#/api';
 
 interface RowType {
   //createTime: string;
@@ -42,7 +42,7 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { type: 'seq', width: 70 },
     { align: 'center', type: 'checkbox' },
-    { align: 'left', title: 'ID',field: 'menuId',visible : false},
+    { align: 'left', title: 'ID', field: 'menuId', visible: false },
     { field: 'menuName', minWidth: 300, title: '菜单', treeNode: true },
     { field: 'menuUrl', title: '路由' },
     { field: 'createName', title: '创建人' },
@@ -58,19 +58,21 @@ const gridOptions: VxeGridProps<RowType> = {
     total: 0,
   },
   proxyConfig: {
-     ajax: {
+    ajax: {
       query: async ({ page }) => {
-        const response =  await GetMenuDataListPage({
-          roleId:data.value.content,
+        const response = await GetMenuDataListPage({
+          roleId: data.value.content,
           page: page.currentPage,
           pageSize: page.pageSize,
         });
 
-        const list = Array.isArray(response.data.data) ? response.data.data : [];
-        const total = response.data.total ;
+        const list = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
+        const total = response.data.total;
         const tableData = {
-            items: list, 
-            total: total 
+          items: list,
+          total: total,
         };
 
         return tableData;
@@ -101,26 +103,25 @@ const [Modal1, modalApi1] = useVbenModal({
   onCancel() {
     modalApi1.close();
   },
-   onConfirm: async () => {
-        // 1. 获取表格所有选中的行数据
+  onConfirm: async () => {
+    // 1. 获取表格所有选中的行数据
     const selectedRows = gridApi.grid?.getCheckboxRecords() || [];
-    
+
     // 2. 提取选中行的menuId，形成数组
-    selectedMenuIds.value = selectedRows.map(row => row.menuId);
+    selectedMenuIds.value = selectedRows.map((row) => row.menuId);
     gridApi.setLoading(true);
     const response = await InsertRoleMenu({
-      roleId:data.value.content,
-      selectedMenuIds:selectedMenuIds.value,
+      roleId: data.value.content,
+      selectedMenuIds: selectedMenuIds.value,
     });
-    if(response.data.code == 0){
-        message.success({
-          content: `保存成功！`,
-        });
-      }
-    else{
-        message.error({
-          content: `保存失败：${response.data.error}`,
-        });
+    if (response.data.code == 0) {
+      message.success({
+        content: `保存成功！`,
+      });
+    } else {
+      message.error({
+        content: `保存失败：${response.data.error}`,
+      });
     }
     gridApi.setLoading(false);
   },
@@ -135,13 +136,14 @@ const [Modal1, modalApi1] = useVbenModal({
   <Modal1 title="数据共享示例">
     <!-- <div class="flex-col-center">外部传递数据： {{ data }}</div> -->
     <div class="vp-raw h-[300px] w-full">
-    <Grid>
-      <template #toolbar-tools>
-        <Button class="mr-2" type="primary" @click="expandAll">展开全部</Button>
-        <Button type="primary" @click="collapseAll"> 折叠全部 </Button>
-      </template>
-    </Grid>
+      <Grid>
+        <template #toolbar-tools>
+          <Button class="mr-2" type="primary" @click="expandAll"
+            >展开全部</Button
+          >
+          <Button type="primary" @click="collapseAll"> 折叠全部 </Button>
+        </template>
+      </Grid>
     </div>
   </Modal1>
-
 </template>

@@ -6,14 +6,19 @@ import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
 import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
 import { BookOpenText, CircleHelp, SvgGithubIcon } from '@vben/icons';
-import { BasicLayout, LockScreen, Notification, UserDropdown } from '@vben/layouts';
+import {
+  BasicLayout,
+  LockScreen,
+  Notification,
+  UserDropdown,
+} from '@vben/layouts';
 import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
-import { ReceiveMessage,OneMessage,AllMessage } from '#/api';
+import { ReceiveMessage, OneMessage, AllMessage } from '#/api';
 
 // 消息结构（和后端一致）
 interface T_MessageQueueModel {
@@ -24,7 +29,6 @@ interface T_MessageQueueModel {
   creatTime: string;
   status: number; // 0未读 1已读
 }
-
 
 interface CustomNotificationItem extends NotificationItem {
   originalData?: T_MessageQueueModel;
@@ -55,7 +59,6 @@ async function fetchUnreadMessages() {
     //   sendName: msg.sendName,
     //   originalData: msg,
     // }));
-
     //notifications.value = newItems;
   } catch (err) {
     console.warn('拉取消息失败', err);
@@ -65,7 +68,7 @@ async function fetchUnreadMessages() {
 // 标记单条已读
 async function markRead(id: string | number) {
   try {
-    console.log("单条已读")
+    console.log('单条已读');
     await OneMessage(id.toString());
     const item = notifications.value.find((x) => x.id === id);
     if (item) item.isRead = true;
@@ -77,8 +80,10 @@ async function markRead(id: string | number) {
 // 全部已读
 async function handleMakeAll() {
   try {
-    console.log("全部已读")
-    const unreadMsgIds = notifications.value.filter(item => !item.isRead).map(item => item.id.toString());
+    console.log('全部已读');
+    const unreadMsgIds = notifications.value
+      .filter((item) => !item.isRead)
+      .map((item) => item.id.toString());
     await AllMessage(unreadMsgIds);
     notifications.value.forEach((item) => (item.isRead = true));
   } catch (err) {
@@ -100,7 +105,6 @@ function remove(id: string | number) {
 function handleViewAll() {
   console.log('查看所有');
 }
-
 
 // 轮询启动/停止
 function startPolling() {
@@ -130,16 +134,36 @@ const authStore = useAuthStore();
 const accessStore = useAccessStore();
 const { destroyWatermark, updateWatermark } = useWatermark();
 
-const showDot = computed(() => notifications.value.some((item) => !item.isRead));
+const showDot = computed(() =>
+  notifications.value.some((item) => !item.isRead),
+);
 
 const menus = computed(() => [
-  { handler: () => router.push({ name: 'Profile' }), icon: 'lucide:user', text: $t('page.auth.profile') },
-  { handler: () => openWindow(VBEN_DOC_URL), icon: BookOpenText, text: $t('ui.widgets.document') },
-  { handler: () => openWindow(VBEN_GITHUB_URL), icon: SvgGithubIcon, text: 'GitHub' },
-  { handler: () => openWindow(`${VBEN_GITHUB_URL}/issues`), icon: CircleHelp, text: $t('ui.widgets.qa') },
+  {
+    handler: () => router.push({ name: 'Profile' }),
+    icon: 'lucide:user',
+    text: $t('page.auth.profile'),
+  },
+  {
+    handler: () => openWindow(VBEN_DOC_URL),
+    icon: BookOpenText,
+    text: $t('ui.widgets.document'),
+  },
+  {
+    handler: () => openWindow(VBEN_GITHUB_URL),
+    icon: SvgGithubIcon,
+    text: 'GitHub',
+  },
+  {
+    handler: () => openWindow(`${VBEN_GITHUB_URL}/issues`),
+    icon: CircleHelp,
+    text: $t('ui.widgets.qa'),
+  },
 ]);
 
-const avatar = computed(() => userStore.userInfo?.avatar ?? preferences.app.defaultAvatar);
+const avatar = computed(
+  () => userStore.userInfo?.avatar ?? preferences.app.defaultAvatar,
+);
 
 async function handleLogout() {
   stopPolling();
@@ -150,7 +174,7 @@ onMounted(() => {
   watch(
     () => currentUser.value?.username,
     (val) => (val ? startPolling() : stopPolling()),
-    { immediate: true }
+    { immediate: true },
   );
 });
 
@@ -164,13 +188,15 @@ watch(
   async ({ enable, content }) => {
     if (enable) {
       await updateWatermark({
-        content: content || `${userStore.userInfo?.username} - ${userStore.userInfo?.realName}`,
+        content:
+          content ||
+          `${userStore.userInfo?.username} - ${userStore.userInfo?.realName}`,
       });
     } else {
       destroyWatermark();
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 
@@ -201,7 +227,10 @@ watch(
     </template>
 
     <template #extra>
-      <AuthenticationLoginExpiredModal v-model:open="accessStore.loginExpired" :avatar="avatar">
+      <AuthenticationLoginExpiredModal
+        v-model:open="accessStore.loginExpired"
+        :avatar="avatar"
+      >
         <LoginForm />
       </AuthenticationLoginExpiredModal>
     </template>
@@ -213,18 +242,62 @@ watch(
 </template>
 
 <style scoped>
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.space-y-1 > * + * { margin-top: 0.25rem; }
-.justify-between { justify-content: space-between; }
-.items-center { align-items: center; }
-.font-medium { font-weight: 500; }
-.text-xs { font-size: 0.75rem; }
-.text-sm { font-size: 0.875rem; }
-.text-gray-400 { color: var(--vben-text-color-3); }
-.text-gray-500 { color: var(--vben-text-color-2); }
-.text-gray-600 { color: var(--vben-text-color-1); }
-.text-gray-800 { color: var(--vben-text-color-base); }
-.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.self-end { align-self: flex-end; }
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.space-y-1 > * + * {
+  margin-top: 0.25rem;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-gray-400 {
+  color: var(--vben-text-color-3);
+}
+
+.text-gray-500 {
+  color: var(--vben-text-color-2);
+}
+
+.text-gray-600 {
+  color: var(--vben-text-color-1);
+}
+
+.text-gray-800 {
+  color: var(--vben-text-color-base);
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.self-end {
+  align-self: flex-end;
+}
 </style>

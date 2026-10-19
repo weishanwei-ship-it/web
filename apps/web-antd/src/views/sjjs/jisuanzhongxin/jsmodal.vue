@@ -108,13 +108,21 @@ defineExpose({ modalApi });
         <Space size="large">
           <label>执行标准</label>
           <Select v-model:value="formselect.standardType" style="width: 350px">
-            <SelectOption v-for="item in standardOptions" :key="item.value" :value="item.value">
+            <SelectOption
+              v-for="item in standardOptions"
+              :key="item.value"
+              :value="item.value"
+            >
               {{ item.label }}
             </SelectOption>
           </Select>
           <label>产品类型</label>
           <Select v-model:value="formselect.calcTarget" style="width: 350px">
-            <SelectOption v-for="item in targetOptions" :key="item.value" :value="item.value">
+            <SelectOption
+              v-for="item in targetOptions"
+              :key="item.value"
+              :value="item.value"
+            >
               {{ item.label }}
             </SelectOption>
           </Select>

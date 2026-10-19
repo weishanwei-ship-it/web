@@ -1,4 +1,3 @@
-
 // 从配置中提取接口基础地址（VITE_GLOB_API_URL）
 const API_BASE_URL = import.meta.env.VITE_GLOB_API_URL;
 /**
@@ -17,17 +16,14 @@ export const downloadFile = async (filePath: string, fileName?: string) => {
     link.download = fileName || filePath.split('/').pop() || '下载文件.xlsx';
     // 强制触发下载（而非打开文件）
     link.target = '_blank';
-    
+
     // 3. 触发点击（弹出下载文件夹选择弹窗）
     document.body.appendChild(link);
     link.click();
-    
+
     // 4. 清理临时元素
     document.body.removeChild(link);
-    
   } catch (err) {
     console.error('下载失败：', err);
   }
 };
-
-
