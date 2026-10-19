@@ -129,7 +129,7 @@ catalog:
   pkg-types: ^2.3.0
   playwright: ^1.58.2
   postcss: ^8.5.8
-  postcss-html: ^1.8.1
+  postcss-html: ^2.0.0
   postcss-scss: ^4.0.9
   publint: ^0.3.18
   qrcode: ^1.5.4
