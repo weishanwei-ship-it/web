@@ -183,6 +183,34 @@ async function onFileChange(e: Event) {
       return;
     }
 
+    // ★ 单行表头格式没有 计算内容/符号/单位 三列，从【公式库】按编码自动补齐
+    if (records.some((r) => r.计算内容 == null)) {
+      try {
+        const libAll: any[] = [];
+        for (let p = 1; p <= 20; p++) {
+          const res = await DataApi.getList('公式库', p, 2000);
+          const items = res.items || [];
+          libAll.push(...items);
+          if (items.length < 2000) break;
+        }
+        const meta = new Map<string, any>();
+        for (const it of libAll) {
+          const code = String(it.计算页信息唯一编码 || '').trim();
+          if (code && !meta.has(code)) meta.set(code, it);
+        }
+        for (const r of records) {
+          const m = meta.get(String(r.参数编码 || '').trim());
+          if (m) {
+            if (r.计算内容 == null) r.计算内容 = m.计算内容 ?? null;
+            if (r.符号 == null) r.符号 = m.符号 ?? null;
+            if (r.单位 == null) r.单位 = m.单位 ?? null;
+          }
+        }
+      } catch (e) {
+        console.warn('[导入] 从公式库补齐参数元数据失败（不影响导入）', e);
+      }
+    }
+
     // 2. 二次确认
     const ok = await new Promise<boolean>((resolve) => {
       Modal.confirm({
@@ -266,24 +294,36 @@ function parseDesignGivenExcel(workbook: XLSX.WorkBook) {
     blankrows: false,
   });
 
-  if (rows.length < 7) {
-    throw new Error('Excel 结构不符：至少需要 7 行');
+  if (rows.length < 2) {
+    throw new Error('Excel 结构不符：至少需要表头行 + 数据行');
   }
 
-  const codeRow = rows[2] || []; // 参数编码  X001N003...
-  const nameRow = rows[3] || []; // 计算内容  公称压力...
-  const symbolRow = rows[4] || []; // 符号      P...
-  const unitRow = rows[5] || []; // 单位      MPa...
+  // ★ 参数编码行位置自动探测，兼容两种格式：
+  //   A) 多行表头（旧）：第 3 行(idx2)=参数编码、第 4 行=计算内容、第 5 行=符号、第 6 行=单位，第 7 行起数据
+  //   B) 单行表头（新）：第 1 行(idx0) AE 列起就是 X 码，数据行紧随其后
+  const PARAM_START = 30; // AE 列
+  const findParamCols = (row: any[]): number[] => {
+    const cols: number[] = [];
+    for (let c = PARAM_START; c < row.length; c++) {
+      const code = String(row[c] || '')
+        .trim()
+        .replace(/^\*/, '');
+      if (/^X\d{3}N\d+$/i.test(code)) {
+        cols.push(c);
+      }
+    }
+    return cols;
+  };
 
-  // 参数列：从 AE 列（idx=30）起，第 3 行有 X00xNxxx 编码
-  const PARAM_START = 30;
-  const paramCols: number[] = [];
-  for (let c = PARAM_START; c < codeRow.length; c++) {
-    const code = String(codeRow[c] || '')
-      .trim()
-      .replace(/^\*/, '');
-    if (/^X\d{3}N\d+$/i.test(code)) {
-      paramCols.push(c);
+  let headerIdx = -1;
+  let paramCols: number[] = [];
+  for (const candidate of [2, 0, 1, 3]) {
+    if (candidate >= rows.length) continue;
+    const cols = findParamCols(rows[candidate] || []);
+    if (cols.length > 0) {
+      headerIdx = candidate;
+      paramCols = cols;
+      break;
     }
   }
 
@@ -291,12 +331,26 @@ function parseDesignGivenExcel(workbook: XLSX.WorkBook) {
     throw new Error('未找到参数列（AE 列起应有 X00xNxxx 编码）');
   }
 
+  const codeRow = rows[headerIdx] || []; // 参数编码  X001N003...
+  const nameRow = rows[headerIdx + 1] || []; // 计算内容（单行表头格式时为空）
+  const symbolRow = rows[headerIdx + 2] || []; // 符号
+  const unitRow = rows[headerIdx + 3] || []; // 单位
+
+  // 数据起始行：编码行之后第一个 A 列（产品编码）非空的行
+  let dataStart = headerIdx + 4;
+  for (let r = headerIdx + 1; r < rows.length; r++) {
+    if (String((rows[r] || [])[0] || '').trim() !== '') {
+      dataStart = r;
+      break;
+    }
+  }
+
   // ★ 用 Map 去重（防止 Excel 里 X006N003 之类重复出现）
   const recordMap = new Map<string, any>();
   const productSet = new Set<string>();
   const duplicateLog: string[] = [];
 
-  for (let r = 6; r < rows.length; r++) {
+  for (let r = dataStart; r < rows.length; r++) {
     const row = rows[r];
     if (!row) continue;
 
@@ -508,9 +562,14 @@ onMounted(loadAll);
 
             <div style="flex: 1; overflow: hidden">
               <Table
-                :columns!="paramColumns"
+                :columns="paramColumns"
                 :data-source="filteredParams"
-                :pagination="false"
+                :pagination="{
+                  pageSize: 100,
+                  showSizeChanger: true,
+                  pageSizeOptions: ['50', '100', '200', '500'],
+                  showQuickJumper: true,
+                }"
                 :scroll="{ y: 'calc(100vh - 330px)', x: 720 }"
                 size="small"
                 bordered

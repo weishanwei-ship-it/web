@@ -704,19 +704,17 @@ watch(
  
           <!-- 其他列: 截断 + Tooltip -->
           <template v-else>
-            <!-- 直接在这里把值取出来，如果是 undefined 就兜底为空字符串 -->
-            <template v-slot:default="{ record, column }">
-              <Tooltip
-                v-if="record[column?.dataIndex as string] !== null && record[column?.dataIndex as string] !== undefined && record[column?.dataIndex as string] !== ''"
-                :title="String(record[column?.dataIndex as string])"
-                placement="topLeft"
-              >
-                <span class="ellipsis-text">
-                  {{ record[column?.dataIndex as string] }}
-                </span>
-              </Tooltip>
-              <span v-else>-</span>
-            </template>
+            <!-- 直接在这里把值取出来，如果是 undefined 就兜底为空字符串 -->         
+            <Tooltip
+              v-if="record[column?.dataIndex as string] !== null && record[column?.dataIndex as string] !== undefined && record[column?.dataIndex as string] !== ''"
+              :title="String(record[column?.dataIndex as string])"
+              placement="topLeft"
+            >
+              <span class="ellipsis-text">
+                {{ record[column?.dataIndex as string] }}
+              </span>
+            </Tooltip>
+            <span v-else>-</span> 
           </template>
         </template>
 

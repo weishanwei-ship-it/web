@@ -525,6 +525,9 @@ const selectedComboCode = ref<string>('');
 
 const designGivenCodes = ref<string[]>([]);
 const selectedDesignGivenCode = ref<string>('');
+// ★ 打开弹窗时由后端按规则拼出的编码（用于实时计算时的三级匹配）
+const builtRuleCode = ref<string>(''); // 9 段规则码（设计给定口径）
+const builtFullCode = ref<string>(''); // 完整组合码
 
 const designGivenParamsMap = ref<Record<string, string>>({});
 const designGivenLoading = ref(false);
@@ -728,6 +731,8 @@ async function openConfigModal(record: any) {
 
   // 清空上次的遗留
   selectedDesignGivenCode.value = '';
+  builtRuleCode.value = '';
+  builtFullCode.value = '';
 
   Object.keys(configForm).forEach((k) => delete configForm[k]);
   Object.keys(record).forEach((k) => {
@@ -765,22 +770,58 @@ async function openConfigModal(record: any) {
     const res: any = await DataApi.buildProductCode(record);
     console.log('[openConfigModal] 拼接接口原始返回 =', res);
 
-    // 兼容多种返回格式
-    let codeStr = '';
-    if (typeof res === 'string') {
-      codeStr = res; // 直接返回了字符串
-    } else if (res?.data && typeof res.data === 'string') {
-      codeStr = res.data; // { data: "P2A..." }
-    } else if (res?.data?.data) {
-      codeStr = res.data.data; // 多层嵌套
-    }
+      let codeStr = '';
+      let ruleCode = '';
+      let exists = false;
+      const candidatesList: string[] = [];
 
-    if (codeStr) {
-      selectedDesignGivenCode.value = codeStr;
-      console.log('[openConfigModal] 动态生成编码成功 =', codeStr);
-    } else {
-      console.warn('[openConfigModal] 动态生成编码失败，解析后为空');
-    }
+      if (typeof res === 'string') {
+        codeStr = res; // 直接返回了字符串
+      } else if (res?.data && typeof res.data === 'string') {
+        codeStr = res.data; // { data: "P2A..." }
+      } else if (res?.data?.data) {
+        codeStr = res.data.data; // 多层嵌套
+      }
+
+      // ★ 新口径：9 段规则码（设计给定表用的编码）
+      const raw = (res?.data && typeof res.data === 'object'
+        ? res.data
+        : res) as any;
+      ruleCode = String(raw?.ruleCode || '').trim();
+      exists = !!raw?.exists;
+      for (const c of raw?.candidates || []) {
+        if (c) candidatesList.push(String(c));
+      }
+
+      builtFullCode.value = codeStr;
+      builtRuleCode.value = ruleCode;
+
+      if (ruleCode) {
+        console.log(
+          '[openConfigModal] 9 段规则码 =',
+          ruleCode,
+          '| 设计给定存在 =',
+          exists,
+          '| 兜底候选 =',
+          candidatesList.length,
+        );
+      }
+
+      // ★ 优先用规则码（设计给定口径）；不存在时用兜底候选的第一个
+      if (ruleCode && exists) {
+        selectedDesignGivenCode.value = ruleCode;
+      } else if (candidatesList.length === 1) {
+        selectedDesignGivenCode.value = candidatesList[0]!;
+        console.warn(
+          '[openConfigModal] 规则码无对应数据，改用唯一候选：',
+          candidatesList[0],
+        );
+      } else if (codeStr) {
+        selectedDesignGivenCode.value = codeStr;
+        console.warn('[openConfigModal] 动态生成编码成功 =', codeStr);
+      } else {
+        console.warn('[openConfigModal] 动态生成编码失败，解析后为空');
+      }
   } catch (e) {
     console.error('[openConfigModal] 请求拼接编码接口异常 =', e);
   }
@@ -994,17 +1035,77 @@ async function realtimeCalc() {
     const 产品结构编码 = extractProductCode(configRecord.value);
     console.log('产品结构编码 =', 产品结构编码);
 
+    // ★ 出厂编号：【设计计算书】取数（最大压差/泄漏等级/执行机构输出力 Fn1/Fn2）的钥匙，
+    //   后端 ApplyDesignBookSourcesAsync 没有它就直接跳过注入 → 17/18 行恒为 '-'
+    const 出厂编号 = String(
+      configRecord.value['出厂编号'] ?? '',
+    ).trim();
+    console.log('出厂编号 =', 出厂编号);
+
     let designGivenCode = selectedDesignGivenCode.value;
+    const codes = designGivenCodes.value;
+
+    // ① 所选编码如果已经不在【设计给定】里（重新导入后编码换代）→ 失效
+    if (designGivenCode && !codes.includes(designGivenCode)) {
+      console.warn(
+        '[realtimeCalc] 所选设计给定编码已不存在，重新匹配：',
+        designGivenCode,
+      );
+      designGivenCode = '';
+    }
+
+    // ② 精确匹配：后端按规则拼出的 9 段规则码
+    if (!designGivenCode && builtRuleCode.value && codes.includes(builtRuleCode.value)) {
+      designGivenCode = builtRuleCode.value;
+      console.log('[realtimeCalc] 命中规则码 =', designGivenCode);
+    }
+
+    // ②½ 规则码本身不匹配（如某段代号口径不一致 / 该规格暂未录入设计给定）
+    //    → 取与规则码"公共前缀最长"的候选（同系列最近的一条），并提示
+    if (!designGivenCode && builtRuleCode.value) {
+      const scored = codes
+        .map((c) => {
+          let n = 0;
+          const max = Math.min(c.length, builtRuleCode.value.length);
+          while (n < max && c[n] === builtRuleCode.value[n]) n += 1;
+          return { code: c, n };
+        })
+        .filter((x) => x.n >= 8)
+        .toSorted((a, b) => b.n - a.n);
+      if (scored.length > 0) {
+        designGivenCode = scored[0]!.code;
+        console.log(
+          '[realtimeCalc] 规则码未精确命中，按最长公共前缀匹配 =',
+          designGivenCode,
+          `(公共 ${scored[0]!.n} 位，规则码 ${builtRuleCode.value})`,
+        );
+        message.warning(
+          `设计给定里没有 ${builtRuleCode.value} 这条编码，已改用最接近的 ${designGivenCode}（请确认规格是否一致）`,
+          6,
+        );
+      }
+    }
+
+    // ③ 前缀匹配：设计给定码 = 组合码的前缀，取最长的一条
+    if (!designGivenCode && builtFullCode.value) {
+      const hits = codes.filter((c) => builtFullCode.value.startsWith(c));
+      if (hits.length > 0) {
+        designGivenCode = hits.toSorted((a, b) => b.length - a.length)[0]!;
+        console.log('[realtimeCalc] 按组合码前缀最长匹配 =', designGivenCode);
+      }
+    }
+
+    // ④ 兜底：按阀门型号前缀取第一个候选
     if (!designGivenCode) {
       const model = String(configRecord.value['阀门型号'] || '').trim();
-      const candidates = designGivenCodes.value.filter((c) =>
-        c.startsWith(model),
-      );
-      designGivenCode = candidates[0] || '';
+      designGivenCode = codes.find((c) => c.startsWith(model)) || '';
       if (designGivenCode) {
-        selectedDesignGivenCode.value = designGivenCode;
         console.log('[realtimeCalc] 兜底匹配设计给定编码 =', designGivenCode);
       }
+    }
+
+    if (designGivenCode && designGivenCode !== selectedDesignGivenCode.value) {
+      selectedDesignGivenCode.value = designGivenCode;
     }
     console.log('设计给定产品编码 =', designGivenCode);
 
@@ -1014,11 +1115,13 @@ async function realtimeCalc() {
         标准体系,
         下单日期,
         设计给定产品编码: designGivenCode || undefined,
+        出厂编号: 出厂编号 || undefined,
         params,
       }),
       DataApi.ruleCalc({
         阀门型号,
         设计给定产品编码: designGivenCode || undefined,
+        出厂编号: 出厂编号 || undefined,
         params,
       }),
       产品结构编码
@@ -2252,80 +2355,39 @@ watch(
                   </span>
                 </div>
 
-                <!-- ★ 按章节展示 -->
+                <!-- ★ 按章节展示：每页计算书只出一条结论（不展示判定明细） -->
                 <div
                   v-for="ch in checkResult.chapters"
                   :key="ch.chapterCode"
                   style="
-                    margin-bottom: 16px;
-                    overflow: hidden;
+                    display: flex;
+                    gap: 12px;
+                    align-items: center;
+                    padding: 10px 16px;
+                    margin-bottom: 8px;
                     border: 1px solid #f0f0f0;
                     border-radius: 4px;
+                    background: #fafafa;
                   "
                 >
-                  <!-- 章节标题栏 -->
-                  <div
-                    style="
-                      display: flex;
-                      gap: 12px;
-                      align-items: center;
-                      padding: 10px 16px;
-                      background: #fafafa;
-                      border-bottom: 1px solid #f0f0f0;
-                    "
+                  <strong style="font-size: 14px; min-width: 160px">{{
+                    ch.chapterName
+                  }}</strong>
+                  <Tag :color="ch.passed ? 'green' : 'red'" style="margin: 0">
+                    {{ ch.passed ? '合格' : '不合格' }}
+                  </Tag>
+                  <span
+                    v-if="!ch.passed"
+                    style="font-size: 13px; color: #ff4d4f"
                   >
-                    <Tag :color="ch.passed ? 'green' : 'red'" style="margin: 0">
-                      {{ ch.passed ? '合格' : '不合格' }}
-                    </Tag>
-                    <strong style="font-size: 14px">{{
-                      ch.chapterName
-                    }}</strong>
-                    <span
-                      v-if="!ch.passed"
-                      style="margin-left: auto; font-size: 13px; color: #ff4d4f"
-                    >
-                      {{ ch.message }}
-                    </span>
-                  </div>
-
-                  <!-- 判定明细 -->
-                  <Table
-                    v-if="ch.details && ch.details.length > 0"
-                    :data-source="ch.details"
-                    :columns="[
-                      { title: '判定项', dataIndex: 'name', width: 260 },
-                      { title: '结果', dataIndex: 'passed', width: 120 },
-                      { title: '提示', dataIndex: 'message' },
-                    ]"
-                    :pagination="false"
-                    size="small"
-                    bordered
-                    :row-key="(r: any) => r.name"
+                    {{ ch.message }}
+                  </span>
+                  <span
+                    v-else
+                    style="margin-left: auto; font-size: 12px; color: #999"
                   >
-                    <template #bodyCell="{ column, record }">
-                      <template v-if="column.dataIndex === 'passed'">
-                        <Tag v-if="record.skipped" color="default">跳过</Tag>
-                        <Tag v-else :color="record.passed ? 'green' : 'red'">
-                          {{ record.passed ? '通过' : '不通过' }}
-                        </Tag>
-                      </template>
-
-                      <template v-else-if="column.dataIndex === 'message'">
-                        <span
-                          :style="{
-                            color:
-                              record.passed || record.skipped ? '' : '#ff4d4f',
-                            fontWeight:
-                              record.passed || record.skipped
-                                ? 'normal'
-                                : '500',
-                          }"
-                        >
-                          {{ record.message }}
-                        </span>
-                      </template>
-                    </template>
-                  </Table>
+                    本章节各项判定通过
+                  </span>
                 </div>
               </div>
             </div>
