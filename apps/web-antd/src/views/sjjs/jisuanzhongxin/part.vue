@@ -807,20 +807,41 @@ async function openConfigModal(record: any) {
         );
       }
 
-      // ★ 优先用规则码（设计给定口径）；不存在时用兜底候选的第一个
+      // ★ 优先用规则码（设计给定口径）；无精确行时按「与规则码/组合码公共前缀最长」
+      //   的候选选取——★ 组合码（15 段）本身不在【设计给定】表里，
+      //   不能直接当设计给定编码用（否则后端只能模糊合并，选行随机）
       if (ruleCode && exists) {
         selectedDesignGivenCode.value = ruleCode;
-      } else if (candidatesList.length === 1) {
-        selectedDesignGivenCode.value = candidatesList[0]!;
-        console.warn(
-          '[openConfigModal] 规则码无对应数据，改用唯一候选：',
-          candidatesList[0],
-        );
-      } else if (codeStr) {
-        selectedDesignGivenCode.value = codeStr;
-        console.warn('[openConfigModal] 动态生成编码成功 =', codeStr);
       } else {
-        console.warn('[openConfigModal] 动态生成编码失败，解析后为空');
+        const base = ruleCode || codeStr || '';
+        const lcpLen = (a: string, b: string) => {
+          let n = 0;
+          const max = Math.min(a.length, b.length);
+          while (n < max && a[n] === b[n]) n += 1;
+          return n;
+        };
+        const scored = designGivenCodes.value
+          .map((c) => ({ code: c, n: lcpLen(c, base) }))
+          .toSorted((a, b) => b.n - a.n);
+        if (base && scored.length && scored[0]!.n >= 8) {
+          selectedDesignGivenCode.value = scored[0]!.code;
+          console.warn(
+            '[openConfigModal] 规则码无精确行，按最长公共前缀选取 =',
+            scored[0]!.code,
+            `(公共 ${scored[0]!.n} 位, base=${base})`,
+          );
+        } else if (candidatesList.length === 1) {
+          selectedDesignGivenCode.value = candidatesList[0]!;
+          console.warn(
+            '[openConfigModal] 规则码无对应数据，改用唯一候选：',
+            candidatesList[0],
+          );
+        } else if (codeStr) {
+          selectedDesignGivenCode.value = codeStr;
+          console.warn('[openConfigModal] 无前缀候选可用，暂用组合码 =', codeStr);
+        } else {
+          console.warn('[openConfigModal] 动态生成编码失败，解析后为空');
+        }
       }
   } catch (e) {
     console.error('[openConfigModal] 请求拼接编码接口异常 =', e);
@@ -1044,6 +1065,15 @@ async function realtimeCalc() {
 
     let designGivenCode = selectedDesignGivenCode.value;
     const codes = designGivenCodes.value;
+    // ★ 匹配基准：9 段规则码；后端没拼出规则码时退化用完整组合码
+    //   （组合码前 9 段 = 规则码，与候选比公共前缀结果等价）
+    const ruleBase = builtRuleCode.value || builtFullCode.value || '';
+    const lcpLen = (a: string, b: string) => {
+      let n = 0;
+      const max = Math.min(a.length, b.length);
+      while (n < max && a[n] === b[n]) n += 1;
+      return n;
+    };
 
     // ① 所选编码如果已经不在【设计给定】里（重新导入后编码换代）→ 失效
     if (designGivenCode && !codes.includes(designGivenCode)) {
@@ -1054,6 +1084,30 @@ async function realtimeCalc() {
       designGivenCode = '';
     }
 
+    // ①½ 已选行存在，但与本次产品组合拼出的规则码前缀差异过大
+    //    （如换了通径/上盖型式后，旧的手动选择仍残留——DN25 行挂在 DN40 产品上）
+    //    → 自动纠正到与规则码公共前缀最长的候选，并提示
+    if (designGivenCode && ruleBase) {
+      const curN = lcpLen(designGivenCode, ruleBase);
+      const best = codes
+        .map((c) => ({ code: c, n: lcpLen(c, ruleBase) }))
+        .toSorted((a, b) => b.n - a.n)[0];
+      if (best && best.code !== designGivenCode && best.n > curN) {
+        console.warn(
+          '[realtimeCalc] 已选编码与规则码前缀不符，自动纠正：',
+          designGivenCode,
+          '→',
+          best.code,
+          `(公共前缀 ${curN} → ${best.n} 位)`,
+        );
+        message.warning(
+          `所选设计给定编码与当前产品组合不匹配，已自动改用 ${best.code}（如需保留原选择请手动改回）`,
+          6,
+        );
+        designGivenCode = best.code;
+      }
+    }
+
     // ② 精确匹配：后端按规则拼出的 9 段规则码
     if (!designGivenCode && builtRuleCode.value && codes.includes(builtRuleCode.value)) {
       designGivenCode = builtRuleCode.value;
@@ -1062,14 +1116,9 @@ async function realtimeCalc() {
 
     // ②½ 规则码本身不匹配（如某段代号口径不一致 / 该规格暂未录入设计给定）
     //    → 取与规则码"公共前缀最长"的候选（同系列最近的一条），并提示
-    if (!designGivenCode && builtRuleCode.value) {
+    if (!designGivenCode && ruleBase) {
       const scored = codes
-        .map((c) => {
-          let n = 0;
-          const max = Math.min(c.length, builtRuleCode.value.length);
-          while (n < max && c[n] === builtRuleCode.value[n]) n += 1;
-          return { code: c, n };
-        })
+        .map((c) => ({ code: c, n: lcpLen(c, ruleBase) }))
         .filter((x) => x.n >= 8)
         .toSorted((a, b) => b.n - a.n);
       if (scored.length > 0) {
@@ -1077,10 +1126,10 @@ async function realtimeCalc() {
         console.log(
           '[realtimeCalc] 规则码未精确命中，按最长公共前缀匹配 =',
           designGivenCode,
-          `(公共 ${scored[0]!.n} 位，规则码 ${builtRuleCode.value})`,
+          `(公共 ${scored[0]!.n} 位，基准 ${ruleBase})`,
         );
         message.warning(
-          `设计给定里没有 ${builtRuleCode.value} 这条编码，已改用最接近的 ${designGivenCode}（请确认规格是否一致）`,
+          `设计给定里没有 ${builtRuleCode.value || builtFullCode.value} 这条编码，已改用最接近的 ${designGivenCode}（请确认规格是否一致）`,
           6,
         );
       }
@@ -1172,8 +1221,10 @@ async function realtimeCalc() {
         const val = log.valueDisplay ?? log.value;
         if (val === undefined || val === null) return;
 
+        // ★ item（公式库编码）统一转大写，与行上的 code 对齐，
+        //   使回填可以按编码精确命中（同符号可能被其它章节同名符号覆盖）
+        if (log.item) resultMap[String(log.item).trim().toUpperCase()] = String(val);
         if (log.symbol) resultMap[String(log.symbol).trim()] = String(val);
-        if (log.item) resultMap[String(log.item).trim()] = String(val);
         if (log.itemName) resultMap[String(log.itemName).trim()] = String(val);
       });
 
@@ -1214,7 +1265,15 @@ async function realtimeCalc() {
           continue;
         }
 
-        const newVal = resultMap[sym] ?? resultMap[code] ?? resultMap[content];
+        // ★ 设计给定行：book 已从 scope[编码] 回填了正确值（如推力章「密封面角度 α」=64），
+        //   不能被执行日志的"同名符号"覆盖——扭矩章「球体与密封面间的摩擦角」的符号也是 α
+        //   （X002N022，值为 0），若按 sym 优先查会把 0 盖到推力章的 α 上。
+        //   公式行也优先按 编码 精确命中（如推力章 k：X003N005=7 与 X003N180=13.72 同符号，
+        //   按 sym 查会拿到被 X003N180 覆盖的 13.72）；sym 仅在编码/内容都查不到时兜底。
+        const isGivenRow = /设计给定/.test(String(row.formula || ''));
+        const newVal = isGivenRow
+          ? (resultMap[code] ?? resultMap[content])
+          : (resultMap[code] ?? resultMap[content] ?? resultMap[sym]);
         if (newVal !== undefined) {
           row.value = newVal;
           row._originalValue = newVal;
