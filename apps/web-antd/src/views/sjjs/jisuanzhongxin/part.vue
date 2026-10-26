@@ -29,6 +29,7 @@ const FormItem = Form.Item;
 
 import { DataApi } from '#/api/core/data';
 import type { ColumnInfo } from '#/api/core/data';
+import SubscriptText from '#/components/subscript-text/index.vue';
 
 const route = useRoute();
 
@@ -1224,7 +1225,8 @@ async function realtimeCalc() {
         // ★ item（公式库编码）统一转大写，与行上的 code 对齐，
         //   使回填可以按编码精确命中（同符号可能被其它章节同名符号覆盖）
         if (log.item) resultMap[String(log.item).trim().toUpperCase()] = String(val);
-        if (log.symbol) resultMap[String(log.symbol).trim()] = String(val);
+        if (log.symbol)
+          resultMap[String(log.symbol).replace(/[[\]{}]/g, '').trim()] = String(val);
         if (log.itemName) resultMap[String(log.itemName).trim()] = String(val);
       });
 
@@ -1253,7 +1255,11 @@ async function realtimeCalc() {
 
     for (const ch of chapters) {
       for (const row of ch.rows || []) {
-        const sym = (row.symbol || '').trim();
+        // 符号列现用方括号标记下标（如 p[m]），但引擎回填用的符号是平铺形式（pm），
+        // 这里回填兜底查表前先剥掉方括号，使其与 resultMap 里的 key 对齐
+        const sym = (row.symbol || '')
+          .replace(/[[\]{}]/g, '')
+          .trim();
         const code = (row.code || '').trim();
         const content = (row.content || '').trim();
 
@@ -2558,7 +2564,11 @@ watch(
                     :scroll="{ x: 900 }"
                   >
                     <template #bodyCell="{ column, record }">
-                      <template v-if="column.key === 'formula'">
+                      <template v-if="column.key === 'symbol'">
+                        <SubscriptText :text="record.symbol" />
+                      </template>
+
+                      <template v-else-if="column.key === 'formula'">
                         <Tooltip
                           v-if="record.formulaDisplay || record.formula"
                           :title="record.formula"
@@ -2570,7 +2580,9 @@ watch(
                             style="cursor: pointer"
                             @click="showFormula(record)"
                           >
-                            {{ record.formulaDisplay || record.formula }}
+                            <SubscriptText
+                              :text="record.formulaDisplay || record.formula"
+                            />
                           </div>
                         </Tooltip>
                         <span v-else>-</span>

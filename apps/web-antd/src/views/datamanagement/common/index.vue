@@ -24,6 +24,62 @@ import {
 import { SettingOutlined } from '@ant-design/icons-vue';
 import { DataApi } from '#/api/core/data';
 import type { ColumnInfo } from '#/api/core/data';
+import SubscriptText from '#/components/subscript-text/index.vue';
+
+// 这些列里的变量下标用方括号标记（如 F[mf]、D[mn]），需要渲染成 <sub>
+function isSubscriptColumn(colName: string) {
+  return ['符号', '计算公式', '计算内容'].includes(colName);
+}
+
+// ============================================================
+// Excel 富文本 → 下标标记
+// Excel 的下标/上标是"字体属性"（vertAlign），纯文本读取会丢失：
+//   Dₘₙ → "Dmn"、d_f² → "df2"，导入后就分不清哪个是下标了。
+// 这里用 SheetJS 的 cellHTML（cell.h）把 <sub>/<sup> 还原成标记：
+//   下标 → [x]   上标 → {x}
+// 后端 NormalizeSymbols 计算前会剥掉 [ ]，因此不影响求值。
+// ============================================================
+function decodeHtmlEntities(s: string) {
+  return s
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, '&');
+}
+
+/** 把带富文本格式的单元格转成 [下标] / {上标} 标记文本；无格式则返回 null */
+function richCellToMarked(cell: any): null | string {
+  if (!cell || cell.t !== 's') return null;
+  const html = typeof cell.h === 'string' ? cell.h : '';
+  if (!/<su[bp][ >]/i.test(html)) return null;
+  let s = html;
+  s = s.replace(/<sub[^>]*>([\s\S]*?)<\/sub>/gi, (_m, inner) => `[${inner}]`);
+  s = s.replace(/<sup[^>]*>([\s\S]*?)<\/sup>/gi, (_m, inner) => `{${inner}}`);
+  s = s.replace(/<br\s*\/?>/gi, '\n');
+  s = s.replace(/<[^>]+>/g, '');
+  s = decodeHtmlEntities(s);
+  return s;
+}
+
+/** 就地改写整张表里含下标/上标的字符串单元格，使 sheet_to_json 读到标记文本 */
+function annotateSheetRichText(sheet: any) {
+  if (!sheet || !sheet['!ref']) return 0;
+  const range = XLSX.utils.decode_range(sheet['!ref']);
+  let n = 0;
+  for (let r = range.s.r; r <= range.e.r; r++) {
+    for (let c = range.s.c; c <= range.e.c; c++) {
+      const cell = sheet[XLSX.utils.encode_cell({ c, r })];
+      const marked = richCellToMarked(cell);
+      if (marked === null || marked === cell.v) continue;
+      cell.v = marked;
+      // raw:false 时 sheet_to_json 取的是 cell.w，必须一起改
+      cell.w = marked;
+      n++;
+    }
+  }
+  return n;
+}
 
 const hasValue = (record: any, column: any) => {
   const val = record[column?.dataIndex as string];
@@ -457,7 +513,8 @@ async function onFileChange(e: Event) {
   importing.value = true;
   try {
     const buffer = await file.arrayBuffer();
-    const workbook = XLSX.read(buffer, { type: 'array' });
+    // cellHTML:true —— 保留 Excel 富文本（下标/上标是字体属性，默认解析会丢）
+    const workbook = XLSX.read(buffer, { type: 'array', cellHTML: true });
 
     // ★ 多工作表时让用户显式选择（此前静默读第一个表，选错文件/表会导错数据）
     let sheetName = workbook.SheetNames[0]!;
@@ -480,6 +537,15 @@ async function onFileChange(e: Event) {
       }
     }
     const sheet = workbook.Sheets[sheetName];
+
+    // ★ 公式库这类表：把 Excel 的下标/上标字体还原成 [x]/{x} 标记后再转 JSON
+    const hasSymbolCol = schema.value.some((c) =>
+      ['符号', '计算公式'].includes(c.ColumnName),
+    );
+    const markedCells = hasSymbolCol ? annotateSheetRichText(sheet) : 0;
+    if (markedCells > 0) {
+      console.log(`[导入] 已还原 ${markedCells} 个单元格的下标/上标格式`);
+    }
 
     const jsonRows: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet!, {
       defval: null,
@@ -704,17 +770,21 @@ watch(
  
           <!-- 其他列: 截断 + Tooltip -->
           <template v-else>
-            <!-- 直接在这里把值取出来，如果是 undefined 就兜底为空字符串 -->         
+            <!-- 直接在这里把值取出来，如果是 undefined 就兜底为空字符串 -->
             <Tooltip
               v-if="record[column?.dataIndex as string] !== null && record[column?.dataIndex as string] !== undefined && record[column?.dataIndex as string] !== ''"
               :title="String(record[column?.dataIndex as string])"
               placement="topLeft"
             >
               <span class="ellipsis-text">
-                {{ record[column?.dataIndex as string] }}
+                <SubscriptText
+                  v-if="isSubscriptColumn(column?.dataIndex as string)"
+                  :text="record[column?.dataIndex as string]"
+                />
+                <template v-else>{{ record[column?.dataIndex as string] }}</template>
               </span>
             </Tooltip>
-            <span v-else>-</span> 
+            <span v-else>-</span>
           </template>
         </template>
 
@@ -741,13 +811,19 @@ watch(
                 <span v-else>-</span>
               </template>
               <template v-else>
-                {{
-                  record[col.ColumnName] === null ||
-                  record[col.ColumnName] === undefined ||
-                  record[col.ColumnName] === ''
-                    ? '-'
-                    : record[col.ColumnName]
-                }}
+                <SubscriptText
+                  v-if="isSubscriptColumn(col.ColumnName)"
+                  :text="record[col.ColumnName]"
+                />
+                <template
+                  v-else-if="
+                    record[col.ColumnName] === null ||
+                    record[col.ColumnName] === undefined ||
+                    record[col.ColumnName] === ''
+                  "
+                  >-</template
+                >
+                <template v-else>{{ record[col.ColumnName] }}</template>
               </template>
             </DescriptionsItem>
           </Descriptions>
